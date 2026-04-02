@@ -1,0 +1,394 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>BACKHAUL</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <!-- Mapbox GL JS -->
+    <script src='https://api.mapbox.com/mapbox-gl-js/v2.9.1/mapbox-gl.js'></script>
+    <link href='https://api.mapbox.com/mapbox-gl-js/v2.9.1/mapbox-gl.css' rel='stylesheet' />
+    <style>
+        .spinner {
+            position: absolute;
+            right: 10px;
+            border: 2px solid #f3f3f3; /* Light grey */
+            border-top: 2px solid #3498db; /* Blue */
+            border-radius: 50%;
+            width: 16px;
+            height: 16px;
+            animation: spin 1s linear infinite;
+            display: none; /* Hidden by default */
+        }
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+    </style>
+</head>
+<body>
+<div class="container">
+    <h1>BACKHAUL</h1>
+
+    <!-- Navigation Section -->
+    <section class="navigation-section">
+        <h2>Navigation</h2>
+        <a href="{{ url_for('available_loads') }}" class="btn">View Available Loads</a>
+        <a href="{{ url_for('available_vehicles') }}" class="btn">View Available Vehicles</a>
+        {% if session.user_id %}
+            <a href="{{ url_for('dashboard') }}" class="btn">My Dashboard</a>
+            <a href="{{ url_for('inbox') }}" class="btn btn-success">My Messages</a>
+            <a href="{{ url_for('logout') }}" class="btn" style="background-color: #dc3545;">Log Out</a>
+        {% else %}
+            <a href="{{ url_for('login') }}" class="btn">Log In</a>
+            <a href="{{ url_for('register') }}" class="btn btn-success">Sign Up</a>
+        {% endif %}
+    </section>
+
+    {% if session.user_id %}
+    <!-- Post a Load Section -->
+    <section>
+        <h2>1. Post a Load (Shipper)</h2>
+        <form id="postLoadForm" enctype="multipart/form-data">
+            <input type="text" name="description" placeholder="Description (e.g., Couch)" required>
+            <select name="category" required style="margin-bottom: 10px; width: 100%; padding: 10px; border: 1px solid #ccc; border-radius: 4px;">
+                <option value="" disabled selected>Select Category</option>
+                {% for val, label in categories %}
+                <option value="{{ val }}">{{ label }}</option>
+                {% endfor %}
+            </select>
+            <select name="package_size" style="margin-bottom: 10px; width: 100%; padding: 10px; border: 1px solid #ccc; border-radius: 4px;">
+                <option value="" selected>Select General Load Size (Optional)</option>
+                <option value="Small">Small (Fits in a Car, under 200 lbs)</option>
+                <option value="Medium">Medium (Pickup Truck / Trailer, 200 - 2,000 lbs)</option>
+                <option value="Large">Large (Transport Truck / Trailer, 2,000+ lbs)</option>
+            </select>
+            <input type="number" name="weight" placeholder="Weight (lbs)" min="0">
+            <input type="text" name="dimensions" placeholder="Exact Dimensions (Optional, e.g., 6x3x3 ft)">
+            <div style="position: relative; display: flex; align-items: center;">
+                <input type="text" name="pickup" id="loadPickup" list="loadPickupSuggestions" placeholder="Pickup Location" autocomplete="off">
+                <span class="spinner" id="loadPickupSpinner"></span>
+            </div>
+            <datalist id="loadPickupSuggestions"></datalist>
+            <div style="position: relative; display: flex; align-items: center;">
+                <input type="text" name="delivery" id="loadDelivery" list="loadDeliverySuggestions" placeholder="Delivery Location" autocomplete="off">
+                <span class="spinner" id="loadDeliverySpinner"></span>
+            </div>
+            <datalist id="loadDeliverySuggestions"></datalist>
+
+            <div class="checkbox-group" style="margin-bottom: 15px; display: flex; align-items: flex-start; gap: 8px;">
+                <input type="checkbox" name="is_trailer" id="is_trailer" value="true">
+                <label for="is_trailer" style="font-size: 0.85em; color: #555; margin-top: 2px; line-height: 1.4;">This "load" is a trailer that needs to be hauled.</label>
+            </div>
+            <div class="checkbox-group" id="bol_group" style="margin-bottom: 15px; display: none; align-items: flex-start; gap: 8px;">
+                <input type="checkbox" name="requires_bol" id="requires_bol" value="true">
+                <label for="requires_bol" style="font-size: 0.85em; color: #555; margin-top: 2px; line-height: 1.4;">A Bill of Lading is required for this trailer.</label>
+            </div>
+
+            <label for="loading_responsibility">Loading Responsibility:</label>
+            <select name="loading_responsibility" id="loading_responsibility" required style="margin-bottom: 10px; width: 100%; padding: 10px; border: 1px solid #ccc; border-radius: 4px;">
+                <option value="shipper">Shipper provides equipment/manpower</option>
+                <option value="driver">Driver must load (Driver capable)</option>
+            </select>
+            
+            <div class="checkbox-group" style="margin-bottom: 15px; display: flex; align-items: flex-start; gap: 8px;">
+                <input type="checkbox" name="equipment_failure_compensation" id="equipment_failure_compensation" value="true">
+                <label for="equipment_failure_compensation" style="font-size: 0.85em; color: #555; margin-top: 2px; line-height: 1.4;">I agree to compensate the transporter if promised loading equipment/manpower is unavailable at the time of loading, causing delays.</label>
+            </div>
+
+            <label for="shipping_date">Desired Shipping Date:</label>
+            <input type="date" name="shipping_date" id="shipping_date" required>
+            <label for="load_image">Image of Item (optional):</label>
+            <input type="file" name="load_image" id="load_image" accept="image/*">
+            <input type="text" name="shipper_offer" placeholder="Offer (e.g., $50)">
+            <button type="submit">Post Load</button>
+        </form>
+        <div id="loadResult" class="result"></div>
+    </section>
+
+    <!-- Post a Vehicle Section -->
+    <section>
+        <h2>2. Post a Vehicle (Driver)</h2>
+        <form id="postVehicleForm">
+            <input type="text" name="vehicle_type" placeholder="Vehicle Type (e.g., SUV)" required>
+            <select name="category" required style="margin-bottom: 10px; width: 100%; padding: 10px; border: 1px solid #ccc; border-radius: 4px;">
+                <option value="" disabled selected>Select Best Suited Category</option>
+                {% for val, label in categories %}
+                <option value="{{ val }}">{{ label }}</option>
+                {% endfor %}
+            </select>
+            <div style="position: relative; display: flex; align-items: center;">
+                <input type="text" name="departure_city" id="vehicleDeparture" list="vehicleDepartureSuggestions" placeholder="Departure City" autocomplete="off">
+                <span class="spinner" id="vehicleDepartureSpinner"></span>
+            </div>
+            <datalist id="vehicleDepartureSuggestions"></datalist>
+            <div style="position: relative; display: flex; align-items: center;">
+                <input type="text" name="destination_city" id="vehicleDestination" list="vehicleDestinationSuggestions" placeholder="Destination City" autocomplete="off">
+                <span class="spinner" id="vehicleDestinationSpinner"></span>
+            </div>
+            <datalist id="vehicleDestinationSuggestions"></datalist>
+            <label for="start_date">Start Date:</label>
+            <input type="date" name="start_date" id="start_date" required>
+            <label for="end_date">End Date:</label>
+            <input type="date" name="end_date" id="end_date" required>
+            <input type="number" name="max_weight" placeholder="Max Weight (lbs)" min="0">
+            <input type="text" name="max_dimensions" placeholder="Max Dimensions">
+            <div class="checkbox-group" style="margin-bottom: 15px; display: flex; align-items: flex-start; gap: 8px;">
+                <input type="checkbox" name="has_loading_equipment" id="has_loading_equipment" value="true">
+                <label for="has_loading_equipment" style="font-size: 0.85em; color: #555; margin-top: 2px; line-height: 1.4;">I have my own loading equipment (e.g., ramps, liftgate, dolly).</label>
+            </div>
+            <div class="checkbox-group" style="margin-bottom: 15px; display: flex; align-items: flex-start; gap: 8px;">
+                <input type="checkbox" name="can_haul_trailer" id="can_haul_trailer" value="true">
+                <label for="can_haul_trailer" style="font-size: 0.85em; color: #555; margin-top: 2px; line-height: 1.4;">Willing to haul a trailer (bobtailing).</label>
+            </div>
+            <button type="submit">Post Vehicle</button>
+        </form>
+        <div id="vehicleResult" class="result"></div>
+    </section>
+
+    <!-- Match Section -->
+    <section id="matchSection">
+        <h2>3. Match Load to Vehicle</h2>
+        <form id="matchForm">
+            <input type="text" name="load_id" id="match_load_id" placeholder="Load ID (Generated in Step 1)" required>
+            <input type="text" name="vehicle_id" id="match_vehicle_id" placeholder="Vehicle ID (Generated in Step 2)" required>
+            <button type="submit">Match Load to Driver</button>
+        </form>
+        <div id="matchResult" class="result"></div>
+    </section>
+
+    <!-- Find Matches Section -->
+    <section>
+        <h2>4. Find Matching Routes</h2>
+        <p style="font-size: 14px; color: #555;">Check if any available trucks line up with your load's route and dates.</p>
+        <form id="findMatchesForm">
+            <input type="text" name="load_id" placeholder="Load ID (Generated in Step 1)" required>
+            <button type="submit">Find Matching Trucks</button>
+        </form>
+        <div id="findMatchesResult" class="result"></div>
+    </section>
+
+    {% else %}
+    <section style="text-align: center; padding: 40px 20px;">
+        <h2>Get Started with BACKHAUL</h2>
+        <p style="font-size: 16px; color: var(--text-secondary); margin-bottom: 20px;">Join our community to list shipments, post your available transport vehicles, and make or accept load offers.</p>
+        <a href="{{ url_for('login') }}" class="btn" style="width: auto; margin-right: 10px;">Log In</a>
+        <a href="{{ url_for('register') }}" class="btn btn-success" style="width: auto;">Sign Up</a>
+    </section>
+    {% endif %}
+
+    <!-- App Feedback Section -->
+    <section>
+        <h2>5. App Feedback</h2>
+        <p style="font-size: 14px; color: var(--text-secondary); margin-bottom: 15px;">Help us improve BACKHAUL! Let us know about bugs, performance issues, or feature requests.</p>
+        <form id="appFeedbackForm">
+            <select name="feedback_type" required style="margin-bottom: 15px; width: 100%; padding: 12px 15px; border: 1px solid var(--border-color); border-radius: 8px; font-family: 'Inter', sans-serif; font-size: 16px; background-color: var(--light-gray);">
+                <option value="" disabled selected>Select Feedback Type</option>
+                <option value="bug">Report a Bug / Performance Issue</option>
+                <option value="feature">Suggest a Feature</option>
+                <option value="general">General Feedback</option>
+            </select>
+            <textarea name="message" rows="4" placeholder="Describe your experience or suggest an improvement..." required></textarea>
+            <button type="submit">Submit Feedback</button>
+        </form>
+        <div id="feedbackResult" class="result" style="display: none;"></div>
+    </section>
+</div>
+
+    <script>
+        // This token needs to be passed from your Flask backend to the index.html template
+        mapboxgl.accessToken = '{{ mapbox_token }}';
+
+        function displayMatches(trucks, resultContainer) {
+            resultContainer.innerHTML = ''; // Clear previous results
+
+            if (trucks.message) { // Handle "No matches found" message from the server
+                resultContainer.innerHTML = `<p class="no-results">${trucks.message}</p>`;
+                return;
+            }
+
+            if (!Array.isArray(trucks) || trucks.length === 0) {
+                resultContainer.innerHTML = '<p class="no-results">No matching trucks found.</p>';
+                return;
+            }
+
+            trucks.forEach(truck => {
+                const card = document.createElement('div');
+                card.className = 'card'; // Reuse the card style
+
+                // Format rating string
+                const rating = truck.rating_count > 0
+                    ? `★ ${truck.avg_rating.toFixed(2)} (${truck.rating_count} reviews)`
+                    : '(No reviews yet)';
+
+                // ID Verified badge
+                const verifiedBadge = truck.id_verified 
+                    ? '<span class="badge" style="background-color: #28a745; color: white; font-size: 0.7em; vertical-align: middle; padding: 3px 6px; border-radius: 10px; margin-left: 5px;">✓ ID Verified</span>' 
+                    : '';
+
+                // Populate card with truck details and action buttons
+                card.innerHTML = `
+                    <h3>${truck.vehicle_type} (ID: ${truck.vehicle_id})</h3>
+                    <p><strong>Transporter:</strong> <a href="/profile/${truck.driver_id}">${truck.username}</a> ${verifiedBadge} <span class="rating">${rating}</span></p>
+                    <p><strong>Route:</strong> ${truck.departure_city} &rarr; ${truck.destination_city}</p>
+                    <p><strong>Available:</strong> ${truck.start_date} to ${truck.end_date}</p>
+                ${truck.max_weight ? `<p><strong>Max Capacity:</strong> ${truck.max_weight} lbs</p>` : ''}
+                ${truck.max_dimensions ? `<p><strong>Max Dimensions:</strong> ${truck.max_dimensions}</p>` : ''}
+                    <p><strong>Equipment:</strong> ${truck.has_loading_equipment ? 'Has own loading equipment' : 'No loading equipment provided'}</p>
+                    <div class="card-actions" style="margin-top: 15px; display: flex; gap: 10px;">
+                        <a href="/chat/${truck.driver_id}" class="btn btn-success">Message Transporter</a>
+                        <a href="/?vehicle_id=${truck.vehicle_id}#matchSection" class="btn">Request This Truck</a>
+                    </div>
+                `;
+                resultContainer.appendChild(card);
+            });
+        }
+
+        // Toggle equipment failure compensation checkbox requirement
+        const loadingResponsibilitySelect = document.getElementById('loading_responsibility');
+        const compensationCheckbox = document.getElementById('equipment_failure_compensation');
+
+        if (loadingResponsibilitySelect && compensationCheckbox) {
+            const toggleCompensation = () => {
+                if (loadingResponsibilitySelect.value === 'shipper') {
+                    compensationCheckbox.required = true;
+                    compensationCheckbox.disabled = false;
+                    compensationCheckbox.parentElement.style.opacity = '1';
+                } else {
+                    compensationCheckbox.required = false;
+                    compensationCheckbox.checked = false;
+                    compensationCheckbox.disabled = true;
+                    compensationCheckbox.parentElement.style.opacity = '0.5';
+                }
+            };
+            toggleCompensation();
+            loadingResponsibilitySelect.addEventListener('change', toggleCompensation);
+        }
+
+        // JS for trailer/BOL checkboxes
+        const isTrailerCheckbox = document.getElementById('is_trailer');
+        const bolGroup = document.getElementById('bol_group');
+        const bolCheckbox = document.getElementById('requires_bol');
+
+        if (isTrailerCheckbox && bolGroup) {
+            const toggleBolVisibility = () => {
+                if (isTrailerCheckbox.checked) {
+                    bolGroup.style.display = 'flex';
+                } else {
+                    bolGroup.style.display = 'none';
+                    bolCheckbox.checked = false;
+                }
+            };
+            toggleBolVisibility();
+            isTrailerCheckbox.addEventListener('change', toggleBolVisibility);
+        }
+
+        // Updated helper function to handle form submissions
+        async function setupFormSubmit(formId, endpoint, resultId, customHandler = null) {
+            const form = document.getElementById(formId);
+            const resultContainer = document.getElementById(resultId);
+
+        if (!form || !resultContainer) return;
+
+            form.addEventListener('submit', async (e) => {
+                e.preventDefault();
+                const formData = new FormData(form);
+                resultContainer.innerHTML = '<p>Please wait...</p>'; // Provide user feedback
+                resultContainer.style.display = 'block'; // Make sure the container is visible
+
+                try {
+                    const response = await fetch(endpoint, {
+                        method: 'POST',
+                        body: formData
+                    });
+                    const result = await response.json();
+
+                    if (customHandler) {
+                        customHandler(result, resultContainer);
+                    } else {
+                        // Show user-friendly success or error messages
+                        if (response.ok) {
+                            resultContainer.innerHTML = `<p class="success-message">${result.message || 'Successfully submitted!'}</p>`;
+                            form.reset(); // Clear the form on success
+                        } else {
+                            resultContainer.innerHTML = `<p class="error-message">${result.error || result.message || 'An error occurred. Please try again.'}</p>`;
+                        }
+                    }
+                } catch (error) {
+                    resultContainer.innerText = "An error occurred.";
+                    console.error(error);
+                }
+            });
+        }
+
+        // Wire up the forms to their respective endpoints
+        setupFormSubmit('postLoadForm', '/post-load', 'loadResult');
+        setupFormSubmit('postVehicleForm', '/post-truck', 'vehicleResult');
+        setupFormSubmit('matchForm', '/match-load', 'matchResult');
+        setupFormSubmit('findMatchesForm', '/find-matches', 'findMatchesResult', displayMatches);
+        setupFormSubmit('appFeedbackForm', '/submit-feedback', 'feedbackResult');
+
+        // Auto-fill match form if URL parameters are present
+        window.addEventListener('DOMContentLoaded', () => {
+            const urlParams = new URLSearchParams(window.location.search);
+            if (urlParams.has('load_id')) {
+            const el = document.getElementById('match_load_id');
+            if (el) el.value = urlParams.get('load_id');
+            }
+            if (urlParams.has('vehicle_id')) {
+            const el = document.getElementById('match_vehicle_id');
+            if (el) el.value = urlParams.get('vehicle_id');
+            }
+        });
+
+        // --- Autocomplete functionality ---
+        function debounce(func, wait) {
+            let timeout;
+            return function(...args) {
+                clearTimeout(timeout);
+                timeout = setTimeout(() => func.apply(this, args), wait);
+            };
+        }
+
+        async function fetchCitySuggestions(query, listId, spinnerId) {
+            const spinner = document.getElementById(spinnerId);
+            const dataList = document.getElementById(listId);
+            dataList.innerHTML = '';
+
+            if (!query || query.length < 3) {
+                if (spinner) spinner.style.display = 'none';
+                return;
+            }
+            
+            if (spinner) spinner.style.display = 'block';
+
+            const url = `https://api.mapbox.com/geocoding/v5/mapbox.places/${encodeURIComponent(query)}.json?types=place&country=us,ca&access_token=${mapboxgl.accessToken}`;
+            try {
+                const response = await fetch(url);
+                const data = await response.json();
+                data.features.forEach(feature => {
+                    const option = document.createElement('option');
+                    option.value = feature.place_name;
+                    dataList.appendChild(option);
+                });
+            } catch (error) {
+                console.error('Error fetching suggestions:', error);
+            } finally {
+                if (spinner) spinner.style.display = 'none';
+            }
+        }
+
+    const loadPickup = document.getElementById('loadPickup');
+    if (loadPickup) loadPickup.addEventListener('input', debounce((e) => fetchCitySuggestions(e.target.value, 'loadPickupSuggestions', 'loadPickupSpinner'), 300));
+    const loadDelivery = document.getElementById('loadDelivery');
+    if (loadDelivery) loadDelivery.addEventListener('input', debounce((e) => fetchCitySuggestions(e.target.value, 'loadDeliverySuggestions', 'loadDeliverySpinner'), 300));
+    const vehicleDeparture = document.getElementById('vehicleDeparture');
+    if (vehicleDeparture) vehicleDeparture.addEventListener('input', debounce((e) => fetchCitySuggestions(e.target.value, 'vehicleDepartureSuggestions', 'vehicleDepartureSpinner'), 300));
+    const vehicleDestination = document.getElementById('vehicleDestination');
+    if (vehicleDestination) vehicleDestination.addEventListener('input', debounce((e) => fetchCitySuggestions(e.target.value, 'vehicleDestinationSuggestions', 'vehicleDestinationSpinner'), 300));
+    </script>
+</body>
+</html>

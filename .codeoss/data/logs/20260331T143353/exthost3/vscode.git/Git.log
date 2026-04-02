@@ -1,0 +1,66 @@
+2026-03-31 15:20:21.067 [info] [main] Log level: Info
+2026-03-31 15:20:21.067 [info] [main] Validating found git in: "git"
+2026-03-31 15:20:21.067 [info] [main] Using git "2.43.0" from "git"
+2026-03-31 15:20:21.067 [info] [Model][doInitialScan] Initial repository scan started
+2026-03-31 15:20:21.067 [info] > git rev-parse --show-toplevel [12ms]
+2026-03-31 15:20:21.067 [info] fatal: not a git repository (or any parent up to mount point /)
+Stopping at filesystem boundary (GIT_DISCOVERY_ACROSS_FILESYSTEM not set).
+2026-03-31 15:20:21.067 [info] > git rev-parse --show-toplevel [5ms]
+2026-03-31 15:20:21.067 [info] fatal: not a git repository (or any parent up to mount point /)
+Stopping at filesystem boundary (GIT_DISCOVERY_ACROSS_FILESYSTEM not set).
+2026-03-31 15:20:21.067 [info] > git rev-parse --show-toplevel [14ms]
+2026-03-31 15:20:21.067 [info] fatal: not a git repository (or any parent up to mount point /)
+Stopping at filesystem boundary (GIT_DISCOVERY_ACROSS_FILESYSTEM not set).
+2026-03-31 15:20:21.067 [info] > git rev-parse --show-toplevel [3ms]
+2026-03-31 15:20:21.067 [info] fatal: not a git repository (or any parent up to mount point /)
+Stopping at filesystem boundary (GIT_DISCOVERY_ACROSS_FILESYSTEM not set).
+2026-03-31 15:20:21.067 [info] > git rev-parse --show-toplevel [55ms]
+2026-03-31 15:20:21.067 [info] fatal: not a git repository (or any parent up to mount point /)
+Stopping at filesystem boundary (GIT_DISCOVERY_ACROSS_FILESYSTEM not set).
+2026-03-31 15:20:21.067 [info] > git rev-parse --show-toplevel [22ms]
+2026-03-31 15:20:21.067 [info] fatal: not a git repository (or any parent up to mount point /)
+Stopping at filesystem boundary (GIT_DISCOVERY_ACROSS_FILESYSTEM not set).
+2026-03-31 15:20:21.067 [info] > git rev-parse --show-toplevel [3ms]
+2026-03-31 15:20:21.067 [info] fatal: not a git repository (or any parent up to mount point /)
+Stopping at filesystem boundary (GIT_DISCOVERY_ACROSS_FILESYSTEM not set).
+2026-03-31 15:20:21.067 [info] > git rev-parse --show-toplevel [6ms]
+2026-03-31 15:20:21.067 [info] fatal: not a git repository (or any parent up to mount point /)
+Stopping at filesystem boundary (GIT_DISCOVERY_ACROSS_FILESYSTEM not set).
+2026-03-31 15:20:21.067 [info] > git rev-parse --show-toplevel [5ms]
+2026-03-31 15:20:21.067 [info] fatal: not a git repository (or any parent up to mount point /)
+Stopping at filesystem boundary (GIT_DISCOVERY_ACROSS_FILESYSTEM not set).
+2026-03-31 15:20:21.067 [info] > git rev-parse --show-toplevel [8ms]
+2026-03-31 15:20:21.067 [info] fatal: not a git repository (or any parent up to mount point /)
+Stopping at filesystem boundary (GIT_DISCOVERY_ACROSS_FILESYSTEM not set).
+2026-03-31 15:20:21.067 [info] > git rev-parse --show-toplevel [3ms]
+2026-03-31 15:20:21.067 [info] fatal: not a git repository (or any parent up to mount point /)
+Stopping at filesystem boundary (GIT_DISCOVERY_ACROSS_FILESYSTEM not set).
+2026-03-31 15:20:21.067 [info] > git rev-parse --show-toplevel [2ms]
+2026-03-31 15:20:21.067 [info] fatal: not a git repository (or any parent up to mount point /)
+Stopping at filesystem boundary (GIT_DISCOVERY_ACROSS_FILESYSTEM not set).
+2026-03-31 15:20:21.067 [info] [Model][doInitialScan] Initial repository scan completed - repositories (0), closed repositories (0), parent repositories (0), unsafe repositories (0)
+2026-03-31 15:20:26.462 [info] > git rev-parse --show-toplevel [21ms]
+2026-03-31 15:20:26.462 [info] fatal: not a git repository (or any parent up to mount point /)
+Stopping at filesystem boundary (GIT_DISCOVERY_ACROSS_FILESYSTEM not set).
+2026-03-31 15:20:27.712 [info] > git rev-parse --show-toplevel [18ms]
+2026-03-31 15:20:27.713 [info] fatal: not a git repository (or any parent up to mount point /)
+Stopping at filesystem boundary (GIT_DISCOVERY_ACROSS_FILESYSTEM not set).
+2026-03-31 15:20:44.082 [info] > git rev-parse --show-toplevel [3ms]
+2026-03-31 15:20:44.110 [info] > git rev-parse --git-dir --git-common-dir --show-superproject-working-tree [9ms]
+2026-03-31 15:20:50.963 [info] [Model][openRepository] Opened repository (path): /home/perrymckay1/.gemini/history/0fe60c05f291482db7251adaf3bd2778b0f7a58b85ece355bef98a963ceb4cd8
+2026-03-31 15:20:50.963 [info] [Model][openRepository] Opened repository (real path): /home/perrymckay1/.gemini/history/0fe60c05f291482db7251adaf3bd2778b0f7a58b85ece355bef98a963ceb4cd8
+2026-03-31 15:20:50.963 [info] [Model][openRepository] Opened repository (kind): repository
+2026-03-31 15:20:50.990 [info] > git config --get commit.template [8ms]
+2026-03-31 15:20:51.007 [info] [Git][getRemotes] No remotes found in the git config file
+2026-03-31 15:20:51.012 [info] > git for-each-ref --format=%(refname)%00%(upstream:short)%00%(objectname)%00%(upstream:track)%00%(upstream:remotename)%00%(upstream:remoteref) refs/heads/main refs/remotes/main [7ms]
+2026-03-31 15:20:51.059 [info] > git status -z -uall [26ms]
+2026-03-31 15:20:51.060 [info] > git for-each-ref --sort -committerdate --format %(refname)%00%(objectname)%00%(*objectname) [10ms]
+2026-03-31 15:20:51.106 [info] > git for-each-ref --format=%(refname)%00%(upstream:short)%00%(objectname)%00%(upstream:track)%00%(upstream:remotename)%00%(upstream:remoteref) refs/heads/main refs/remotes/main [10ms]
+2026-03-31 15:20:51.144 [info] > git config --get commit.template [9ms]
+2026-03-31 15:20:51.145 [info] > git config --get --local branch.main.vscode-merge-base [21ms]
+2026-03-31 15:20:51.145 [warning] [Git][config] git config failed: Failed to execute git
+2026-03-31 15:20:51.175 [info] [Git][getRemotes] No remotes found in the git config file
+2026-03-31 15:20:51.177 [info] > git reflog main --grep-reflog=branch: Created from *. [18ms]
+2026-03-31 15:20:51.186 [info] > git for-each-ref --format=%(refname)%00%(upstream:short)%00%(objectname)%00%(upstream:track)%00%(upstream:remotename)%00%(upstream:remoteref) refs/heads/main refs/remotes/main [12ms]
+2026-03-31 15:20:51.225 [info] > git status -z -uall [23ms]
+2026-03-31 15:20:51.226 [info] > git for-each-ref --sort -committerdate --format %(refname)%00%(objectname)%00%(*objectname) [3ms]

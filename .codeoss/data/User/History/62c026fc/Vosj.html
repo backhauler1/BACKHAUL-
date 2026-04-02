@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Edit Truck</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+<div class="container">
+    <a href="{{ url_for('profile', user_id=session.user_id) }}" class="back-link">&larr; Back to Profile</a>
+    <section>
+        <h2>Edit Truck (ID: {{ truck.vehicle_id }})</h2>
+        <form action="{{ url_for('edit_truck', vehicle_id=truck.vehicle_id) }}" method="POST">
+            <input type="text" name="vehicle_type" placeholder="Vehicle Type" value="{{ truck.vehicle_type }}" required>
+            <select name="category" required style="margin-bottom: 10px; width: 100%; padding: 10px; border: 1px solid #ccc; border-radius: 4px;">
+                <option value="" disabled>Select Best Suited Category</option>
+                {% for val, label in categories %}
+                <option value="{{ val }}" {% if truck.category == val %}selected{% endif %}>{{ label }}</option>
+                {% endfor %}
+            </select>
+            <input type="text" name="departure_city" placeholder="Departure City" value="{{ truck.departure_city }}">
+            <input type="text" name="destination_city" placeholder="Destination City" value="{{ truck.destination_city }}">
+            <label for="start_date">Start Date:</label>
+            <input type="date" name="start_date" id="start_date" value="{{ truck.start_date }}" required>
+            <label for="end_date">End Date:</label>
+            <input type="date" name="end_date" id="end_date" value="{{ truck.end_date }}" required>
+            <input type="number" name="max_weight" placeholder="Max Weight (lbs)" value="{{ truck.max_weight or '' }}" min="0">
+            <input type="text" name="max_dimensions" placeholder="Max Dimensions" value="{{ truck.max_dimensions or '' }}">
+            <div class="checkbox-group" style="margin-bottom: 15px; display: flex; align-items: flex-start; gap: 8px;">
+                <input type="checkbox" name="has_loading_equipment" id="has_loading_equipment" value="true" {% if truck.has_loading_equipment %}checked{% endif %}>
+                <label for="has_loading_equipment" style="font-size: 0.85em; color: #555; margin-top: 2px; line-height: 1.4;">I have my own loading equipment (e.g., ramps, liftgate, dolly).</label>
+            </div>
+            <div class="checkbox-group" style="margin-bottom: 15px; display: flex; align-items: flex-start; gap: 8px;">
+                <input type="checkbox" name="can_haul_trailer" id="can_haul_trailer" value="true" {% if truck.can_haul_trailer %}checked{% endif %}>
+                <label for="can_haul_trailer" style="font-size: 0.85em; color: #555; margin-top: 2px; line-height: 1.4;">Willing to haul a trailer (bobtailing).</label>
+            </div>
+            <button type="submit">Update Truck</button>
+        </form>
+    </section>
+</div>
+</body>
+</html>

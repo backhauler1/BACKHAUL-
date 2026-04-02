@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My Messages</title>
+    <style>
+        body { font-family: Arial, sans-serif; margin: 20px; max-width: 800px; background-color: #f9f9f9; }
+        h1 { color: #333; }
+        .conversation { background-color: white; border: 1px solid #ddd; padding: 15px; margin-bottom: 10px; border-radius: 8px; box-shadow: 0 2px 4px rgba(0,0,0,0.1); display: flex; justify-content: space-between; align-items: center; }
+        .conversation a { text-decoration: none; color: #007BFF; font-weight: bold; font-size: 1.1em; }
+        .time { color: #777; font-size: 0.9em; }
+        a.back-link { display: inline-block; margin-bottom: 20px; text-decoration: none; color: #007BFF; font-weight: bold; }
+    </style>
+</head>
+<body>
+    <a href="{{ url_for('index') }}" class="back-link">&larr; Back to Home</a>
+    <h1>My Messages</h1>
+
+    {% if conversations %}
+        {% for conv in conversations %}
+            <div class="conversation">
+                <a href="{{ url_for('chat', other_user_id=conv.other_user_id) }}">Chat with {{ conv.other_username }}</a>
+                <span class="time">Last active: {{ conv.last_activity|datetimeformat }}</span>
+            </div>
+        {% endfor %}
+    {% else %}
+        <p>You have no messages yet. Go to an available listing and click on a user's profile to start a conversation.</p>
+    {% endif %}
+</body>
+</html>

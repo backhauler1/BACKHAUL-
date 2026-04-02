@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Delivery Proof</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <!-- Leaflet CSS for Map -->
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+    <style>
+        .proof-section { display: flex; flex-direction: column; gap: 20px; margin-top: 20px; }
+        .photo-container { text-align: center; }
+        .photo-container img { max-width: 100%; height: auto; border: 1px solid #ccc; border-radius: 4px; margin-top: 10px; }
+        #map { height: 400px; width: 100%; border-radius: 8px; border: 1px solid #ccc; z-index: 1; }
+    </style>
+</head>
+<body>
+<div class="container">
+    <a href="{{ url_for('dashboard') }}" class="back-link">&larr; Back to Dashboard</a>
+    <section>
+        <h2>Delivery Verification</h2>
+
+        <div class="proof-section card">
+            {% if proof.image_path %}
+                <!-- Leaflet Map Container -->
+                <div id="map"></div>
+                
+                <div class="photo-container">
+                    <h3>Delivery Photo</h3>
+                    <p class="text-secondary" style="font-size: 0.9em;">Timestamp: {{ proof.timestamp|datetimeformat }}</p>
+                    <!-- Load image securely using our new route -->
+                    <img src="/{{ proof.image_path }}" alt="Delivery Proof Photo">
+                </div>
+                
+                <!-- Leaflet JS Map Script -->
+                <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+                <script>
+                    var lat = {{ proof.latitude or 'null' }};
+                    var lon = {{ proof.longitude or 'null' }};
+                    
+                    if (lat && lon) {
+                        var map = L.map('map').setView([lat, lon], 16);
+                        L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', { maxZoom: 19, attribution: '© OpenStreetMap' }).addTo(map);
+                        L.marker([lat, lon]).addTo(map).bindPopup('<b>Delivery Photo Location</b><br>' + lat + ', ' + lon).openPopup();
+                    } else {
+                        document.getElementById('map').innerHTML = "<p style='text-align:center; padding-top: 180px;'>GPS Location data not available for this photo.</p>";
+                    }
+                </script>
+            {% endif %}
+        </div>
+    </section>
+</div>
+</body>
+</html>

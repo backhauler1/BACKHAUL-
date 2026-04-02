@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Leave a Review</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <style>
+        /* Add some specific styles for the review form */
+        .star-rating {
+            display: flex;
+            flex-direction: row-reverse;
+            justify-content: center;
+            font-size: 2em;
+            padding: 0 .2em;
+            text-align: center;
+            width: 5em;
+            margin: 0 auto 20px auto;
+        }
+
+        .star-rating input {
+            display: none;
+        }
+
+        .star-rating label {
+            color: #ccc;
+            cursor: pointer;
+            transition: color 0.2s;
+        }
+
+        .star-rating :checked ~ label {
+            color: #f90;
+        }
+
+        .star-rating label:hover,
+        .star-rating label:hover ~ label {
+            color: #fc0;
+        }
+    </style>
+</head>
+<body>
+<div class="container">
+    <a href="javascript:history.back()" class="back-link">&larr; Go Back</a>
+    <section>
+        <h2>Leave a Review for {{ reviewee.username }}</h2>
+        <form action="{{ url_for('leave_review', match_id=match_id) }}" method="POST">
+            <div class="star-rating">
+                <input type="radio" id="5-stars" name="rating" value="5" required /><label for="5-stars" class="star">★</label>
+                <input type="radio" id="4-stars" name="rating" value="4" /><label for="4-stars" class="star">★</label>
+                <input type="radio" id="3-stars" name="rating" value="3" /><label for="3-stars" class="star">★</label>
+                <input type="radio" id="2-stars" name="rating" value="2" /><label for="2-stars" class="star">★</label>
+                <input type="radio" id="1-star" name="rating" value="1" /><label for="1-star" class="star">★</label>
+            </div>
+            <div>
+                <label for="comment">Comment (optional)</label>
+                <textarea name="comment" id="comment" rows="4" placeholder="How was your experience?"></textarea>
+            </div>
+            <button type="submit">Submit Review</button>
+        </form>
+    </section>
+</div>
+</body>
+</html>

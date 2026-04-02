@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Edit Load</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+<div class="container">
+    <a href="{{ url_for('dashboard') }}" class="back-link">&larr; Back to Dashboard</a>
+    <section>
+        <h2>Edit Load (ID: {{ load.load_id }})</h2>
+        {% if load.image_filename %}
+            <div class="current-image">
+                <p>Current Image:</p>
+                <img src="{{ url_for('static', filename='uploads/' + load.image_filename) }}" alt="Current load image" style="max-width: 200px; border-radius: 8px; margin-bottom: 15px;">
+            </div>
+        {% endif %}
+        <form action="{{ url_for('edit_load', load_id=load.load_id) }}" method="POST" enctype="multipart/form-data">
+            <input type="text" name="description" placeholder="Description" value="{{ load.description }}" required>
+            <select name="category" required style="margin-bottom: 10px; width: 100%; padding: 10px; border: 1px solid #ccc; border-radius: 4px;">
+                <option value="" disabled>Select Category</option>
+                <option value="General Freight" {% if load.category == 'General Freight' %}selected{% endif %}>General Freight</option>
+                <option value="Vehicles" {% if load.category == 'Vehicles' %}selected{% endif %}>Vehicles (Cars, Trucks)</option>
+                <option value="Recreational Vehicles" {% if load.category == 'Recreational Vehicles' %}selected{% endif %}>Recreational Vehicles (RVs, Boats, ATVs)</option>
+                <option value="Heavy Equipment" {% if load.category == 'Heavy Equipment' %}selected{% endif %}>Heavy Equipment / Machinery</option>
+                <option value="Household Goods" {% if load.category == 'Household Goods' %}selected{% endif %}>Household Goods / Furniture</option>
+                <option value="Livestock / Agriculture" {% if load.category == 'Livestock / Agriculture' %}selected{% endif %}>Livestock / Agriculture</option>
+                <option value="Other" {% if load.category == 'Other' %}selected{% endif %}>Other</option>
+            </select>
+            <input type="text" name="weight" placeholder="Weight" value="{{ load.weight or '' }}">
+            <input type="text" name="dimensions" placeholder="Dimensions" value="{{ load.dimensions or '' }}">
+            <input type="text" name="pickup" placeholder="Pickup Location" value="{{ load.pickup }}">
+            <input type="text" name="delivery" placeholder="Delivery Location" value="{{ load.delivery }}">
+
+            <div class="checkbox-group" style="margin-bottom: 15px; display: flex; align-items: flex-start; gap: 8px;">
+                <input type="checkbox" name="is_trailer" id="is_trailer" value="true" {% if load.is_trailer %}checked{% endif %}>
+                <label for="is_trailer" style="font-size: 0.85em; color: #555; margin-top: 2px; line-height: 1.4;">This "load" is a trailer that needs to be hauled.</label>
+            </div>
+            <div class="checkbox-group" id="bol_group" style="margin-bottom: 15px; display: flex; align-items: flex-start; gap: 8px;">
+                <input type="checkbox" name="requires_bol" id="requires_bol" value="true" {% if load.requires_bol %}checked{% endif %}>
+                <label for="requires_bol" style="font-size: 0.85em; color: #555; margin-top: 2px; line-height: 1.4;">A Bill of Lading is required for this trailer.</label>
+            </div>
+
+            <label for="loading_responsibility">Loading Responsibility:</label>
+            <select name="loading_responsibility" id="loading_responsibility" required style="margin-bottom: 10px; width: 100%; padding: 10px; border: 1px solid #ccc; border-radius: 4px;">
+                <option value="shipper" {% if load.loading_responsibility == 'shipper' %}selected{% endif %}>Shipper provides equipment/manpower</option>
+                <option value="driver" {% if load.loading_responsibility == 'driver' %}selected{% endif %}>Driver must load (Driver capable)</option>
+            </select>
+            
+            <div class="checkbox-group" style="margin-bottom: 15px; display: flex; align-items: flex-start; gap: 8px;">
+                <input type="checkbox" name="equipment_failure_compensation" id="equipment_failure_compensation" value="true" {% if load.equipment_failure_compensation %}checked{% endif %}>
+                <label for="equipment_failure_compensation" style="font-size: 0.85em; color: #555; margin-top: 2px; line-height: 1.4;">I agree to compensate the transporter if promised loading equipment/manpower is unavailable at the time of loading, causing delays.</label>
+            </div>
+
+            <label for="shipping_date">Desired Shipping Date:</label>
+            <input type="date" name="shipping_date" id="shipping_date" value="{{ load.shipping_date }}" required>
+            <label for="load_image">Upload New Image (optional, will replace current):</label>
+            <input type="file" name="load_image" id="load_image" accept="image/*">
+            <input type="text" name="shipper_offer" placeholder="Offer" value="{{ load.offer }}">
+            <button type="submit">Update Load</button>
+        </form>
+    </section>
+</div>
+
+<script>
+    document.addEventListener('DOMContentLoaded', () => {
+        const loadingResponsibilitySelect = document.getElementById('loading_responsibility');
+        const compensationCheckbox = document.getElementById('equipment_failure_compensation');
+
+        if (loadingResponsibilitySelect && compensationCheckbox) {
+            const toggleCompensation = () => {
+                if (loadingResponsibilitySelect.value === 'shipper') {
+                    compensationCheckbox.required = true;
+                    compensationCheckbox.disabled = false;
+                    compensationCheckbox.parentElement.style.opacity = '1';
+                } else {
+                    compensationCheckbox.required = false;
+                    compensationCheckbox.checked = false;
+                    compensationCheckbox.disabled = true;
+                    compensationCheckbox.parentElement.style.opacity = '0.5';
+                }
+            };
+            toggleCompensation();
+            loadingResponsibilitySelect.addEventListener('change', toggleCompensation);
+        }
+
+        // JS for trailer/BOL checkboxes
+        const isTrailerCheckbox = document.getElementById('is_trailer');
+        const bolGroup = document.getElementById('bol_group');
+        const bolCheckbox = document.getElementById('requires_bol');
+
+        if (isTrailerCheckbox && bolGroup) {
+            const toggleBolVisibility = () => {
+                if (isTrailerCheckbox.checked) {
+                    bolGroup.style.display = 'flex';
+                } else {
+                    bolGroup.style.display = 'none';
+                    bolCheckbox.checked = false;
+                }
+            };
+            toggleBolVisibility();
+            isTrailerCheckbox.addEventListener('change', toggleBolVisibility);
+        }
+    });
+</script>
+</body>
+</html>

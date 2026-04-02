@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Page Not Found</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+    <div class="container" style="text-align: center; margin-top: 50px; padding: 40px; background-color: white; border-radius: 8px; box-shadow: 0 4px 12px rgba(0,0,0,0.08);">
+        <h1 style="color: #f8b400; font-size: 3em; margin-bottom: 10px;">404 🕵️‍♂️</h1>
+        <h2>Lost in transit?</h2>
+        <p style="color: #5c636a; margin-bottom: 30px;">Oops! The page you are looking for doesn't exist or has been moved.</p>
+        <a href="{{ url_for('index') }}" class="btn" style="width: auto;">Return to Dashboard</a>
+    </div>
+</body>
+</html>

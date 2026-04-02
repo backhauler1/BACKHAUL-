@@ -1,0 +1,12 @@
+version: '3.8'
+
+services:
+  app:
+    build: .
+    container_name: food-truck-app
+    ports:
+      - "3000:3000"
+    # This directive tells Docker Compose to automatically load 
+    # all variables from your .env file into the container.
+    env_file:
+      - .env

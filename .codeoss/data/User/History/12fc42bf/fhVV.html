@@ -1,0 +1,201 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Available Loads</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <!-- Mapbox GL JS -->
+    <script src='https://api.mapbox.com/mapbox-gl-js/v2.9.1/mapbox-gl.js'></script>
+    <link href='https://api.mapbox.com/mapbox-gl-js/v2.9.1/mapbox-gl.css' rel='stylesheet' />
+    <style>
+        .map-container {
+            height: 200px;
+            width: 100%;
+            margin-top: 15px;
+            border-radius: 8px;
+        }
+        .spinner {
+            position: absolute;
+            right: 10px;
+            border: 2px solid #f3f3f3; /* Light grey */
+            border-top: 2px solid #3498db; /* Blue */
+            border-radius: 50%;
+            width: 16px;
+            height: 16px;
+            animation: spin 1s linear infinite;
+            display: none; /* Hidden by default */
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+    </style>
+</head>
+<body>
+<div class="container">
+    <a href="{{ url_for('index') }}" class="back-link">&larr; Back to Home</a>
+    <h1>Available Loads</h1>
+
+    <div class="filter-controls" style="margin-bottom: 20px; display: flex; gap: 10px; flex-wrap: wrap;">
+        <a href="{{ url_for('available_loads') }}" class="btn {% if not request.args.get('loading') %}active{% endif %}">All Loads</a>
+        <a href="{{ url_for('available_loads', loading='driver') }}" class="btn {% if request.args.get('loading') == 'driver' %}active{% endif %}">Driver Load</a>
+        <a href="{{ url_for('available_loads', loading='shipper') }}" class="btn {% if request.args.get('loading') == 'shipper' %}active{% endif %}">Shipper Load</a>
+    </div>
+
+    <form class="search-bar" method="GET" action="{{ url_for('available_loads') }}" style="margin-bottom: 20px; display: flex; gap: 10px; flex-wrap: wrap; align-items: center;">
+        {% if request.args.get('loading') %}
+            <input type="hidden" name="loading" value="{{ request.args.get('loading') }}">
+        {% endif %}
+        <div style="position: relative; display: flex; align-items: center; flex: 1; min-width: 200px;">
+            <input type="text" name="pickup" id="pickupSearch" list="pickupSuggestions" placeholder="Filter by pickup location..." value="{{ request.args.get('pickup', '') }}" style="width: 100%; padding: 10px; border: 1px solid #ccc; border-radius: 4px;" autocomplete="off">
+            <span class="spinner" id="pickupSpinner"></span>
+        </div>
+        <datalist id="pickupSuggestions"></datalist>
+        <div style="position: relative; display: flex; align-items: center; flex: 1; min-width: 200px;">
+            <input type="text" name="delivery" id="deliverySearch" list="deliverySuggestions" placeholder="Filter by delivery location..." value="{{ request.args.get('delivery', '') }}" style="width: 100%; padding: 10px; border: 1px solid #ccc; border-radius: 4px;" autocomplete="off">
+            <span class="spinner" id="deliverySpinner"></span>
+        </div>
+        <datalist id="deliverySuggestions"></datalist>
+        <button type="submit" class="btn">Search</button>
+        {% if request.args.get('pickup') or request.args.get('delivery') %}
+            <a href="{{ url_for('available_loads', loading=request.args.get('loading')) }}" class="btn" style="background-color: #d9534f; color: white;">Clear</a>
+        {% endif %}
+    </form>
+
+    {% if loads %}
+        {% for load in loads %}
+        <div class="card load-card"
+             data-pickup="{{ load.pickup }}"
+             data-delivery="{{ load.delivery }}"
+             data-load-id="{{ load.load_id }}">
+            <h3>{{ load.description }} (ID: {{ load.load_id }})</h3>
+            <p><strong>Shipper:</strong> <a href="{{ url_for('profile', user_id=load.shipper_id) }}">{{ load.username }}</a>
+                {% if load.rating_count > 0 %}
+                    <span class="rating">★ {{ "%.2f"|format(load.avg_rating) }} ({{ load.rating_count }})</span>
+                {% else %}
+                    <span>(No reviews yet)</span>
+                {% endif %}
+            </p>
+            {% if load.image_filename %}
+                <div class="load-image-container">
+                    <img src="{{ url_for('static', filename='uploads/' + load.image_filename) }}" alt="Image for {{ load.description }}">
+                </div>
+            {% endif %}
+            <p><strong>Route:</strong> {{ load.pickup }} &rarr; {{ load.delivery }}</p>
+            <div id="map-{{ load.load_id }}" class="map-container"></div>
+            <p><strong>Shipping Date:</strong> {{ load.shipping_date }}</p>
+            <p><strong>Offer:</strong> ${{ load.offer }}</p>
+            
+            <p><strong>Loading Responsibility:</strong> 
+                {% if load.loading_responsibility == 'driver' %}
+                    Driver to load
+                {% else %}
+                    Shipper provides equipment/manpower
+                {% endif %}
+            </p>
+            {% if load.equipment_failure_compensation %}
+                <p style="font-size: 0.85em; color: #d9534f; margin-top: 5px;">* Shipper agrees to compensate for loading delays if equipment is unavailable.</p>
+            {% endif %}
+
+            {% if session.user_id and session.user_id != load.shipper_id %}
+            <div class="card-actions">
+                <a href="{{ url_for('chat', other_user_id=load.shipper_id) }}" class="btn btn-success">Message Shipper</a>
+                <a href="{{ url_for('index') }}?load_id={{ load.load_id }}#matchSection" class="btn">Offer to Deliver</a>
+            </div>
+            {% endif %}
+        </div>
+        {% endfor %}
+
+        {% if pagination and pagination.pages > 1 %}
+        <div class="pagination" style="margin-top: 20px; display: flex; justify-content: center; gap: 5px;">
+            {% if pagination.has_prev %}
+                <a href="{{ url_for('available_loads', page=pagination.prev_num, pickup=request.args.get('pickup', ''), delivery=request.args.get('delivery', ''), loading=request.args.get('loading', '')) }}" class="btn">&laquo; Prev</a>
+            {% endif %}
+
+            {% for page_num in pagination.iter_pages(left_edge=1, right_edge=1, left_current=2, right_current=2) %}
+                {% if page_num %}
+                    {% if page_num == pagination.page %}
+                        <span class="btn active" style="pointer-events: none;">{{ page_num }}</span>
+                    {% else %}
+                        <a href="{{ url_for('available_loads', page=page_num, pickup=request.args.get('pickup', ''), delivery=request.args.get('delivery', ''), loading=request.args.get('loading', '')) }}" class="btn">{{ page_num }}</a>
+                    {% endif %}
+                {% else %}
+                    <span class="ellipsis" style="padding: 10px;">...</span>
+                {% endif %}
+            {% endfor %}
+
+            {% if pagination.has_next %}
+                <a href="{{ url_for('available_loads', page=pagination.next_num, pickup=request.args.get('pickup', ''), delivery=request.args.get('delivery', ''), loading=request.args.get('loading', '')) }}" class="btn">Next &raquo;</a>
+            {% endif %}
+        </div>
+        {% endif %}
+    {% else %}
+        <p class="no-results">No loads are currently available.</p>
+    {% endif %}
+</div>
+
+<script>
+    mapboxgl.accessToken = '{{ mapbox_token }}';
+</script>
+<script src="{{ url_for('static', filename='map_loader.js') }}"></script>
+<script>
+    document.addEventListener('DOMContentLoaded', () => {
+        initializeMaps({
+            cardSelector: '.load-card',
+            startLocationAttr: 'pickup',
+            endLocationAttr: 'delivery',
+            idAttr: 'loadId',
+            idPrefix: 'map'
+        });
+
+        // Autocomplete functionality using Mapbox Geocoding API
+        function debounce(func, wait) {
+            let timeout;
+            return function(...args) {
+                clearTimeout(timeout);
+                timeout = setTimeout(() => func.apply(this, args), wait);
+            };
+        }
+
+        async function fetchCitySuggestions(query, listId, spinnerId) {
+            const spinner = document.getElementById(spinnerId);
+            const dataList = document.getElementById(listId);
+            dataList.innerHTML = ''; // Clear previous suggestions on new input
+
+            if (!query || query.length < 3) {
+                if (spinner) spinner.style.display = 'none';
+                return; // Wait for 3 characters to save API calls
+            }
+            
+            if (spinner) spinner.style.display = 'block';
+
+            // types=place restricts results to cities and towns, country restricts to US and Canada
+            const url = `https://api.mapbox.com/geocoding/v5/mapbox.places/${encodeURIComponent(query)}.json?types=place&country=us,ca&access_token=${mapboxgl.accessToken}`;
+            try {
+                const response = await fetch(url);
+                const data = await response.json();
+                data.features.forEach(feature => {
+                    const option = document.createElement('option');
+                    option.value = feature.place_name; // e.g., "Seattle, Washington, United States"
+                    dataList.appendChild(option);
+                });
+            } catch (error) {
+                console.error('Error fetching suggestions:', error);
+            } finally {
+                if (spinner) spinner.style.display = 'none';
+            }
+        }
+
+        const pickupInput = document.getElementById('pickupSearch');
+        const deliveryInput = document.getElementById('deliverySearch');
+        if (pickupInput) pickupInput.addEventListener('input', debounce((e) => fetchCitySuggestions(e.target.value, 'pickupSuggestions', 'pickupSpinner'), 300));
+        if (deliveryInput) deliveryInput.addEventListener('input', debounce((e) => fetchCitySuggestions(e.target.value, 'deliverySuggestions', 'deliverySpinner'), 300));
+    });
+</script>
+</body>
+</html>

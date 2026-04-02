@@ -1,0 +1,187 @@
+const request = require('supertest');
+const express = require('express');
+const bcrypt = require('bcrypt');
+const jwt = require('jsonwebtoken');
+const pool = require('./db');
+const loginRouter = require('./login');
+
+// Mock dependencies
+jest.mock('./db', () => ({
+    query: jest.fn(),
+}));
+jest.mock('bcrypt', () => ({
+    compare: jest.fn(),
+    hash: jest.fn(),
+}));
+jest.mock('jsonwebtoken', () => ({
+    sign: jest.fn(),
+    verify: jest.fn(),
+}));
+jest.mock('./rateLimiter', () => ({
+    authLimiter: (req, res, next) => next(),
+}));
+jest.mock('./email', () => jest.fn().mockResolvedValue(true));
+
+const app = express();
+app.use(express.json());
+app.use('/api/auth', loginRouter);
+
+describe('POST /api/auth/login', () => {
+    beforeEach(() => {
+        jest.clearAllMocks();
+        process.env.JWT_SECRET = 'test-secret';
+        process.env.JWT_REFRESH_SECRET = 'test-refresh-secret';
+    });
+
+    it('should successfully log in and set cookies for valid credentials', async () => {
+        // Mock DB and bcrypt
+        const mockUser = { id: 1, email: 'test@example.com', password: 'hashedpassword', roles: ['user'], token_version: 0, referral_code: 'REF123' };
+        pool.query.mockResolvedValueOnce({ rows: [mockUser] });
+        bcrypt.compare.mockResolvedValueOnce(true);
+        
+        // Mock JWT
+        jwt.sign
+            .mockReturnValueOnce('mocked_access_token') // For access token
+            .mockReturnValueOnce('mocked_refresh_token'); // For refresh token
+
+        // Mock DB UPDATE for refresh token
+        pool.query.mockResolvedValueOnce({ rowCount: 1 });
+
+        const res = await request(app)
+            .post('/api/auth/login')
+            .send({ email: 'test@example.com', password: 'password123' });
+
+        expect(res.statusCode).toBe(200);
+        expect(res.body.message).toBe('Logged in successfully.');
+        expect(res.body.user).toEqual({ id: 1, email: 'test@example.com', roles: ['user'], referralCode: 'REF123' });
+
+        // Verify cookie headers
+        const setCookieHeaders = res.headers['set-cookie'];
+        expect(setCookieHeaders).toBeDefined();
+        expect(setCookieHeaders.some(cookie => cookie.includes('token=mocked_access_token'))).toBe(true);
+        expect(setCookieHeaders.some(cookie => cookie.includes('refreshToken=mocked_refresh_token'))).toBe(true);
+        
+        // Verify database refresh token update
+        expect(pool.query).toHaveBeenCalledWith(
+            'UPDATE users SET refresh_token = $1, last_login_at = NOW(), deletion_warning_sent = false WHERE id = $2',
+            ['mocked_refresh_token', 1]
+        );
+    });
+
+    it('should return 401 for an invalid password', async () => {
+        pool.query.mockResolvedValueOnce({ rows: [{ id: 1, email: 'test@example.com', password: 'hashedpassword' }] });
+        bcrypt.compare.mockResolvedValueOnce(false); // Password mismatch
+
+        const res = await request(app)
+            .post('/api/auth/login')
+            .send({ email: 'test@example.com', password: 'wrongpassword' });
+
+        expect(res.statusCode).toBe(401);
+        expect(res.body.message).toBe('Invalid credentials.');
+    });
+
+    it('should return 401 if the user is not found', async () => {
+        pool.query.mockResolvedValueOnce({ rows: [] }); // User not found
+
+        const res = await request(app)
+            .post('/api/auth/login')
+            .send({ email: 'notfound@example.com', password: 'password123' });
+
+        expect(res.statusCode).toBe(401);
+        expect(res.body.message).toBe('Invalid credentials.');
+    });
+
+    it('should return 400 if email or password are missing', async () => {
+        const res = await request(app)
+            .post('/api/auth/login')
+            .send({ email: 'test@example.com' }); // Missing password
+
+        expect(res.statusCode).toBe(400);
+        expect(res.body.message).toBe('Email and password are required.');
+    });
+});
+
+describe('POST /api/auth/forgot-password', () => {
+    const sendEmail = require('./email');
+
+    beforeEach(() => {
+        jest.clearAllMocks();
+        process.env.JWT_SECRET = 'test-secret';
+    });
+
+    it('should send a reset email if the user exists', async () => {
+        pool.query.mockResolvedValueOnce({ rows: [{ id: 1, email: 'test@example.com', password: 'hashedpassword' }] });
+        jwt.sign.mockReturnValueOnce('mocked_reset_token');
+
+        const res = await request(app)
+            .post('/api/auth/forgot-password')
+            .send({ email: 'test@example.com' });
+
+        expect(res.statusCode).toBe(200);
+        expect(res.body.message).toContain('password reset link has been sent');
+        expect(sendEmail).toHaveBeenCalledTimes(1);
+        
+        const emailArgs = sendEmail.mock.calls[0][0];
+        expect(emailArgs.to).toBe('test@example.com');
+        expect(emailArgs.text).toContain('mocked_reset_token');
+    });
+
+    it('should return a generic success message even if the user does not exist', async () => {
+        pool.query.mockResolvedValueOnce({ rows: [] }); // User not found
+
+        const res = await request(app)
+            .post('/api/auth/forgot-password')
+            .send({ email: 'nonexistent@example.com' });
+
+        expect(res.statusCode).toBe(200);
+        expect(res.body.message).toContain('password reset link has been sent');
+        expect(sendEmail).not.toHaveBeenCalled();
+    });
+});
+
+describe('POST /api/auth/reset-password', () => {
+    beforeEach(() => {
+        jest.clearAllMocks();
+        process.env.JWT_SECRET = 'test-secret';
+    });
+
+    it('should successfully reset the password with a valid token', async () => {
+        pool.query.mockResolvedValueOnce({ rows: [{ id: 1, password: 'oldhash' }] });
+        jwt.verify.mockReturnValueOnce({ id: 1, email: 'test@example.com' });
+        bcrypt.hash.mockResolvedValueOnce('newhashedpassword');
+        pool.query.mockResolvedValueOnce({ rowCount: 1 }); // Update query
+
+        const res = await request(app)
+            .post('/api/auth/reset-password')
+            .send({ id: 1, token: 'valid_token', newPassword: 'newpassword123' });
+
+        expect(res.statusCode).toBe(200);
+        expect(res.body.message).toBe('Password has been successfully reset. You can now log in with your new password.');
+        expect(pool.query).toHaveBeenCalledWith(
+            'UPDATE users SET password = $1, refresh_token = NULL WHERE id = $2',
+            ['newhashedpassword', 1]
+        );
+    });
+
+    it('should return 400 if the token is invalid or expired', async () => {
+        pool.query.mockResolvedValueOnce({ rows: [{ id: 1, password: 'oldhash' }] });
+        jwt.verify.mockImplementationOnce(() => { throw new Error('Token expired'); });
+
+        const res = await request(app)
+            .post('/api/auth/reset-password')
+            .send({ id: 1, token: 'invalid_token', newPassword: 'newpassword123' });
+
+        expect(res.statusCode).toBe(400);
+        expect(res.body.message).toBe('Invalid or expired reset token.');
+        expect(bcrypt.hash).not.toHaveBeenCalled();
+    });
+
+    it('should return 400 if the new password is too short', async () => {
+        const res = await request(app)
+            .post('/api/auth/reset-password')
+            .send({ id: 1, token: 'sometoken', newPassword: 'short' });
+
+        expect(res.statusCode).toBe(400);
+        expect(res.body.message).toBe('Password must be at least 8 characters long.');
+    });
+});

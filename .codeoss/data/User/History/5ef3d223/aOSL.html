@@ -1,0 +1,223 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{ user.username }}'s Profile</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <style>
+        .tab-container {
+            width: 100%;
+        }
+        .tab-nav {
+            overflow: hidden;
+            border-bottom: 1px solid var(--border-color);
+            margin-bottom: 20px;
+        }
+        .tab-nav button {
+            background-color: inherit;
+            float: left;
+            border: none;
+            outline: none;
+            cursor: pointer;
+            padding: 14px 16px;
+            transition: 0.3s;
+            font-size: 1em;
+            font-weight: 500;
+            color: var(--text-secondary);
+            border-bottom: 3px solid transparent;
+        }
+        .tab-nav button:hover {
+            background-color: var(--light-gray);
+        }
+        .tab-nav button.active {
+            color: var(--text-dark);
+            border-bottom: 3px solid var(--success-color);
+        }
+        .tab-content {
+            display: none;
+            animation: fadeEffect 0.5s;
+        }
+        @keyframes fadeEffect {
+            from {opacity: 0;}
+            to {opacity: 1;}
+        }
+    </style>
+</head>
+<body>
+<div class="container">
+    <a href="javascript:history.back()" class="back-link">&larr; Go Back</a>
+    <section class="profile-header">
+        <div style="display: flex; justify-content: space-between; align-items: flex-start;">
+            <div>
+                <h1>{{ user.username }} {% if user.id_verified %}<span class="badge" style="background-color: var(--success-color); color: var(--white); font-size: 0.5em; vertical-align: middle; padding: 4px 8px; border-radius: 12px;">✓ ID Verified</span>{% endif %} {% if user.is_traveler_verified %}<span class="badge" style="background-color: #17a2b8; color: var(--white); font-size: 0.5em; vertical-align: middle; padding: 4px 8px; border-radius: 12px;">✓ Verified Traveler</span>{% endif %}</h1>
+                <p>Role: {{ user.role.capitalize() }}</p>
+                <div class="rating-summary">
+                    {% if rating_stats.rating_count > 0 %}
+                        <span class="rating">★ {{ "%.2f"|format(rating_stats.avg_rating) }}</span>
+                        <span class="text-secondary">({{ rating_stats.rating_count }} review(s))</span>
+                    {% else %}
+                        <strong>No reviews yet.</strong>
+                    {% endif %}
+                    {% if user.role == 'shipper' and rating_stats.avg_response_time %}
+                        <br>
+                        <span class="text-secondary" style="font-size: 0.9em; margin-top: 5px; display: inline-block;">Avg. Offer Response: <strong>{{ rating_stats.avg_response_time }}</strong></span>
+                    {% endif %}
+                </div>
+                {% if user.bio %}
+                    <p style="margin-top: 15px; font-style: italic; color: var(--text-secondary);">{{ user.bio }}</p>
+                {% endif %}
+                {% if user.contact_info %}
+                    {% if session.user_id %}
+                        <p style="margin-top: 5px;"><strong>Contact:</strong> {{ user.contact_info }}</p>
+                    {% else %}
+                        <p style="margin-top: 5px; font-size: 0.9em; color: var(--text-secondary);"><em>Log in to view contact information.</em></p>
+                    {% endif %}
+                {% endif %}
+            </div>
+            {% if session.user_id and session.user_id != user.user_id %}
+                <a href="{{ url_for('chat', other_user_id=user.user_id) }}" class="btn btn-success">Message {{ user.username }}</a>
+            {% elif session.user_id == user.user_id %}
+                <a href="{{ url_for('edit_profile') }}" class="btn">Edit Profile</a>
+                <a href="{{ url_for('profile.edit_profile') }}" class="btn">Edit Profile</a>
+            {% endif %}
+        </div>
+    </section>
+
+    <!-- Private Documents Section -->
+    {% if session.user_id %}
+        {% if user.mc_certificate_path or user.insurance_path or user.drivers_license_path %}
+            <section style="padding: 15px; background-color: #f8f9fa; border-radius: 8px; border: 1px solid var(--border-color); margin-bottom: 20px;">
+                <h3 style="margin-top: 0;">Verified Documents</h3>
+                <p style="font-size: 0.9em; color: var(--text-secondary); margin-bottom: 15px;">These documents have been uploaded by the user. Only logged-in users can view them.</p>
+                <div style="display: flex; gap: 10px; flex-wrap: wrap;">
+                    {% if user.mc_certificate_path %}
+                        <a href="{{ url_for('serve_user_doc', user_id=user.user_id, doc_type='mc_cert') }}" target="_blank" class="btn btn-secondary" style="background-color: #e2e3e5; color: #333; border: none;">📄 View MC Certificate</a>
+                        <a href="{{ url_for('profile.serve_user_doc', user_id=user.user_id, doc_type='mc_cert') }}" target="_blank" class="btn btn-secondary" style="background-color: #e2e3e5; color: #333; border: none;">📄 View MC Certificate</a>
+                    {% endif %}
+                    {% if user.insurance_path %}
+                        <a href="{{ url_for('serve_user_doc', user_id=user.user_id, doc_type='insurance') }}" target="_blank" class="btn btn-secondary" style="background-color: #e2e3e5; color: #333; border: none;">📄 View Insurance</a>
+                        <a href="{{ url_for('profile.serve_user_doc', user_id=user.user_id, doc_type='insurance') }}" target="_blank" class="btn btn-secondary" style="background-color: #e2e3e5; color: #333; border: none;">📄 View Insurance</a>
+                    {% endif %}
+                    {% if user.drivers_license_path %}
+                        <a href="{{ url_for('serve_user_doc', user_id=user.user_id, doc_type='license') }}" target="_blank" class="btn btn-secondary" style="background-color: #e2e3e5; color: #333; border: none;">📄 View Driver's License</a>
+                        <a href="{{ url_for('profile.serve_user_doc', user_id=user.user_id, doc_type='license') }}" target="_blank" class="btn btn-secondary" style="background-color: #e2e3e5; color: #333; border: none;">📄 View Driver's License</a>
+                    {% endif %}
+                </div>
+            </section>
+        {% endif %}
+    {% endif %}
+
+    <!-- Match History & Review Section -->
+    <section>
+        <h2>Match History</h2>
+        {% if completed_matches %}
+            {% for match in completed_matches %}
+                <div class="card">
+                    <p>Completed match for load <strong>"{{ match.load_description }}"</strong> with user <strong>{{ match.other_user_username }}</strong>.</p>
+                    <p>Date: {{ match.match_date|datetimeformat }}</p>
+                </div>
+            {% endfor %}
+        {% else %}
+            <p class="no-results">This user has no completed matches yet.</p>
+        {% endif %}
+    </section>
+
+    <section>
+        <h2>Reviews</h2>
+        {% if reviews %}
+            {% for review in reviews %}
+                <div class="review card">
+                    <p>
+                        <strong class="rating">★ {{ review.rating }}/5</strong>
+                        {% if review.load_description %} for the load: <strong>"{{ review.load_description }}"</strong>{% endif %}
+                    </p>
+                    {% if review.comment %}
+                        <p>"{{ review.comment }}"</p>
+                    {% endif %}
+                    <p class="review-meta">- by <a href="{{ url_for('profile', user_id=review.reviewer_id) }}">{{ review.reviewer_name }}</a> on {{ review.timestamp|datetimeformat }}</p>
+                    <p class="review-meta">- by <a href="{{ url_for('profile.profile', user_id=review.reviewer_id) }}">{{ review.reviewer_name }}</a> on {{ review.timestamp|datetimeformat }}</p>
+                </div>
+            {% endfor %}
+        {% else %}
+            <p class="no-results">This user has not received any reviews.</p>
+        {% endif %}
+    </section>
+
+    <!-- User's Postings Section -->
+    {% from '_macros.html' import render_load_card, render_truck_card, render_bid_modal with context %}
+    <section>
+        {# Note: The `asap_loads` variable should be prepared in your backend route and passed to the template. #}
+        <h2>{{ user.username }}'s Postings</h2>
+        <div class="tab-container">
+            <div class="tab-nav">
+                <button class="tab-link active" onclick="openTab(event, 'Loads')">Loads ({{ loads|length }})</button>
+                <button class="tab-link" onclick="openTab(event, 'Trucks')">Trucks ({{ trucks|length }})</button>
+                <button class="tab-link" onclick="openTab(event, 'ASAP')">Needs Shipped ASAP ({{ asap_loads|length }})</button>
+            </div>
+
+            <!-- Loads Tab Content -->
+            <div id="Loads" class="tab-content" style="display: block;">
+                {% if loads %}
+                    {% for load in loads %}
+                        {{ render_load_card(load) }}
+                    {% endfor %}
+                {% else %}
+                    <p class="no-results">{{ user.username }} has not posted any loads.</p>
+                {% endif %}
+            </div>
+
+            <!-- Trucks Tab Content -->
+            <div id="Trucks" class="tab-content">
+                {% if trucks %}
+                    {% for truck in trucks %}
+                        {{ render_truck_card(truck, is_owner=(session.user_id == user.user_id)) }}
+                    {% endfor %}
+                {% else %}
+                    <p class="no-results">{{ user.username }} has not posted any trucks.</p>
+                {% endif %}
+            </div>
+
+            <!-- ASAP Tab Content -->
+            <div id="ASAP" class="tab-content">
+                {% if asap_loads %}
+                    {% for load in asap_loads %}
+                        {{ render_load_card(load, is_asap_view=True) }}
+                    {% endfor %}
+                {% else %}
+                    <p class="no-results">{{ user.username }} has no loads that need shipped ASAP.</p>
+                {% endif %}
+            </div>
+        </div>
+    </section>
+
+</div>
+
+{{ render_bid_modal() }}
+
+<script src="{{ url_for('static', filename='main.js') }}"></script>
+<script>
+    function openTab(evt, tabName) {
+        var i, tabcontent, tablinks;
+        tabcontent = document.getElementsByClassName("tab-content");
+        for (i = 0; i < tabcontent.length; i++) {
+            tabcontent[i].style.display = "none";
+        }
+        tablinks = document.getElementsByClassName("tab-link");
+        for (i = 0; i < tablinks.length; i++) {
+            tablinks[i].className = tablinks[i].className.replace(" active", "");
+        }
+        document.getElementById(tabName).style.display = "block";
+        evt.currentTarget.className += " active";
+    }
+
+    document.addEventListener('DOMContentLoaded', () => {
+        // Initialize Bidding Modal Logic
+        setupBiddingModal();
+    });
+</script>
+</body>
+</html>

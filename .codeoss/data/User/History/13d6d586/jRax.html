@@ -1,0 +1,11 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Leave a Review</title>
+    <eection>
+        <h2>Leave a Review for {{ reviewee.username }}</h2>
+        <form action="{{ url_for('leave_review', match_id=match_id) }}" method="POST">
+            <div>
+                <label for="rating">Rating (1-5)</label>
+     

@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Edit Profile</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+<div class="container">
+    <a href="{{ url_for('profile', user_id=session.user_id) }}" class="back-link">&larr; Back to Profile</a>
+    <section>
+        <h2>Edit Profile</h2>
+        <form action="{{ url_for('edit_profile') }}" method="POST" enctype="multipart/form-data">
+            <label for="bio">Bio (Tell others about yourself or your company):</label>
+            <textarea name="bio" id="bio" rows="4" placeholder="e.g., Independent owner-operator with 10 years experience...">{{ user.bio or '' }}</textarea>
+            
+            <label for="contact_info">Contact Information (Phone, email, etc.):</label>
+            <input type="text" name="contact_info" id="contact_info" placeholder="e.g., 555-0199 or name@example.com" value="{{ user.contact_info or '' }}">
+            
+            <label for="dot_number">USDOT Number (Required for long-distance Brokers):</label>
+            <input type="text" name="dot_number" id="dot_number" placeholder="e.g., 1234567" value="{{ user.dot_number or '' }}">
+            <p style="font-size: 0.85em; color: var(--text-secondary); margin-top: -10px; margin-bottom: 15px;">We automatically verify your DOT number with the FMCSA to establish trust on the platform.</p>
+
+            <label for="mc_certificate">MC Certificate Document (Required if auto-verification fails):</label>
+            <input type="file" name="mc_certificate" id="mc_certificate" accept=".pdf, image/jpeg, image/png">
+            {% if user.mc_certificate_path %}
+                <div style="display: flex; align-items: center; gap: 10px; margin-top: -10px; margin-bottom: 15px;">
+                    <p style="font-size: 0.85em; color: #28a745; margin: 0;">✓ MC Certificate currently on file.</p>
+                    <button type="submit" formaction="{{ url_for('delete_document', doc_type='mc_cert') }}" formnovalidate class="btn btn-danger" style="padding: 2px 8px; font-size: 0.75em; width: auto;">Delete</button>
+                </div>
+            {% endif %}
+
+            <label for="insurance_doc">Personal Auto / Cargo Insurance (Optional but Recommended):</label>
+            <input type="file" name="insurance_doc" id="insurance_doc" accept=".pdf, image/jpeg, image/png">
+            
+            <label for="insurance_expiration_date" style="margin-top: 10px;">Insurance Expiration Date:</label>
+            <input type="date" name="insurance_expiration_date" id="insurance_expiration_date" value="{{ user.insurance_expiration_date or '' }}">
+            
+            {% if user.insurance_path or user.insurance_certificate_path %}
+                <div style="display: flex; align-items: center; gap: 10px; margin-top: 5px; margin-bottom: 15px;">
+                    <p style="font-size: 0.85em; color: #28a745; margin: 0;">✓ Insurance Document currently on file.</p>
+                    <button type="submit" formaction="{{ url_for('delete_document', doc_type='insurance') }}" formnovalidate class="btn btn-danger" style="padding: 2px 8px; font-size: 0.75em; width: auto;">Delete</button>
+                </div>
+            {% endif %}
+            <p style="font-size: 0.85em; color: var(--text-secondary); margin-top: -5px; margin-bottom: 15px;">Uploading proof of insurance increases trust and may be required by some shippers.</p>
+
+            <label for="drivers_license">Driver's License (Image/PDF):</label>
+            <input type="file" name="drivers_license" id="drivers_license" accept=".pdf, image/jpeg, image/png">
+            {% if user.drivers_license_path %}
+                <div style="display: flex; align-items: center; gap: 10px; margin-top: -10px; margin-bottom: 15px;">
+                    <p style="font-size: 0.85em; color: #28a745; margin: 0;">✓ Driver's License currently on file.</p>
+                    <button type="submit" formaction="{{ url_for('delete_document', doc_type='license') }}" formnovalidate class="btn btn-danger" style="padding: 2px 8px; font-size: 0.75em; width: auto;">Delete</button>
+                </div>
+            {% endif %}
+
+            <button type="submit">Update Profile</button>
+        </form>
+    </section>
+
+    <section style="margin-top: 30px; border-top: 1px solid #eee; padding-top: 20px;">
+        <h2>Identity & Payment Verification</h2>
+        {% if user.id_verified %}
+            <p style="color: #28a745; font-weight: bold;">✓ Your identity is verified.</p>
+            <p style="font-size: 0.9em; color: #555;">Your account is securely connected to Stripe for payments.</p>
+        {% else %}
+            <p style="color: #555; margin-bottom: 15px;">To build trust, prevent theft, and enable payments, please verify your identity securely through Stripe.</p>
+            <!-- Note: You will need to create a 'stripe_onboarding' route in your Flask app -->
+            <a href="{{ url_for('stripe_onboarding') }}" class="btn btn-success" style="display: inline-block;">Connect Stripe & Verify ID</a>
+        {% endif %}
+    </section>
+</div>
+</body>
+</html>

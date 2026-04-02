@@ -1,0 +1,15 @@
+2026-03-31 10:21:30.664 [info] Extension host with pid 1573 started
+2026-03-31 10:21:31.326 [info] ExtensionService#_doActivateExtension vscode.github-authentication, startup: false, activationEvent: 'onAuthenticationRequest:github'
+2026-03-31 10:21:31.328 [info] ExtensionService#_doActivateExtension vscode.emmet, startup: false, activationEvent: 'onLanguage'
+2026-03-31 10:21:31.328 [info] ExtensionService#_doActivateExtension google.geminicodeassist, startup: false, activationEvent: 'onView:cloudcode.gemini.chatView'
+2026-03-31 10:21:31.328 [info] ExtensionService#_doActivateExtension vscode.typescript-language-features, startup: false, activationEvent: 'onLanguage:javascript'
+2026-03-31 10:21:31.329 [info] ExtensionService#_doActivateExtension vscode.html-language-features, startup: false, activationEvent: 'onLanguage:html'
+2026-03-31 10:21:31.329 [info] ExtensionService#_doActivateExtension ms-python.python, startup: false, activationEvent: 'onLanguage:python'
+2026-03-31 10:21:33.121 [info] ExtensionService#_doActivateExtension vscode.git-base, startup: true, activationEvent: '*', root cause: vscode.git
+2026-03-31 10:21:43.125 [info] ExtensionService#_doActivateExtension EditorConfig.EditorConfig, startup: false, activationEvent: 'onStartupFinished'
+2026-03-31 10:21:43.126 [info] ExtensionService#_doActivateExtension google.cloud-shell, startup: false, activationEvent: 'onStartupFinished'
+2026-03-31 10:21:43.126 [info] ExtensionService#_doActivateExtension vscode.debug-auto-launch, startup: false, activationEvent: 'onStartupFinished'
+2026-03-31 10:21:43.127 [info] ExtensionService#_doActivateExtension google.gemini-cli-vscode-ide-companion, startup: false, activationEvent: 'onStartupFinished'
+2026-03-31 10:21:43.127 [info] ExtensionService#_doActivateExtension vscode.merge-conflict, startup: false, activationEvent: 'onStartupFinished'
+2026-03-31 10:26:49.051 [info] Extension host terminating: renderer disconnected for too long (2)
+2026-03-31 10:26:49.053 [info] Extension host with pid 1573 exiting with code 0

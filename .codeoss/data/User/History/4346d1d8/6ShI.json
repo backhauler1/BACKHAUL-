@@ -1,0 +1,20 @@
+{
+  "orderHistory": {
+    "loading": "Cargando sus pedidos...",
+    "loadFailed": "Error al cargar los pedidos: {{message}}",
+    "empty": "No tiene pedidos anteriores.",
+    "headers": {
+      "orderId": "ID del pedido",
+      "date": "Fecha",
+      "total": "Total",
+      "status": "Estado",
+      "actions": "Acciones"
+    },
+    "downloadInvoice": "↓ Factura PDF",
+    "pagination": {
+      "previous": "Anterior",
+      "next": "Siguiente",
+      "pageIndicator": "Página {{current}} de {{total}}"
+    }
+  }
+}

@@ -1,0 +1,221 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Available Trucks</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <!-- Mapbox GL JS -->
+    <script src='https://api.mapbox.com/mapbox-gl-js/v2.9.1/mapbox-gl.js'></script>
+    <link href='https://api.mapbox.com/mapbox-gl-js/v2.9.1/mapbox-gl.css' rel='stylesheet' />
+    <style>
+        .map-container {
+            height: 200px;
+            width: 100%;
+            margin-top: 15px;
+            border-radius: 8px;
+        }
+        .spinner {
+            position: absolute;
+            right: 10px;
+            border: 2px solid #f3f3f3; /* Light grey */
+            border-top: 2px solid #3498db; /* Blue */
+            border-radius: 50%;
+            width: 16px;
+            height: 16px;
+            animation: spin 1s linear infinite;
+            display: none; /* Hidden by default */
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+    </style>
+</head>
+<body>
+<div class="container">
+    <a href="{{ url_for('index') }}" class="back-link">&larr; Back to Home</a>
+    <h1>Available Trucks</h1>
+
+    <div class="filter-controls" style="margin-bottom: 20px; display: flex; gap: 10px; flex-wrap: wrap;">
+        <a href="{{ url_for('available_vehicles') }}" class="btn {% if not request.args.get('equipment') and not request.args.get('bobtail') %}active{% endif %}">All Trucks</a>
+        <a href="{{ url_for('available_vehicles', equipment='true') }}" class="btn {% if request.args.get('equipment') == 'true' %}active{% endif %}">With Loading Equipment</a>
+        <a href="{{ url_for('available_vehicles', bobtail='true') }}" class="btn {% if request.args.get('bobtail') == 'true' %}active{% endif %}">Bobtailing / Can Haul Trailer</a>
+    </div>
+
+    <form class="search-bar" method="GET" action="{{ url_for('available_vehicles') }}" style="margin-bottom: 20px; display: flex; gap: 10px; flex-wrap: wrap; align-items: center;">
+        {% if request.args.get('equipment') %}
+            <input type="hidden" name="equipment" value="{{ request.args.get('equipment') }}">
+        {% endif %}
+        {% if request.args.get('bobtail') %}
+            <input type="hidden" name="bobtail" value="{{ request.args.get('bobtail') }}">
+        {% endif %}
+        <div style="position: relative; display: flex; align-items: center; flex: 1; min-width: 200px;">
+            <input type="text" name="pickup" id="pickupSearch" list="pickupSuggestions" placeholder="Filter by pickup location..." value="{{ request.args.get('pickup', '') }}" style="width: 100%; padding: 10px; border: 1px solid #ccc; border-radius: 4px;" autocomplete="off">
+            <span class="spinner" id="pickupSpinner"></span>
+        </div>
+        <datalist id="pickupSuggestions"></datalist>
+        <div style="position: relative; display: flex; align-items: center; flex: 1; min-width: 200px;">
+            <input type="text" name="delivery" id="deliverySearch" list="deliverySuggestions" placeholder="Filter by delivery location..." value="{{ request.args.get('delivery', '') }}" style="width: 100%; padding: 10px; border: 1px solid #ccc; border-radius: 4px;" autocomplete="off">
+            <span class="spinner" id="deliverySpinner"></span>
+        </div>
+        <datalist id="deliverySuggestions"></datalist>
+        <div style="position: relative; display: flex; align-items: center; flex: 1; min-width: 200px;">
+            <select name="category" style="width: 100%; padding: 10px; border: 1px solid #ccc; border-radius: 4px;">
+                <option value="">All Categories</option>
+                {% for val, label in categories %}
+                <option value="{{ val }}" {% if request.args.get('category') == val %}selected{% endif %}>{{ label }}</option>
+                {% endfor %}
+            </select>
+        </div>
+        <div style="position: relative; display: flex; align-items: center; flex: 1; min-width: 200px;">
+            <input type="number" name="min_capacity" placeholder="Min Capacity (lbs)" value="{{ request.args.get('min_capacity', '') }}" style="width: 100%; padding: 10px; border: 1px solid #ccc; border-radius: 4px;" min="0">
+        </div>
+        <button type="submit" class="btn">Search</button>
+        {% if request.args.get('pickup') or request.args.get('delivery') or request.args.get('category') or request.args.get('min_capacity') %}
+            <a href="{{ url_for('available_vehicles', equipment=request.args.get('equipment'), bobtail=request.args.get('bobtail')) }}" class="btn" style="background-color: #d9534f; color: white;">Clear</a>
+        {% endif %}
+    </form>
+
+    {% if trucks %}
+        {% for truck in trucks %}
+        <div class="card truck-card"
+             data-departure="{{ truck.departure_city }}"
+             data-destination="{{ truck.destination_city }}"
+             data-vehicle-id="{{ truck.vehicle_id }}">
+            <h3>{{ truck.vehicle_type }} (ID: {{ truck.vehicle_id }})</h3>
+            {% if truck.category %}
+                <p><strong>Suited For:</strong> <span class="badge" style="background-color: #eee; padding: 3px 8px; border-radius: 12px; font-size: 0.85em; color: #333;">{{ truck.category }}</span></p>
+            {% endif %}
+            <p><strong>Transporter:</strong> <a href="{{ url_for('profile', user_id=truck.driver_id) }}">{{ truck.username }}</a>
+                {% if truck.id_verified %}<span class="badge" style="background-color: #28a745; color: white; font-size: 0.7em; vertical-align: middle; padding: 3px 6px; border-radius: 10px; margin-left: 5px;">✓ ID Verified</span>{% endif %}
+                {% if truck.rating_count > 0 %}
+                    <span class="rating">★ {{ "%.2f"|format(truck.avg_rating) }} ({{ truck.rating_count }})</span>
+                {% else %}
+                    <span>(No reviews yet)</span>
+                {% endif %}
+            </p>
+            <p><strong>Route:</strong> {{ truck.departure_city }} &rarr; {{ truck.destination_city }}</p>
+            <div id="map-{{ truck.vehicle_id }}" class="map-container"></div>
+            <p><strong>Availability:</strong> {{ truck.start_date }} to {{ truck.end_date }}</p>
+            {% if truck.max_weight %}
+            <p><strong>Max Capacity:</strong> {{ truck.max_weight }} lbs</p>
+            {% endif %}
+            {% if truck.max_dimensions %}
+            <p><strong>Max Dimensions:</strong> {{ truck.max_dimensions }}</p>
+            {% endif %}
+            <p><strong>Equipment:</strong> {{ 'Has own loading equipment' if truck.has_loading_equipment else 'No loading equipment provided' }}</p>
+            <p><strong>Hauling Capability:</strong> {{ 'Can haul a trailer (bobtailing)' if truck.can_haul_trailer else 'Not available for trailer hauling' }}</p>
+
+            {% if session.user_id and session.user_id != truck.driver_id %}
+            <div class="card-actions">
+                <a href="{{ url_for('chat', other_user_id=truck.driver_id) }}" class="btn btn-success">Message Transporter</a>
+                <a href="{{ url_for('index') }}?vehicle_id={{ truck.vehicle_id }}#matchSection" class="btn">Request This Truck</a>
+            </div>
+        {% elif not session.user_id %}
+        <div class="card-actions">
+            <a href="{{ url_for('login') }}" class="btn">Log in to Request This Truck</a>
+        </div>
+            {% endif %}
+        </div>
+        {% endfor %}
+
+        {% if pagination and pagination.pages > 1 %}
+        <div class="pagination" style="margin-top: 20px; display: flex; justify-content: center; gap: 5px;">
+            {# Helper macro to generate pagination links while preserving filters #}
+            {% macro pagination_link(page_num, text) %}
+                {% set query_params = request.args.to_dict() %}
+                {% do query_params.update({'page': page_num}) %}
+                <a href="{{ url_for('available_vehicles', **query_params) }}" class="btn">{{ text|safe }}</a>
+            {% endmacro %}
+
+            {% if pagination.has_prev %}
+                {{ pagination_link(pagination.prev_num, '&laquo; Prev') }}
+            {% endif %}
+
+            {% for page_num in pagination.iter_pages(left_edge=1, right_edge=1, left_current=2, right_current=2) %}
+                {% if page_num %}
+                    {% if page_num == pagination.page %}
+                        <span class="btn active" style="pointer-events: none;">{{ page_num }}</span>
+                    {% else %}
+                        {{ pagination_link(page_num, page_num) }}
+                    {% endif %}
+                {% else %}
+                    <span class="ellipsis" style="padding: 10px;">...</span>
+                {% endif %}
+            {% endfor %}
+
+            {% if pagination.has_next %}
+                {{ pagination_link(pagination.next_num, 'Next &raquo;') }}
+            {% endif %}
+        </div>
+        {% endif %}
+    {% else %}
+        <p class="no-results">No trucks are currently available. Go back and post one!</p>
+    {% endif %}
+</div>
+
+<script>
+    mapboxgl.accessToken = '{{ mapbox_token }}';
+</script>
+<script src="{{ url_for('static', filename='map_loader.js') }}"></script>
+<script>
+    document.addEventListener('DOMContentLoaded', () => {
+        initializeMaps({
+            cardSelector: '.truck-card',
+            startLocationAttr: 'departure',
+            endLocationAttr: 'destination',
+            idAttr: 'vehicleId',
+            idPrefix: 'map'
+        });
+
+        // Autocomplete functionality using Mapbox Geocoding API
+        function debounce(func, wait) {
+            let timeout;
+            return function(...args) {
+                clearTimeout(timeout);
+                timeout = setTimeout(() => func.apply(this, args), wait);
+            };
+        }
+
+        async function fetchCitySuggestions(query, listId, spinnerId) {
+            const spinner = document.getElementById(spinnerId);
+            const dataList = document.getElementById(listId);
+            dataList.innerHTML = ''; // Clear previous suggestions on new input
+
+            if (!query || query.length < 3) {
+                if (spinner) spinner.style.display = 'none';
+                return; // Wait for 3 characters to save API calls
+            }
+            
+            if (spinner) spinner.style.display = 'block';
+
+            // types=place restricts results to cities and towns, country restricts to US and Canada
+            const url = `https://api.mapbox.com/geocoding/v5/mapbox.places/${encodeURIComponent(query)}.json?types=place&country=us,ca&access_token=${mapboxgl.accessToken}`;
+            try {
+                const response = await fetch(url);
+                const data = await response.json();
+                data.features.forEach(feature => {
+                    const option = document.createElement('option');
+                    option.value = feature.place_name; // e.g., "Seattle, Washington, United States"
+                    dataList.appendChild(option);
+                });
+            } catch (error) {
+                console.error('Error fetching suggestions:', error);
+            } finally {
+                if (spinner) spinner.style.display = 'none';
+            }
+        }
+
+        const pickupInput = document.getElementById('pickupSearch');
+        const deliveryInput = document.getElementById('deliverySearch');
+        if (pickupInput) pickupInput.addEventListener('input', debounce((e) => fetchCitySuggestions(e.target.value, 'pickupSuggestions', 'pickupSpinner'), 300));
+        if (deliveryInput) deliveryInput.addEventListener('input', debounce((e) => fetchCitySuggestions(e.target.value, 'deliverySuggestions', 'deliverySpinner'), 300));
+    });
+</script>
+</body>
+</html>

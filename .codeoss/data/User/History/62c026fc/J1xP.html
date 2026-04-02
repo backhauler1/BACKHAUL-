@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Edit Truck</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+<div class="container">
+    <a href="{{ url_for('profile', user_id=session.user_id) }}" class="back-link">&larr; Back to Profile</a>
+    <section>
+        <h2>Edit Truck (ID: {{ truck.vehicle_id }})</h2>
+        <form action="{{ url_for('edit_truck', vehicle_id=truck.vehicle_id) }}" method="POST">
+            <input type="text" name="vehicle_type" placeholder="Vehicle Type" value="{{ truck.vehicle_type }}" required>
+            <input type="text" name="departure_city" placeholder="Departure City" value="{{ truck.departure_city }}">
+            <input type="text" name="destination_city" placeholder="Destination City" value="{{ truck.destination_city }}">
+            <label for="start_date">Start Date:</label>
+            <input type="date" name="start_date" id="start_date" value="{{ truck.start_date }}" required>
+            <label for="end_date">End Date:</label>
+            <input type="date" name="end_date" id="end_date" value="{{ truck.end_date }}" required>
+            <input type="text" name="max_weight" placeholder="Max Weight" value="{{ truck.max_weight or '' }}">
+            <input type="text" name="max_dimensions" placeholder="Max Dimensions" value="{{ truck.max_dimensions or '' }}">
+            <button type="submit">Update Truck</button>
+        </form>
+    </section>
+</div>
+</body>
+</html>

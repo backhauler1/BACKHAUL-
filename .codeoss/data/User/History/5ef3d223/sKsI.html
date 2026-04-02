@@ -1,0 +1,383 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>{{ user.username }}'s Profile</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <style>
+        .tab-container {
+            width: 100%;
+        }
+        .tab-nav {
+            overflow: hidden;
+            border-bottom: 1px solid #ccc;
+            margin-bottom: 20px;
+        }
+        .tab-nav button {
+            background-color: inherit;
+            float: left;
+            border: none;
+            outline: none;
+            cursor: pointer;
+            padding: 14px 16px;
+            transition: 0.3s;
+            font-size: 1em;
+            font-weight: 500;
+            color: #555;
+            border-bottom: 3px solid transparent;
+        }
+        .tab-nav button:hover {
+            background-color: #f1f1f1;
+        }
+        .tab-nav button.active {
+            color: #333;
+            border-bottom: 3px solid #5cb85c;
+        }
+        .tab-content {
+            display: none;
+            animation: fadeEffect 0.5s;
+        }
+        @keyframes fadeEffect {
+            from {opacity: 0;}
+            to {opacity: 1;}
+        }
+        /* Modal Styles */
+        .modal {
+            display: none; /* Hidden by default */
+            position: fixed; /* Stay in place */
+            z-index: 1000; /* Sit on top */
+            left: 0;
+            top: 0;
+            width: 100%; /* Full width */
+            height: 100%; /* Full height */
+            overflow: auto; /* Enable scroll if needed */
+            background-color: rgb(0,0,0); /* Fallback color */
+            background-color: rgba(0,0,0,0.4); /* Black w/ opacity */
+            padding-top: 60px;
+        }
+
+        .modal-content {
+            background-color: #fefefe;
+            margin: 5% auto;
+            padding: 20px;
+            border: 1px solid #888;
+            width: 80%;
+            max-width: 500px;
+            border-radius: 8px;
+            position: relative;
+        }
+
+        .close {
+            color: #aaa;
+            position: absolute;
+            top: 10px;
+            right: 20px;
+            font-size: 28px;
+            font-weight: bold;
+            cursor: pointer;
+        }
+    </style>
+</head>
+<body>
+<div class="container">
+    <a href="javascript:history.back()" class="back-link">&larr; Go Back</a>
+    <section class="profile-header">
+        <div style="display: flex; justify-content: space-between; align-items: flex-start;">
+            <div>
+                <h1>{{ user.username }}</h1>
+                <p>Role: {{ user.role.capitalize() }}</p>
+                <div class="rating-summary">
+                    {% if rating_stats.rating_count > 0 %}
+                        <span class="rating">★ {{ "%.2f"|format(rating_stats.avg_rating) }}</span>
+                        <span class="text-secondary">({{ rating_stats.rating_count }} review(s))</span>
+                    {% else %}
+                        <strong>No reviews yet.</strong>
+                    {% endif %}
+                    {% if user.role == 'shipper' and rating_stats.avg_response_time %}
+                        <br>
+                        <span class="text-secondary" style="font-size: 0.9em; margin-top: 5px; display: inline-block;">Avg. Offer Response: <strong>{{ rating_stats.avg_response_time }}</strong></span>
+                    {% endif %}
+                </div>
+                {% if user.bio %}
+                    <p style="margin-top: 15px; font-style: italic; color: #555;">{{ user.bio }}</p>
+                {% endif %}
+                {% if user.contact_info %}
+                    <p style="margin-top: 5px;"><strong>Contact:</strong> {{ user.contact_info }}</p>
+                    {% if session.user_id %}
+                        <p style="margin-top: 5px;"><strong>Contact:</strong> {{ user.contact_info }}</p>
+                    {% else %}
+                        <p style="margin-top: 5px; font-size: 0.9em; color: #777;"><em>Log in to view contact information.</em></p>
+                    {% endif %}
+                {% endif %}
+            </div>
+            {% if session.user_id and session.user_id != user.user_id %}
+                <a href="{{ url_for('chat', other_user_id=user.user_id) }}" class="btn btn-success">Message {{ user.username }}</a>
+            {% elif session.user_id == user.user_id %}
+                <a href="{{ url_for('edit_profile') }}" class="btn">Edit Profile</a>
+            {% endif %}
+        </div>
+    </section>
+
+    <!-- Match History & Review Section -->
+    <section>
+        <h2>Match History</h2>
+        {% if completed_matches %}
+            {% for match in completed_matches %}
+                <div class="card">
+                    <p>Completed match for load <strong>"{{ match.load_description }}"</strong> with user <strong>{{ match.other_user_username }}</strong>.</p>
+                    <p>Date: {{ match.match_date|datetimeformat }}</p>
+                </div>
+            {% endfor %}
+        {% else %}
+            <p class="no-results">This user has no completed matches yet.</p>
+        {% endif %}
+    </section>
+
+    <section>
+        <h2>Reviews</h2>
+        {% if reviews %}
+            {% for review in reviews %}
+                <div class="review card">
+                    <p>
+                        <strong class="rating">★ {{ review.rating }}/5</strong>
+                        {% if review.load_description %} for the load: <strong>"{{ review.load_description }}"</strong>{% endif %}
+                    </p>
+                    {% if review.comment %}
+                        <p>"{{ review.comment }}"</p>
+                    {% endif %}
+                    <p class="review-meta">- by <a href="{{ url_for('profile', user_id=review.reviewer_id) }}">{{ review.reviewer_name }}</a> on {{ review.timestamp|datetimeformat }}</p>
+                </div>
+            {% endfor %}
+        {% else %}
+            <p class="no-results">This user has not received any reviews.</p>
+        {% endif %}
+    </section>
+
+    <!-- User's Postings Section -->
+    {# This macro helps avoid repeating the same card HTML in multiple tabs. #}
+{% macro render_load_card(load, is_asap_view=False) %}
+    <div class="card">
+        <h3>{{ load.description }} (ID: {{ load.load_id }})</h3>
+        {% if load.category %}
+            <p><strong>Category:</strong> <span class="badge" style="background-color: #eee; padding: 3px 8px; border-radius: 12px; font-size: 0.85em; color: #333;">{{ load.category }}</span></p>
+        {% endif %}
+        {% if load.package_size or load.dimensions or load.weight %}
+            <p><strong>Size / Weight:</strong> 
+                {% if load.package_size %}{{ load.package_size }}{% endif %}
+                {% if load.dimensions %} [Exact: {{ load.dimensions }}]{% endif %}
+                {% if load.weight %} - {{ load.weight }}{% endif %}
+            </p>
+        {% endif %}
+        {% if load.image_filename %}
+            <div class="load-image-container">
+                <img src="{{ url_for('static', filename='uploads/' + load.image_filename) }}" alt="Image for {{ load.description }}">
+            </div>
+        {% endif %}
+        <p><strong>Route:</strong> {{ load.pickup }} &rarr; {{ load.delivery }}</p>
+        <p><strong>Shipping Date:</strong> {% if is_asap_view %}<span style="color: #dc3545; font-weight: bold;">{{ load.shipping_date }}</span>{% else %}{{ load.shipping_date }}{% endif %}</p>
+        <p><strong>Offer:</strong> ${{ load.offer }}</p>
+        {% if load.is_trailer %}
+            <p><strong>Load Type:</strong> Trailer for Hauling</p>
+            {% if load.requires_bol %}
+                <p style="font-size: 0.85em; color: #d9534f; margin-top: 5px;">* Bill of Lading is required.</p>
+            {% endif %}
+        {% else %}
+            <p><strong>Loading:</strong> {{ 'Driver to load' if load.loading_responsibility == 'driver' else 'Shipper provides equipment' }}</p>
+            {% if load.equipment_failure_compensation %}
+                <p style="font-size: 0.85em; color: #d9534f; margin-top: 5px;">* Shipper agrees to compensate for loading delays if equipment is unavailable.</p>
+            {% endif %}
+        {% endif %}
+        {% if session.user_id == user.user_id %}
+        <div class="card-actions">
+            <a href="{{ url_for('edit_load', load_id=load.load_id) }}" class="btn">Edit</a>
+            <form action="{{ url_for('delete_load', load_id=load.load_id) }}" method="POST" onsubmit="return confirm('Are you sure you want to delete this load?');">
+                <button type="submit" class="btn btn-danger">Delete</button>
+            </form>
+        </div>
+        {% elif session.user_id %}
+        <div class="card-actions">
+            <a href="{{ url_for('chat', other_user_id=user.user_id) }}" class="btn btn-success">Message Shipper</a>
+            <button class="btn make-offer-btn" data-load-id="{{ load.load_id }}" data-load-description="{{ load.description }}">Make an Offer</button>
+        </div>
+        {% endif %}
+    </div>
+{% endmacro %}
+    <section>
+        {# Note: The `asap_loads` variable should be prepared in your backend route and passed to the template. #}
+        <h2>{{ user.username }}'s Postings</h2>
+        <div class="tab-container">
+            <div class="tab-nav">
+                <button class="tab-link active" onclick="openTab(event, 'Loads')">Loads ({{ loads|length }})</button>
+                <button class="tab-link" onclick="openTab(event, 'Trucks')">Trucks ({{ trucks|length }})</button>
+                <button class="tab-link" onclick="openTab(event, 'ASAP')">Needs Shipped ASAP ({{ asap_loads|length }})</button>
+            </div>
+
+            <!-- Loads Tab Content -->
+            <div id="Loads" class="tab-content" style="display: block;">
+                {% if loads %}
+                    {% for load in loads %}
+                        {{ render_load_card(load) }}
+                    {% endfor %}
+                {% else %}
+                    <p class="no-results">{{ user.username }} has not posted any loads.</p>
+                {% endif %}
+            </div>
+
+            <!-- Trucks Tab Content -->
+            <div id="Trucks" class="tab-content">
+                {% if trucks %}
+                    {% for truck in trucks %}
+                        <div class="card">
+                            <h3>{{ truck.vehicle_type }} (ID: {{ truck.vehicle_id }})</h3>
+                            {% if truck.category %}
+                                <p><strong>Suited For:</strong> <span class="badge" style="background-color: #eee; padding: 3px 8px; border-radius: 12px; font-size: 0.85em; color: #333;">{{ truck.category }}</span></p>
+                            {% endif %}
+                            <p><strong>Route:</strong> {{ truck.departure_city }} &rarr; {{ truck.destination_city }}</p>
+                            <p><strong>Availability:</strong> {{ truck.start_date }} to {{ truck.end_date }}</p>
+                            {% if truck.max_weight %}
+                            <p><strong>Max Capacity:</strong> {{ truck.max_weight }} lbs</p>
+                            {% endif %}
+                            {% if truck.max_dimensions %}
+                            <p><strong>Max Dimensions:</strong> {{ truck.max_dimensions }}</p>
+                            {% endif %}
+                            <p><strong>Equipment:</strong> {{ 'Has own loading equipment' if truck.has_loading_equipment else 'No loading equipment provided' }}</p>
+                            <p><strong>Hauling Capability:</strong> {{ 'Can haul a trailer (bobtailing)' if truck.can_haul_trailer else 'Not available for trailer hauling' }}</p>
+                            {% if session.user_id == user.user_id %}
+                            <div class="card-actions">
+                                <a href="{{ url_for('edit_truck', vehicle_id=truck.vehicle_id) }}" class="btn">Edit</a>
+                                <form action="{{ url_for('delete_truck', vehicle_id=truck.vehicle_id) }}" method="POST" onsubmit="return confirm('Are you sure you want to delete this truck?');">
+                                    <button type="submit" class="btn btn-danger">Delete</button>
+                                </form>
+                            </div>
+                            {% endif %}
+                        </div>
+                    {% endfor %}
+                {% else %}
+                    <p class="no-results">{{ user.username }} has not posted any trucks.</p>
+                {% endif %}
+            </div>
+
+            <!-- ASAP Tab Content -->
+            <div id="ASAP" class="tab-content">
+                {% if asap_loads %}
+                    {% for load in asap_loads %}
+                        {{ render_load_card(load, is_asap_view=True) }}
+                    {% endfor %}
+                {% else %}
+                    <p class="no-results">{{ user.username }} has no loads that need shipped ASAP.</p>
+                {% endif %}
+            </div>
+        </div>
+    </section>
+
+</div>
+
+<!-- Bidding Modal -->
+<div id="bidModal" class="modal">
+    <div class="modal-content">
+        <span class="close">&times;</span>
+        <h2>Make an Offer</h2>
+        <p>For load: <strong id="modalLoadDescription"></strong></p>
+        <form id="bidForm" style="margin-top: 20px;">
+            <input type="hidden" id="modalLoadId" name="load_id">
+            <label for="bidAmount">Your Offer Amount ($)</label>
+            <input type="number" id="bidAmount" name="bid_amount" placeholder="e.g., 450" required min="1" style="margin-bottom: 15px;">
+            <label for="bidMessage">Message to Shipper (optional)</label>
+            <textarea id="bidMessage" name="message" rows="3" placeholder="e.g., I can pick this up tomorrow morning." style="margin-bottom: 15px;"></textarea>
+            <button type="submit" class="btn">Submit Offer</button>
+        </form>
+        <div id="bidResult" class="result" style="margin-top: 15px;"></div>
+    </div>
+</div>
+<script>
+    function openTab(evt, tabName) {
+        var i, tabcontent, tablinks;
+        tabcontent = document.getElementsByClassName("tab-content");
+        for (i = 0; i < tabcontent.length; i++) {
+            tabcontent[i].style.display = "none";
+        }
+        tablinks = document.getElementsByClassName("tab-link");
+        for (i = 0; i < tablinks.length; i++) {
+            tablinks[i].className = tablinks[i].className.replace(" active", "");
+        }
+        document.getElementById(tabName).style.display = "block";
+        evt.currentTarget.className += " active";
+    }
+
+    document.addEventListener('DOMContentLoaded', () => {
+        // --- Bidding Modal Logic ---
+        const modal = document.getElementById('bidModal');
+        const closeModal = document.querySelector('.modal .close');
+        const bidForm = document.getElementById('bidForm');
+        const bidResult = document.getElementById('bidResult');
+
+        // Use event delegation to ensure buttons in hidden tabs work when revealed.
+        document.body.addEventListener('click', function(event) {
+            if (event.target.classList.contains('make-offer-btn')) {
+                const button = event.target;
+                const loadId = button.dataset.loadId;
+                const loadDescription = button.dataset.loadDescription;
+
+                // Populate the modal
+                document.getElementById('modalLoadId').value = loadId;
+                document.getElementById('modalLoadDescription').textContent = loadDescription;
+                
+                // Clear previous results and show modal
+                if (bidResult) bidResult.innerHTML = '';
+                if (bidForm) {
+                    bidForm.reset();
+                    bidForm.style.display = 'block';
+                }
+                if (modal) modal.style.display = 'block';
+            }
+        });
+
+        // Close modal when 'x' is clicked
+        if(closeModal) {
+            closeModal.onclick = function() {
+                if (modal) modal.style.display = 'none';
+            }
+        }
+
+        // Close modal when user clicks outside of it
+        window.onclick = function(event) {
+            if (event.target == modal) {
+                modal.style.display = 'none';
+            }
+        }
+
+        // Handle bid form submission
+        if(bidForm) {
+            bidForm.addEventListener('submit', async (e) => {
+                e.preventDefault();
+                const formData = new FormData(bidForm);
+                const loadId = formData.get('load_id');
+                
+                if (bidResult) bidResult.innerHTML = '<p>Submitting offer...</p>';
+
+                try {
+                    const response = await fetch(`/load/${loadId}/bid`, {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify(Object.fromEntries(formData))
+                    });
+                    const result = await response.json();
+
+                    if (response.ok) {
+                        bidResult.innerHTML = `<p class="success-message">${result.message}</p>`;
+                        bidForm.style.display = 'none'; // Hide form on success
+                    } else {
+                        bidResult.innerHTML = `<p class="error-message">${result.error || 'An unknown error occurred.'}</p>`;
+                    }
+                } catch (error) {
+                    bidResult.innerHTML = `<p class="error-message">An error occurred while submitting your offer.</p>`;
+                }
+            });
+        }
+    });
+</script>
+</body>
+</html>

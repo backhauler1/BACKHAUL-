@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Delivery Proof</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <!-- Leaflet CSS for Map -->
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+    <style>
+        .proof-section { display: flex; flex-direction: column; gap: 20px; margin-top: 20px; }
+        .photo-container { text-align: center; }
+        .photo-container img { max-width: 100%; height: auto; border: 1px solid #ccc; border-radius: 4px; margin-top: 10px; }
+        #map { height: 400px; width: 100%; border-radius: 8px; border: 1px solid #ccc; z-index: 1; }
+    </style>
+</head>
+<body>
+<div class="container">
+    <a href="{{ url_for('dashboard') }}" class="back-link">&larr; Back to Dashboard</a>
+    <section>
+        <h2>Delivery Verification</h2>
+
+        <div class="proof-section card">
+            {% if proof.image_path %}
+                <!-- Leaflet Map Container -->
+                <div id="map"></div>
+                
+                <div class="photo-container">
+                    <h3>Delivery Photo</h3>
+                    <p class="text-secondary" style="font-size: 0.9em;">Timestamp: {{ proof.timestamp|datetimeformat }}</p>
+                    <!-- Load image securely using our new route -->
+                    <img src="/{{ proof.image_path }}" alt="Delivery Proof Photo">
+                </div>
+                
+                <!-- Leaflet JS Map Script -->
+                <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+                <script>
+                    var lat = {{ proof.latitude or 'null' }};
+                    var lon = {{ proof.longitude or 'null' }};
+                    
+                    if (lat && lon) {
+                        var map = L.map('map').setView([lat, lon], 16);
+                        L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', { maxZoom: 19, attribution: '© OpenStreetMap' }).addTo(map);
+                        L.marker([lat, lon]).addTo(map).bindPopup('<b>Delivery Photo Location</b><br>' + lat + ', ' + lon).openPopup();
+                    } else {
+                        document.getElementById('map').innerHTML = "<p style='text-align:center; padding-top: 180px;'>GPS Location data not available for this photo.</p>";
+                    }
+                </script>
+            {% endif %}
+            
+            {% if proof.signature %}
+                <div class="signature-container" style="text-align: center; margin-top: 20px;">
+                    <h3>Recipient Signature</h3>
+                    <p class="text-secondary" style="font-size: 0.9em;">Timestamp: {{ proof.timestamp|datetimeformat }}</p>
+                    <img src="{{ proof.signature }}" alt="Signature" style="border: 1px solid #ccc; border-radius: 4px; max-width: 100%; background: #fff;">
+                </div>
+            {% endif %}
+
+            {% if session.user_id == load_users['shipper_id'] and load_status['payment_status'] != 'disputed' %}
+            <div style="margin-top: 30px; border-top: 1px solid #eee; padding-top: 20px;">
+                <h3 style="color: #dc3545;">Dispute Delivery</h3>
+                <p style="font-size: 0.9em; color: var(--text-secondary); margin-bottom: 10px;">Does this proof of delivery look incorrect? You can open a dispute to notify the transporter and support team.</p>
+                <form action="{{ url_for('dispute_delivery', load_id=load_id) }}" method="POST">
+                    <textarea name="reason" rows="3" style="width: 100%; padding: 10px; border: 1px solid var(--border-color); border-radius: 4px; margin-bottom: 10px;" placeholder="Explain why you are disputing this delivery..." required></textarea>
+                    <button type="submit" class="btn" style="background-color: #dc3545; color: white;">Open Dispute</button>
+                </form>
+            </div>
+            {% elif load_status['payment_status'] == 'disputed' %}
+            <div style="margin-top: 30px; padding: 15px; background-color: #fff3cd; border-radius: 4px; color: #856404; border: 1px solid #ffeeba;">
+                <strong>Status:</strong> This delivery is currently under dispute.
+            </div>
+            {% endif %}
+        </div>
+    </section>
+</div>
+</body>
+</html>

@@ -1,0 +1,49 @@
+2026-03-31 20:27:45.886 [info] Extension host with pid 27612 started
+2026-03-31 20:27:45.894 [info] Lock '/home/perrymckay1/.codeoss/data/User/workspaceStorage/-6a79e224/vscode.lock': Lock acquired.
+2026-03-31 20:27:46.761 [info] ExtensionService#_doActivateExtension vscode.github-authentication, startup: false, activationEvent: 'onAuthenticationRequest:github'
+2026-03-31 20:27:46.762 [info] ExtensionService#_doActivateExtension vscode.emmet, startup: false, activationEvent: 'onLanguage'
+2026-03-31 20:27:46.763 [info] ExtensionService#_doActivateExtension google.geminicodeassist, startup: false, activationEvent: 'onView:cloudcode.gemini.chatView'
+2026-03-31 20:27:46.763 [info] ExtensionService#_doActivateExtension vscode.configuration-editing, startup: false, activationEvent: 'onLanguage:json'
+2026-03-31 20:27:46.763 [info] ExtensionService#_doActivateExtension vscode.extension-editing, startup: false, activationEvent: 'onLanguage:json'
+2026-03-31 20:27:46.764 [info] ExtensionService#_doActivateExtension vscode.json-language-features, startup: false, activationEvent: 'onLanguage:json'
+2026-03-31 20:27:46.764 [info] ExtensionService#_doActivateExtension vscode.npm, startup: false, activationEvent: 'onLanguage:json'
+2026-03-31 20:27:48.064 [info] ExtensionService#_doActivateExtension vscode.git-base, startup: true, activationEvent: '*', root cause: vscode.git
+2026-03-31 20:27:55.070 [info] Not activating extension 'ms-python.python': Timed out while searching for 'workspaceContains' pattern **/pylock.*.toml
+2026-03-31 20:27:55.070 [info] Not activating extension 'redhat.java': Timed out while searching for 'workspaceContains' pattern */pom.xml,*/build.gradle,*/settings.gradle,*/build.gradle.kts,*/settings.gradle.kts,*/.classpath
+2026-03-31 20:27:55.070 [info] Not activating extension 'vscjava.vscode-java-dependency': Timed out while searching for 'workspaceContains' pattern */pom.xml,*/build.gradle,*/settings.gradle,*/build.gradle.kts,*/settings.gradle.kts,*/.classpath
+2026-03-31 20:27:55.072 [info] Not activating extension 'vscjava.vscode-java-test': Timed out while searching for 'workspaceContains' pattern */pom.xml,*/build.gradle,*/settings.gradle,*/build.gradle.kts,*/settings.gradle.kts,*/.classpath
+2026-03-31 20:27:55.072 [info] Not activating extension 'vscjava.vscode-maven': Timed out while searching for 'workspaceContains' pattern **/pom.xml
+2026-03-31 20:27:58.076 [info] ExtensionService#_doActivateExtension EditorConfig.EditorConfig, startup: false, activationEvent: 'onStartupFinished'
+2026-03-31 20:27:58.077 [info] ExtensionService#_doActivateExtension google.cloud-shell, startup: false, activationEvent: 'onStartupFinished'
+2026-03-31 20:27:58.077 [info] ExtensionService#_doActivateExtension vscode.debug-auto-launch, startup: false, activationEvent: 'onStartupFinished'
+2026-03-31 20:27:58.078 [info] ExtensionService#_doActivateExtension google.gemini-cli-vscode-ide-companion, startup: false, activationEvent: 'onStartupFinished'
+2026-03-31 20:27:58.078 [info] ExtensionService#_doActivateExtension vscode.merge-conflict, startup: false, activationEvent: 'onStartupFinished'
+2026-03-31 20:28:06.560 [info] ExtensionService#_doActivateExtension vscode.git, startup: true, activationEvent: '*'
+2026-03-31 20:28:06.561 [info] ExtensionService#_doActivateExtension vscode.github, startup: true, activationEvent: '*'
+2026-03-31 20:28:07.196 [info] Eager extensions activated
+2026-03-31 20:28:11.285 [info] ExtensionService#_doActivateExtension vscode.typescript-language-features, startup: false, activationEvent: 'onLanguage:jsonc'
+2026-03-31 20:28:11.433 [info] ExtensionService#_doActivateExtension googlecloudtools.cloudcode, startup: false, activationEvent: 'onStartupFinished'
+2026-03-31 20:28:14.029 [info] ExtensionService#_doActivateExtension vscode.terminal-suggest, startup: false, activationEvent: 'onTerminalShellIntegration:*'
+2026-03-31 20:48:22.397 [warning] ExtHostTextEditorOptions 'setOptions' failed:'
+2026-03-31 20:48:22.398 [warning] Illegal argument: TextEditor(vs.editor.ICodeEditor:1,$model9)
+2026-03-31 20:48:23.044 [warning] ExtHostTextEditorOptions 'setOptions' failed:'
+2026-03-31 20:48:23.044 [warning] Illegal argument: TextEditor(vs.editor.ICodeEditor:1,$model10)
+2026-03-31 20:48:23.697 [warning] ExtHostTextEditorOptions 'setOptions' failed:'
+2026-03-31 20:48:23.697 [warning] Illegal argument: TextEditor(vs.editor.ICodeEditor:1,$model11)
+2026-03-31 20:48:24.634 [warning] ExtHostTextEditorOptions 'setOptions' failed:'
+2026-03-31 20:48:24.634 [warning] Illegal argument: TextEditor(vs.editor.ICodeEditor:1,$model12)
+2026-03-31 21:28:29.693 [error] Error: unauthorized.
+    at e.Authorization.authorize (/google/devshell/editor/code-oss-for-cloud-shell/extensions/cloud-shell/dist/extension.js:1:6008)
+    at CA.resp [as h] (file:///google/devshell/editor/code-oss-for-cloud-shell/out/vs/workbench/api/node/extensionHostProcess.js:116:41743)
+    at t.CloudShellTheiaAuth.promptForOrGetAuth (/google/devshell/editor/code-oss-for-cloud-shell/extensions/geminicodeassist/dist/webpack:/common/packages/cloudshell/authorization.ts:99:11)
+    at t.CloudShellTheiaAuth.validCache [as runAuthorization] (/google/devshell/editor/code-oss-for-cloud-shell/extensions/geminicodeassist/dist/webpack:/common/packages/cloudshell/authorization.ts:83:7)
+    at t.CloudShellAuthProvider.accessToken [as getAccessToken] (/google/devshell/editor/code-oss-for-cloud-shell/extensions/geminicodeassist/dist/webpack:/common/packages/auth/cloudshell_auth_provider.ts:50:35)
+    at c.updateExperimentationDataCache (/google/devshell/editor/code-oss-for-cloud-shell/extensions/geminicodeassist/dist/webpack:/common/packages/experimentation/experiment_service.ts:290:11)
+    at c.updateExperimentationData (/google/devshell/editor/code-oss-for-cloud-shell/extensions/geminicodeassist/dist/webpack:/common/packages/experimentation/experiment_service.ts:281:117)
+    at c.updateExperimentationData (/google/devshell/editor/code-oss-for-cloud-shell/extensions/geminicodeassist/dist/extension.js:14:12500392) cloudshell.authorize {"value":"google.cloud-shell","_lower":"google.cloud-shell"}
+2026-03-31 21:28:30.695 [error] Error: Error calling Cloud Shell Theia Authorization. unauthorized.
+    at t.CloudShellTheiaAuth.validCache [as runAuthorization] (/google/devshell/editor/code-oss-for-cloud-shell/extensions/geminicodeassist/dist/webpack:/common/packages/cloudshell/authorization.ts:86:13)
+    at t.CloudShellAuthProvider.accessToken [as getAccessToken] (/google/devshell/editor/code-oss-for-cloud-shell/extensions/geminicodeassist/dist/webpack:/common/packages/auth/cloudshell_auth_provider.ts:50:35)
+    at c.updateExperimentationDataCache (/google/devshell/editor/code-oss-for-cloud-shell/extensions/geminicodeassist/dist/webpack:/common/packages/experimentation/experiment_service.ts:290:11)
+    at c.updateExperimentationData (/google/devshell/editor/code-oss-for-cloud-shell/extensions/geminicodeassist/dist/webpack:/common/packages/experimentation/experiment_service.ts:281:117)
+    at c.updateExperimentationData (/google/devshell/editor/code-oss-for-cloud-shell/extensions/geminicodeassist/dist/extension.js:14:12500392)

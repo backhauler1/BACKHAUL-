@@ -1,0 +1,64 @@
+# Use an official lightweight Node.js image
+FROM node:18-alpine
+#
+# Stage 1: Build Stage
+# This stage installs all dependencies (including devDependencies) and runs the build script.
+#
+FROM node:18-alpine AS builder
+
+# Set the working directory
+WORKDIR /app
+WORKDIR /usr/src/app
+
+# Copy package manifests to leverage Docker caching
+COPY package*.json ./
+# Copy package.json and package-lock.json to leverage Docker cache
+COPY package.json package-lock.json* ./
+
+# Install all dependencies (including devDependencies needed for esbuild)
+# Install all dependencies
+RUN npm ci
+
+# Copy the rest of the application
+# Copy the rest of your application's source code
+COPY . .
+
+# Build the production static assets
+RUN node build.js
+# Run the build script (e.g., for a React, Vue, or Angular frontend)
+# If your project doesn't have a build step, you can remove this line.
+RUN npm run build
+
+# Prune devDependencies to reduce the final image size and attack surface
+RUN npm prune --production
+#
+# Stage 2: Production Stage
+# This stage creates the final, lean production image.
+#
+FROM node:18-alpine AS production
+
+# Expose the server port
+EXPOSE 5000
+WORKDIR /usr/src/app
+
+# Enforce production environment variables
+ENV NODE_ENV=production
+# Create and use a non-root user for better security
+RUN addgroup -S appgroup && adduser -S appuser -G appgroup
+USER appuser
+
+# Start the application (which runs migrations and starts Express)
+CMD ["node", "server.js"]
+# Copy package files and install *only* production dependencies
+COPY package.json package-lock.json* ./
+RUN npm ci --omit=dev
+
+# Copy the built assets and necessary source code from the builder stage
+COPY --from=builder /usr/src/app/dist ./dist
+COPY --from=builder /usr/src/app/src ./src
+
+# Expose the port your application will run on
+EXPOSE 3000
+
+# The command to start your application in production
+CMD ["node", "src/index.js"] # Or whatever your entry point is

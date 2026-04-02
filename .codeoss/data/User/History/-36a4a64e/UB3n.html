@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Available Trucks</title>
+    <style>
+        body { font-family: Arial, sans-serif; margin: 20px; max-width: 800px; background-color: #f9f9f9; }
+        h1 { text-align: center; color: #333; }
+        .truck-card { background-color: white; border: 1px solid #ddd; padding: 15px; margin-bottom: 15px; border-radius: 8px; box-shadow: 0 2px 4px rgba(0,0,0,0.1); }
+        .truck-card h3 { margin-top: 0; color: #007BFF; }
+        .truck-card p { margin: 5px 0; color: #555; }
+        .no-trucks { text-align: center; color: #777; font-style: italic; }
+        a.back-link { display: inline-block; margin-bottom: 20px; text-decoration: none; color: #007BFF; font-weight: bold; }
+    </style>
+</head>
+<body>
+    <a href="/" class="back-link">&larr; Back to Home</a>
+    <h1>Available Trucks</h1>
+
+    {% if trucks %}
+        {% for truck in trucks %}
+        <div class="truck-card">
+            <h3>{{ truck.vehicle_type }} (ID: {{ truck.vehicle_id }})</h3>
+            <p><strong>Route:</strong> {{ truck.departure_city }} &rarr; {{ truck.destination_city }}</p>
+            <p><strong>Availability:</strong> {{ truck.start_date }} to {{ truck.end_date }}</p>
+        </div>
+        {% endfor %}
+    {% else %}
+        <p class="no-trucks">No trucks are currently available. Go back and post one!</p>
+    {% endif %}
+</body>
+</html>

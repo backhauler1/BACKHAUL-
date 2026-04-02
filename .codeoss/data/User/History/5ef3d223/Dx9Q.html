@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>{{ user.username }}'s Profile</title>
+    <style>
+        body { font-family: sans-serif; max-width: 800px; margin: auto; padding: 20px; }
+        .profile-header { border-bottom: 1px solid #ccc; padding-bottom: 15px; margin-bottom: 20px; }
+        .rating-summary { font-size: 1.2em; }
+        .review { border: 1px solid #eee; padding: 15px; margin-bottom: 15px; border-radius: 5px; }
+        .review-meta { font-size: 0.9em; color: #555; }
+    </style>
+</head>
+<body>
+    <div class="profile-header">
+        <h1>{{ user.username }}</h1>
+        <p>Role: {{ user.role.capitalize() }}</p>
+        <div class="rating-summary">
+            {% if rating_stats.rating_count > 0 %}
+                <strong>Average Rating: {{ "%.2f"|format(rating_stats.avg_rating) }}</strong> / 5
+                (from {{ rating_stats.rating_count }} review(s))
+            {% else %}
+                <strong>No reviews yet.</strong>
+            {% endif %}
+        </div>
+    </div>
+
+    <h2>Reviews</h2>
+    {% if reviews %}
+        {% for review in reviews %}
+            <div class="review">
+                <p><strong>Rating: {{ review.rating }}/5</strong></p>
+                {% if review.comment %}
+                    <p>"{{ review.comment }}"</p>
+                {% endif %}
+                <p class="review-meta">- by {{ review.reviewer_name }} on {{ review.timestamp|datetimeformat }}</p>
+            </div>
+        {% endfor %}
+    {% else %}
+        <p>This user has not received any reviews.</p>
+    {% endif %}
+
+    <a href="{{ url_for('dashboard') }}">Back to Dashboard</a>
+</body>
+</html>

@@ -1,0 +1,25 @@
+/* Add these to your existing style.css file */
+
+/* General badge styling */
+.badge {
+    padding: 3px 8px;
+    border-radius: 12px;
+    font-size: 0.85em;
+    vertical-align: middle;
+}
+
+.badge-category {
+    background-color: var(--light-gray);
+    color: var(--text-dark);
+}
+
+.shipping-date-asap {
+    color: #dc3545; /* A red color for urgency */
+    font-weight: bold;
+}
+
+.text-warning-small {
+    font-size: 0.85em;
+    color: #d9534f; /* A warning/danger color */
+    margin-top: 5px;
+}

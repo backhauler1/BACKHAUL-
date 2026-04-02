@@ -1,0 +1,42 @@
+2026-04-01 11:02:02.624 [info] 
+
+
+
+
+2026-04-01 11:02:02.664 [info] Extension host agent started.
+2026-04-01 11:02:08.518 [info] [127.0.0.1][4faadc49][ManagementConnection] New connection established.
+2026-04-01 11:02:08.575 [info] [127.0.0.1][66e1ebf3][ExtensionHostConnection] New connection established.
+2026-04-01 11:02:09.658 [info] [127.0.0.1][66e1ebf3][ExtensionHostConnection] <1463> Launched Extension Host Process.
+2026-04-01 11:02:10.429 [info] [127.0.0.1][66e1ebf3][ExtensionHostConnection] <1463> [reconnection-grace-time] Extension host: read VSCODE_RECONNECTION_GRACE_TIME=10800000ms (10800s)
+
+2026-04-01 11:02:29.345 [info] [127.0.0.1][4faadc49][ManagementConnection] The client has disconnected gracefully, so the connection will be disposed.
+2026-04-01 11:02:32.422 [info] [127.0.0.1][aa5f0ef7][ManagementConnection] New connection established.
+2026-04-01 11:02:32.486 [info] [127.0.0.1][664e024b][ExtensionHostConnection] New connection established.
+2026-04-01 11:02:32.491 [info] [127.0.0.1][664e024b][ExtensionHostConnection] <1526> Launched Extension Host Process.
+2026-04-01 11:02:32.987 [info] [127.0.0.1][664e024b][ExtensionHostConnection] <1526> [reconnection-grace-time] Extension host: read VSCODE_RECONNECTION_GRACE_TIME=10800000ms (10800s)
+
+2026-04-01 11:07:32.681 [info] [127.0.0.1][66e1ebf3][ExtensionHostConnection] <1463> Extension Host Process exited with code: 0, signal: null.
+2026-04-01 13:00:32.728 [info] [127.0.0.1][aa5f0ef7][ManagementConnection] The client has disconnected gracefully, so the connection will be disposed.
+2026-04-01 13:00:33.474 [info] [127.0.0.1][664e024b][ExtensionHostConnection] <1526> Extension Host Process exited with code: 0, signal: null.
+2026-04-01 13:00:44.122 [info] [127.0.0.1][4b348122][ManagementConnection] New connection established.
+2026-04-01 13:00:44.256 [info] [127.0.0.1][d7bf0c54][ExtensionHostConnection] New connection established.
+2026-04-01 13:00:44.261 [info] [127.0.0.1][d7bf0c54][ExtensionHostConnection] <6423> Launched Extension Host Process.
+2026-04-01 13:00:44.900 [info] [127.0.0.1][d7bf0c54][ExtensionHostConnection] <6423> [reconnection-grace-time] Extension host: read VSCODE_RECONNECTION_GRACE_TIME=10800000ms (10800s)
+
+2026-04-01 13:52:05.006 [info] [127.0.0.1][d7bf0c54][ExtensionHostConnection] The client has reconnected.
+2026-04-01 13:52:05.244 [info] [127.0.0.1][4b348122][ManagementConnection] The client has reconnected.
+2026-04-01 14:02:43.203 [info] [127.0.0.1][4b348122][ManagementConnection] The client has reconnected.
+2026-04-01 14:02:43.403 [info] [127.0.0.1][d7bf0c54][ExtensionHostConnection] The client has reconnected.
+2026-04-01 14:19:04.421 [info] [127.0.0.1][4b348122][ManagementConnection] The client has disconnected, will wait for reconnection 3h before disposing...
+2026-04-01 14:21:32.349 [info] [127.0.0.1][4b348122][ManagementConnection] Another client has connected, will shorten the wait for reconnection 5m before disposing...
+2026-04-01 14:21:32.350 [info] [127.0.0.1][4b348122][ManagementConnection] The client has reconnected.
+2026-04-01 14:21:32.538 [info] [127.0.0.1][d7bf0c54][ExtensionHostConnection] The client has reconnected.
+2026-04-01 14:50:09.530 [info] [127.0.0.1][4b348122][ManagementConnection] The client has disconnected gracefully, so the connection will be disposed.
+2026-04-01 14:50:10.318 [info] [127.0.0.1][d7bf0c54][ExtensionHostConnection] <6423> Extension Host Process exited with code: 0, signal: null.
+2026-04-01 14:50:18.665 [info] [127.0.0.1][9e96b20f][ManagementConnection] New connection established.
+2026-04-01 14:50:18.712 [info] [127.0.0.1][5daadc34][ExtensionHostConnection] New connection established.
+2026-04-01 14:50:18.718 [info] [127.0.0.1][5daadc34][ExtensionHostConnection] <12240> Launched Extension Host Process.
+2026-04-01 14:50:19.503 [info] [127.0.0.1][5daadc34][ExtensionHostConnection] <12240> [reconnection-grace-time] Extension host: read VSCODE_RECONNECTION_GRACE_TIME=10800000ms (10800s)
+
+2026-04-01 18:19:27.867 [info] [127.0.0.1][9e96b20f][ManagementConnection] The client has reconnected.
+2026-04-01 18:19:28.112 [info] [127.0.0.1][5daadc34][ExtensionHostConnection] The client has reconnected.

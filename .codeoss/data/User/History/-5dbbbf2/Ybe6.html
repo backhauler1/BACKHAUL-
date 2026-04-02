@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Chat with {{ other_user.username }}</title>
+    <style>
+        body { font-family: Arial, sans-serif; margin: 20px; max-width: 600px; background-color: #f9f9f9; }
+        .chat-box { background-color: white; border: 1px solid #ddd; padding: 15px; border-radius: 8px; height: 400px; overflow-y: scroll; display: flex; flex-direction: column; gap: 10px; margin-bottom: 15px; }
+        .message { max-width: 80%; padding: 10px; border-radius: 8px; }
+        .message.sent { background-color: #007BFF; color: white; align-self: flex-end; border-bottom-right-radius: 0; }
+        .message.received { background-color: #e9ecef; color: #333; align-self: flex-start; border-bottom-left-radius: 0; }
+        .message .time { font-size: 0.75em; opacity: 0.8; margin-top: 5px; display: block; }
+        form { display: flex; gap: 10px; }
+        input[type="text"] { flex-grow: 1; padding: 10px; border: 1px solid #ccc; border-radius: 4px; }
+        button { padding: 10px 20px; background-color: #28a745; color: white; border: none; border-radius: 4px; cursor: pointer; font-weight: bold; }
+        a.back-link { display: inline-block; margin-bottom: 20px; text-decoration: none; color: #007BFF; font-weight: bold; }
+    </style>
+</head>
+<body>
+    <a href="{{ url_for('inbox') }}" class="back-link">&larr; Back to Inbox</a>
+    <h2>Chat with <a href="{{ url_for('profile', user_id=other_user_id) }}">{{ other_user.username }}</a></h2>
+
+    <div class="chat-box" id="chatBox">
+        {% if messages %}
+            {% for msg in messages %}
+                <div class="message {% if msg.sender_id == session.user_id %}sent{% else %}received{% endif %}">
+                    {{ msg.content }}
+                    <span class="time">{{ msg.timestamp|datetimeformat }}</span>
+                </div>
+            {% endfor %}
+        {% else %}
+            <p style="text-align: center; color: #777;">No messages yet. Send one to start the conversation!</p>
+        {% endif %}
+    </div>
+
+    <form action="{{ url_for('chat', other_user_id=other_user_id) }}" method="POST">
+        <input type="text" name="content" placeholder="Type your message..." required autocomplete="off" autofocus>
+        <button type="submit">Send</button>
+    </form>
+
+    <script>
+        // Auto-scroll to the bottom of the chat box
+        const chatBox = document.getElementById('chatBox');
+        chatBox.scrollTop = chatBox.scrollHeight;
+    </script>
+</body>
+</html>

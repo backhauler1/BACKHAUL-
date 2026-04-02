@@ -1,0 +1,35 @@
+# This is a template for your environment variables.
+# DO NOT commit this file to version control.
+# Create a .env file in your root directory and fill in your actual credentials.
+MAPBOX_TOKENpk.eyJ1IjoicGVycnltY2theSIsImEiOiJjbW13YnhpcHIwY2s3MnJwcHM3NXd2MzA3In0.uLwD-mhjPg1Qo7J62NqM9A
+# Server Configuration
+PORT=5000
+NODE_ENV=development
+
+# Stripe API Keys
+STRIPE_PUBLIC_KEY=pk_test_51TBdtAJIihjsJR9tpGi7gQDeBA50PythmeuVb91D7ST2WMUBzvNSke2GTu4iOrJi7QcRP599jJPRPtd5SctXIQ2q00kT4ypMk7
+STRIPE_SECRET_KEY=
+
+# Stripe Webhook Signing Secret (get this from your Stripe Dashboard)
+STRIPE_WEBHOOK_SECRET=whsec_...your_webhook_signing_secret...
+
+# Database Connection (using pg environment variables)
+PGUSER=your_db_user
+PGHOST=localhost
+PGDATABASE=your_db_name
+PGPASSWORD=your_db_password
+PGPORT=5432
+
+# JWT Secrets (use long, random, and unique strings for each)
+JWT_SECRET=a_very_strong_and_long_random_string_for_access_tokens
+JWT_REFRESH_SECRET=another_very_strong_and_long_random_string_for_refresh_tokens
+
+# Mapbox Token
+MAPBOX_TOKEN=pk.your_mapbox_token_here
+
+# Email Service (e.g., Mailtrap for development)
+EMAIL_HOST=smtp.mailtrap.io
+EMAIL_PORT=2525
+EMAIL_USER=your_mailtrap_user
+EMAIL_PASS=your_mailtrap_pass
+EMAIL_FROM="Your App Name <no-reply@yourapp.com>"

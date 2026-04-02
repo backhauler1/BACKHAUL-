@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My Messages</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+<div class="container">
+    <a href="{{ url_for('index') }}" class="back-link">&larr; Back to Home</a>
+    <h1>My Messages</h1>
+
+    {% if conversations %}
+        <ul class="conversation-list">
+            {% for conv in conversations %}
+                <li class="card conversation-item">
+                    <a href="{{ url_for('chat', other_user_id=conv.other_user_id) }}" class="conversation-link">
+                        <div class="conversation-header">
+                            <span class="other-username">Chat with {{ conv.other_username }}</span>
+                            {# Assuming 'conv.has_unread' is a boolean indicating new messages #}
+                            {% if conv.has_unread %}
+                                <span class="unread-indicator">New!</span>
+                            {% endif %}
+                        </div>
+                        {# Assuming 'datetimeformat' filter can take a 'full=true' argument for a detailed tooltip #}
+                        <span class="time" title="Last active: {{ conv.last_activity|datetimeformat(full=true) }}">Last active: {{ conv.last_activity|datetimeformat }}</span>
+                    </a>
+                </li>
+            {% endfor %}
+        </ul>
+    {% else %}
+        <p class="no-results">You have no messages yet. Start a conversation from a user's profile page.</p>
+    {% endif %}
+</div>
+</body>
+</html>
+        {% endfor %}
+    {% else %}
+        <p class="no-results">You have no messages yet. Start a conversation from a user's profile page.</p>
+    {% endif %}
+</div>
+</body>
+</html>

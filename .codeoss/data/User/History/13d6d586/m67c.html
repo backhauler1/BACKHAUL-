@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Leave a Review</title>
+    <!-- Basic styling -->
+    <style>
+        body { font-family: sans-serif; max-width: 600px; margin: auto; padding: 20px; }
+        .form-group { margin-bottom: 15px; }
+        label { display: block; margin-bottom: 5px; }
+        input, textarea { width: 100%; padding: 8px; box-sizing: border-box; }
+        button { padding: 10px 15px; background-color: #007bff; color: white; border: none; cursor: pointer; }
+    </style>
+</head>
+<body>
+    <h1>Leave a Review for {{ reviewee.username }}</h1>
+    <form action="{{ url_for('leave_review', match_id=match_id) }}" method="POST">
+        <div class="form-group">
+            <label for="rating">Rating (1-5)</label>
+            <input type="number" id="rating" name="rating" min="1" max="5" required>
+        </div>
+        <div class="form-group">
+            <label for="comment">Comment (optional)</label>
+            <textarea id="comment" name="comment" rows="4"></textarea>
+        </div>
+        <button type="submit">Submit Review</button>
+    </form>
+</body>
+</html>

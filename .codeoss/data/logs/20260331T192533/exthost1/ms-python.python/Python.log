@@ -1,0 +1,16 @@
+2026-03-31 19:26:13.010 [error] extension activation failed Canceled (FileSystemError): Canceled
+    at Function.e (file:///google/devshell/editor/code-oss-for-cloud-shell/out/vs/workbench/api/node/extensionHostProcess.js:116:18876)
+    at Object.copy (file:///google/devshell/editor/code-oss-for-cloud-shell/out/vs/workbench/api/node/extensionHostProcess.js:116:17367)
+    at processTicksAndRejections (node:internal/process/task_queues:105:5)
+    at u (/google/devshell/editor/code-oss-for-cloud-shell/extensions/ms-python.python/out/client/extension.js:2:917781)
+    at t.registerPythonStartup (/google/devshell/editor/code-oss-for-cloud-shell/extensions/ms-python.python/out/client/extension.js:2:918123)
+    at /google/devshell/editor/code-oss-for-cloud-shell/extensions/ms-python.python/out/client/extension.js:2:478114
+    at t.activateComponents (/google/devshell/editor/code-oss-for-cloud-shell/extensions/ms-python.python/out/client/extension.js:2:476850)
+    at /google/devshell/editor/code-oss-for-cloud-shell/extensions/ms-python.python/out/client/extension.js:2:2701666
+    at e (/google/devshell/editor/code-oss-for-cloud-shell/extensions/ms-python.python/out/client/extension.js:2:2701198)
+    at mA.n (file:///google/devshell/editor/code-oss-for-cloud-shell/out/vs/workbench/api/node/extensionHostProcess.js:116:13398)
+    at mA.m (file:///google/devshell/editor/code-oss-for-cloud-shell/out/vs/workbench/api/node/extensionHostProcess.js:116:13361)
+    at mA.l (file:///google/devshell/editor/code-oss-for-cloud-shell/out/vs/workbench/api/node/extensionHostProcess.js:116:12817) {
+  code: 'Unknown'
+}
+2026-03-31 19:26:13.012 [info] Skipping ActivatedEnv Detection:  process.env.VSCODE_CLI !== '1'

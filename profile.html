@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{ user.username }}'s Profile</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+<div class="container">
+    <a href="javascript:history.back()" class="back-link">&larr; Go Back</a>
+    <section class="profile-header card">
+        <h1 style="margin-bottom: 5px;">{{ user.username }}</h1>
+        <p style="margin-top: 0;">
+            {% if user.id_verified %}<span class="badge" style="background-color: var(--success-color); color: var(--white); font-size: 0.8em; padding: 4px 8px; border-radius: 12px;">✓ ID Verified</span>{% endif %}
+            {% if user.is_broker_verified %}<span class="badge" style="background-color: #007bff; color: var(--white); font-size: 0.8em; padding: 4px 8px; border-radius: 12px; margin-left: 5px;">✓ Verified Broker</span>{% endif %}
+            {% if user.is_traveler_verified %}<span class="badge" style="background-color: #17a2b8; color: var(--white); font-size: 0.8em; padding: 4px 8px; border-radius: 12px; margin-left: 5px;">✓ Verified Traveler</span>{% endif %}
+        </p>
+        
+        <div class="rating-summary" style="margin-top: 10px;">
+            {% if rating_stats.rating_count > 0 %}
+                <span class="rating" style="font-size: 1.2em; color: #f90;">★ {{ "%.2f"|format(rating_stats.avg_rating) }}</span>
+                <span class="text-secondary">({{ rating_stats.rating_count }} review(s))</span>
+            {% else %}
+                <strong>No reviews yet.</strong>
+            {% endif %}
+        </div>
+
+        {% if user.bio %}
+            <div style="margin-top: 20px;">
+                <h3>About</h3>
+                <p style="white-space: pre-wrap;">{{ user.bio }}</p>
+            </div>
+        {% endif %}
+
+        {% if user.contact_info %}
+            <div style="margin-top: 15px;">
+                <h3>Contact Info</h3>
+                <p>{{ user.contact_info }}</p>
+            </div>
+        {% endif %}
+
+        {% if session.user_id != user.user_id %}
+            <div class="card-actions" style="margin-top: 20px;">
+                <a href="{{ url_for('messaging.chat', other_user_id=user.user_id) }}" class="btn btn-success">Message {{ user.username }}</a>
+            </div>
+        {% endif %}
+    </section>
+
+    {% from '_macros.html' import render_load_card, render_truck_card %}
+
+    {% if loads %}
+    <section style="margin-top: 30px;">
+        <h2>Active Loads by {{ user.username }}</h2>
+        {% for load in loads %}
+            {{ render_load_card(load) }}
+        {% endfor %}
+    </section>
+    {% endif %}
+
+    {% if trucks %}
+    <section style="margin-top: 30px;">
+        <h2>Active Vehicles by {{ user.username }}</h2>
+        {% for truck in trucks %}
+            {{ render_truck_card(truck) }}
+        {% endfor %}
+    </section>
+    {% endif %}
+
+    <section style="margin-top: 30px;">
+        <h2>Reviews</h2>
+        {% if reviews %}
+            {% for review in reviews %}
+                <div class="card" style="margin-bottom: 15px;">
+                    <p>
+                        <strong style="color: #f90;">
+                            {% for i in range(review.rating) %}★{% endfor %}
+                            {% for i in range(5 - review.rating) %}☆{% endfor %}
+                        </strong>
+                        <span class="text-secondary" style="font-size: 0.85em; margin-left: 10px;">{{ review.timestamp|datetimeformat }}</span>
+                    </p>
+                    {% if review.comment %}
+                        <p style="margin-top: 10px;">"{{ review.comment }}"</p>
+                    {% endif %}
+                    <p style="font-size: 0.9em; margin-top: 10px;" class="text-secondary">
+                        - Left by <a href="{{ url_for('profile.profile', user_id=review.reviewer_id) }}">{{ review.reviewer_name }}</a>
+                        {% if review.load_description %}
+                            for job "{{ review.load_description }}"
+                        {% endif %}
+                    </p>
+                </div>
+            {% endfor %}
+        {% else %}
+            <p class="no-results">This user hasn't received any reviews yet.</p>
+        {% endif %}
+    </section>
+</div>
+</body>
+</html>

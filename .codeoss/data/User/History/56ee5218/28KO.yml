@@ -1,0 +1,36 @@
+name: Automated Tests
+
+# Trigger the workflow on pushes and pull requests to the main/master branch
+on:
+  push:
+    branches: [ "main", "master" ]
+  pull_request:
+    branches: [ "main", "master" ]
+
+jobs:
+  test:
+    # Run the job on the latest version of Ubuntu Linux
+    runs-on: ubuntu-latest
+
+    steps:
+    # 1. Check out the repository code
+    - name: Checkout Repository
+      uses: actions/checkout@v4
+
+    # 2. Set up Node.js
+    - name: Setup Node.js
+      uses: actions/setup-node@v4
+      with:
+        node-version: '20' # You can change this to match your local Node.js version
+        cache: 'npm'
+
+    # 3. Install dependencies
+    - name: Install Dependencies
+      run: npm install
+
+    # 4. Run the Jest tests
+    - name: Run Tests
+      run: npx jest
+      env:
+        # Inject any required environment variables for the tests to run successfully
+        NODE_ENV: test

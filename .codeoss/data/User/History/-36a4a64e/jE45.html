@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Available Trucks</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+<div class="container">
+    <a href="{{ url_for('index') }}" class="back-link">&larr; Back to Home</a>
+    <h1>Available Trucks</h1>
+
+    {% if trucks %}
+        {% for truck in trucks %}
+        <div class="card">
+            <h3>{{ truck.vehicle_type }} (ID: {{ truck.vehicle_id }})</h3>
+            <p><strong>Transporter:</strong> <a href="{{ url_for('profile', user_id=truck.driver_id) }}">{{ truck.username }}</a>
+                {% if truck.rating_count > 0 %}
+                    <span class="rating">★ {{ "%.2f"|format(truck.avg_rating) }} ({{ truck.rating_count }})</span>
+                {% else %}
+                    <span>(No reviews yet)</span>
+                {% endif %}
+            </p>
+            <p><strong>Route:</strong> {{ truck.departure_city }} &rarr; {{ truck.destination_city }}</p>
+            <p><strong>Availability:</strong> {{ truck.start_date }} to {{ truck.end_date }}</p>
+        </div>
+        {% endfor %}
+    {% else %}
+        <p class="no-results">No trucks are currently available. Go back and post one!</p>
+    {% endif %}
+</div>
+</body>
+</html>

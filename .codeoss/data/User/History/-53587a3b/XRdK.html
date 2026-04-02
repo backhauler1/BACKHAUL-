@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Terms of Service</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <style>
+        .terms-container {
+            max-width: 800px;
+            margin: 40px auto;
+            padding: 30px;
+            background-color: #fff;
+            border-radius: 8px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+            line-height: 1.6;
+        }
+        .terms-container h1 {
+            border-bottom: 2px solid #eee;
+            padding-bottom: 10px;
+            margin-bottom: 20px;
+        }
+        .terms-container h2 {
+            margin-top: 30px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container terms-container">
+        <h1>Terms of Service</h1>
+        <p><strong>Last Updated:</strong> [Date]</p>
+
+        <h2>1. Acceptance of Terms</h2>
+        <p>By accessing or using this platform ("Service"), you agree to be bound by these Terms of Service ("Terms"). If you disagree with any part of the terms, then you may not access the Service. This is a legally binding agreement between you and the Service provider.</p>
+
+        <h2>2. Description of Service</h2>
+        <p>The Service is a neutral venue that connects users seeking to ship goods ("Shippers") with users offering transportation services ("Transporters"). The Service is not a transportation carrier, freight forwarder, or broker. Our role is solely to facilitate the availability of the platform. We are not a party to any agreement or transaction between users.</p>
+
+        <h2>3. User Conduct and Responsibility</h2>
+        <p>You are solely responsible for your interactions with other users of the Service. You agree to act responsibly and exercise good judgment. All transactions, communications, and arrangements are made at your own risk. You are responsible for your own actions and for complying with all applicable laws, regulations, and rules in connection with your use of the Service.</p>
+
+        <h2>4. Disclaimer of Warranties & Limitation of Liability</h2>
+        <p>The Service is provided "as is" and "as available". You use the Service at your own risk. We do not screen users and are not responsible for the conduct of any user. In no event shall the Service be liable for any damages whatsoever, whether direct, indirect, general, special, compensatory, consequential, and/or incidental, arising out of or relating to the conduct of you or anyone else in connection with the use of the service, including without limitation, bodily injury, emotional distress, and/or any other damages resulting from communications or meetings with other users.</p>
+        
+        <p style="margin-top: 40px; text-align: center;">
+            <a href="{{ url_for('index') }}" class="btn">Return to Dashboard</a>
+        </p>
+    </div>
+    <p style="text-align: center; margin-top: 20px; font-size: 0.9em; color: #888;"><strong>Disclaimer:</strong> This is a general template and not legal advice. You should consult with a legal professional to ensure it meets your specific needs.</p>
+</body>
+</html>

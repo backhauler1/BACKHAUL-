@@ -1,0 +1,12 @@
+# Dependencies
+node_modules/
+
+# Environment variables (CRITICAL)
+.env
+
+# Build output
+dist/
+
+# Test coverage & artifacts
+cypress/videos/
+cypress/screenshots/

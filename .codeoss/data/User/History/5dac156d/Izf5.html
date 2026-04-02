@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Resend Verification Link - GottaBackhaul</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+<div class="container">
+    <a href="{{ url_for('login') }}" class="back-link">&larr; Back to Login</a>
+    <section class="card" style="max-width: 500px; margin: 0 auto; padding: 30px;">
+        <h2 style="margin-top: 0;">Resend Verification Link</h2>
+        <p style="color: var(--text-secondary); margin-bottom: 20px;">Didn't receive your confirmation email? Enter your email address below and we'll send you a new one.</p>
+        <form action="{{ url_for('resend_verification') }}" method="POST">
+            <input type="email" name="email" placeholder="Enter your registered email" required style="width: 100%; padding: 10px; margin-bottom: 15px; border: 1px solid var(--border-color); border-radius: 4px;">
+            <button type="submit" class="btn btn-success" style="width: 100%;">Resend Verification Email</button>
+        </form>
+    </section>
+</div>
+</body>
+</html>

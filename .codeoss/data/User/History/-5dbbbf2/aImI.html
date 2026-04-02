@@ -1,0 +1,251 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Chat with {{ other_user.username }}</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <style>
+        body {
+            display: flex;
+            justify-content: center;
+            align-items: flex-start;
+        }
+        .container {
+            width: 100%;
+            max-width: 800px;
+        }
+        .chat-card {
+            display: flex;
+            flex-direction: column;
+            height: 85vh;
+            max-height: 800px;
+        }
+        .chat-header {
+            padding: 15px 20px;
+            border-bottom: 1px solid var(--border-color);
+            background-color: var(--card-bg-secondary);
+        }
+        .messages {
+            flex-grow: 1;
+            overflow-y: auto;
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+        .message {
+            max-width: 75%;
+            padding: 10px 15px;
+            border-radius: 18px;
+            line-height: 1.4;
+            word-wrap: break-word;
+        }
+        .message.sent {
+            background-color: #007bff;
+            color: white;
+            align-self: flex-end;
+            border-bottom-right-radius: 4px;
+        }
+        .message.received {
+            background-color: var(--card-bg-secondary);
+            color: var(--text-primary);
+            align-self: flex-start;
+            border-bottom-left-radius: 4px;
+        }
+        .message-timestamp {
+            font-size: 0.75em;
+            opacity: 0.8;
+            display: block;
+            margin-top: 5px;
+        }
+        .sent .message-timestamp {
+            text-align: right;
+        }
+        .received .message-timestamp {
+            text-align: left;
+        }
+        .message-form {
+            padding: 15px 20px;
+            border-top: 1px solid var(--border-color);
+            display: flex;
+            gap: 10px;
+            background-color: var(--card-bg-secondary);
+        }
+        .message-form textarea {
+            flex-grow: 1;
+            padding: 10px 15px;
+            border-radius: 20px;
+            border: 1px solid var(--border-color);
+            resize: none;
+            height: 42px;
+            font-family: inherit;
+            font-size: 1rem;
+        }
+        .message-form button {
+            border-radius: 50%;
+            width: 42px;
+            height: 42px;
+            padding: 0;
+            flex-shrink: 0;
+        }
+        /* Typing indicator styles */
+        #typing-indicator {
+            padding: 5px 20px;
+            font-size: 0.9em;
+            color: var(--text-secondary);
+            font-style: italic;
+            min-height: 20px; /* Reserve space to prevent layout shifts */
+            opacity: 0;
+            transition: opacity 0.3s ease-in-out;
+        }
+        #typing-indicator.active {
+            opacity: 1;
+        }
+    </style>
+</head>
+<body>
+<div class="container">
+    <a href="{{ url_for('messaging.inbox') }}" class="back-link">&larr; Back to Inbox</a>
+    <div class="card chat-card" id="chatBox">
+        <div class="chat-header">
+            <h2 style="margin: 0;">Chat with {{ other_user.username }}</h2>
+        </div>
+        
+        <div class="messages" id="message-list">
+            {% for message in messages %}
+                <div class="message {% if message.sender_id == session.user_id %}sent{% else %}received{% endif %}" data-timestamp="{{ message.timestamp }}">
+                    <div>{{ message.content }}</div>
+                    <div class="message-timestamp">
+                        {% if message.timestamp %}{{ message.timestamp|datetimeformat }}{% endif %}
+                    </div>
+                </div>
+            {% else %}
+                <p class="no-results" style="text-align: center; color: var(--text-secondary);">No messages yet. Start the conversation!</p>
+            {% endfor %}
+        </div>
+
+        <div id="typing-indicator"></div>
+
+        <form action="{{ url_for('messaging.chat', other_user_id=other_user_id) }}" method="POST" class="message-form">
+            <textarea name="content" placeholder="Type a message..." required rows="1"></textarea>
+            <button type="submit" class="btn btn-success" aria-label="Send Message">➤</button>
+        </form>
+    </div>
+</div>
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    const messageList = document.getElementById('message-list');
+    if (messageList) {
+        // Scroll to the bottom to show the latest messages on initial load
+        messageList.scrollTop = messageList.scrollHeight;
+    }
+
+    const messageInput = document.querySelector('textarea[name="content"]');
+    if (messageInput) {
+        // Auto-resize textarea as user types
+        messageInput.addEventListener('input', () => {
+            messageInput.style.height = 'auto';
+            messageInput.style.height = `${Math.min(messageInput.scrollHeight, 120)}px`;
+        });
+
+        // Submit form on Enter, but allow new lines with Shift+Enter
+        messageInput.addEventListener('keydown', function(event) {
+            if (event.key === 'Enter' && !event.shiftKey) {
+                event.preventDefault(); // Prevent new line
+                if (messageInput.value.trim()) {
+                    messageInput.form.submit();
+                }
+            }
+        });
+    }
+
+    // --- Real-time updates using Server-Sent Events ---
+    const chatBox = document.getElementById('chatBox');
+    if (chatBox && !!window.EventSource) {
+        const otherUserName = '{{ other_user.username }}'; // Get other user's username from Jinja
+        const otherUserId = '{{ other_user_id }}';
+        const currentUserId = '{{ session.user_id }}';
+
+        const findLastTimestamp = () => {
+            const lastMessage = messageList.querySelector('.message:last-of-type');
+            return lastMessage ? lastMessage.dataset.timestamp : 0;
+        };
+
+        const formatTimestamp = (unixTimestamp) => {
+            if (!unixTimestamp) return '';
+            const date = new Date(unixTimestamp * 1000);
+            return date.toLocaleString(undefined, {
+                year: 'numeric', month: 'short', day: 'numeric',
+                hour: 'numeric', minute: '2-digit'
+            });
+        };
+
+        const appendMessage = (msg) => {
+            // Prevent appending a duplicate message that might already be on the page
+            if (document.querySelector(`[data-timestamp='${msg.timestamp}']`)) {
+                return;
+            }
+
+            const messageDiv = document.createElement('div');
+            const contentDiv = document.createElement('div');
+            const timestampDiv = document.createElement('div');
+
+            const messageClass = String(msg.sender_id) === currentUserId ? 'sent' : 'received';
+            messageDiv.className = `message ${messageClass}`;
+            messageDiv.dataset.timestamp = msg.timestamp;
+
+            contentDiv.textContent = msg.content;
+            timestampDiv.className = 'message-timestamp';
+            timestampDiv.textContent = formatTimestamp(msg.timestamp);
+
+            messageDiv.appendChild(contentDiv);
+            messageDiv.appendChild(timestampDiv);
+
+            const noResults = messageList.querySelector('.no-results');
+            if (noResults) noResults.remove();
+
+            messageList.appendChild(messageDiv);
+            
+            const isScrolledToBottom = messageList.scrollHeight - messageList.clientHeight <= messageList.scrollTop + 100;
+            if(isScrolledToBottom) {
+                messageList.scrollTop = messageList.scrollHeight;
+            }
+        };
+
+        const source = new EventSource(`/messaging/stream/${otherUserId}?since=${findLastTimestamp()}`);
+
+        source.addEventListener('message', (event) => appendMessage(JSON.parse(event.data)));
+        source.addEventListener('typing_status', (event) => {
+            const data = JSON.parse(event.data);
+            if (data.is_typing) {
+                typingIndicator.textContent = `${otherUserName} is typing...`;
+                typingIndicator.classList.add('active');
+                // Scroll to bottom if typing indicator appears and user is near bottom
+                const isScrolledToBottom = messageList.scrollHeight - messageList.clientHeight <= messageList.scrollTop + 100;
+                if(isScrolledToBottom) {
+                    messageList.scrollTop = messageList.scrollHeight + typingIndicator.offsetHeight;
+                }
+            } else {
+                typingIndicator.classList.remove('active');
+                typingIndicator.textContent = '';
+            }
+        });
+        source.addEventListener('contact_info_released', (event) => {
+            const data = JSON.parse(event.data);
+            const contactInfoDiv = document.createElement('div');
+            contactInfoDiv.className = 'message received'; // Style as a system message or similar
+            contactInfoDiv.innerHTML = `
+                <div><strong>Shipper Contact Info Released:</strong></div>
+                <div>Phone: ${data.phone || 'N/A'}</div>
+                <div>Email: ${data.email || 'N/A'}</div>
+                <div>Other: ${data.other || 'N/A'}</div>`;
+            messageList.appendChild(contactInfoDiv);
+            messageList.scrollTop = messageList.scrollHeight;
+        });
+        source.onerror = (err) => console.error("EventSource connection failed:", err);
+    }
+});
+</script>
+</body>
+</html>

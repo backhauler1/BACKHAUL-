@@ -1,0 +1,13 @@
+2026-04-02 10:50:39.265 [error] Request textDocument/documentColor failed.
+Error: Starting server failed
+    at T.$start (/google/devshell/editor/code-oss-for-cloud-shell/extensions/html-language-features/client/dist/node/htmlClientMain.js:2:56998)
+    at processTicksAndRejections (node:internal/process/task_queues:105:5)
+    at T.sendRequest (/google/devshell/editor/code-oss-for-cloud-shell/extensions/html-language-features/client/dist/node/htmlClientMain.js:2:40589)
+    at dS.provideColors (file:///google/devshell/editor/code-oss-for-cloud-shell/out/vs/workbench/api/node/extensionHostProcess.js:144:170720)
+2026-04-02 10:50:39.265 [error] Request textDocument/documentSymbol failed.
+Error: Starting server failed
+    at T.$start (/google/devshell/editor/code-oss-for-cloud-shell/extensions/html-language-features/client/dist/node/htmlClientMain.js:2:56998)
+    at processTicksAndRejections (node:internal/process/task_queues:105:5)
+    at T.sendRequest (/google/devshell/editor/code-oss-for-cloud-shell/extensions/html-language-features/client/dist/node/htmlClientMain.js:2:40589)
+    at i (/google/devshell/editor/code-oss-for-cloud-shell/extensions/html-language-features/client/dist/node/htmlClientMain.js:2:513871)
+    at bR.provideDocumentSymbols (file:///google/devshell/editor/code-oss-for-cloud-shell/out/vs/workbench/api/node/extensionHostProcess.js:144:146611)

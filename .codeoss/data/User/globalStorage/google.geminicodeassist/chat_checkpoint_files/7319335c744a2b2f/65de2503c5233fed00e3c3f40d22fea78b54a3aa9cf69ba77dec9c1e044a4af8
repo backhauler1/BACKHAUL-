@@ -1,0 +1,6 @@
+{
+  "dependencies": {
+    "@aws-sdk/s3-request-presigner": "^3.1019.0",
+    "socket.io": "^4.8.3"
+  }
+}

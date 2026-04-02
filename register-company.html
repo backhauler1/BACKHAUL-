@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Register Transport Company</title>
+    <!-- Ensure you link to your application CSS -->
+</head>
+<body>
+    <div class="container">
+        <h2>Register Your Transport Company</h2>
+        <p>Join our directory to connect with users needing transport from auctions and general deliveries.</p>
+        
+        <form id="register-company-form">
+            <div class="form-group">
+                <label for="companyName">Company Name *</label>
+                <input type="text" id="companyName" name="companyName" required>
+            </div>
+            
+            <div class="form-group">
+                <label for="description">Company Description</label>
+                <textarea id="description" name="description" rows="4" placeholder="Tell users about your services..."></textarea>
+            </div>
+            
+            <div class="form-group">
+                <label for="services">Services Offered (comma-separated)</label>
+                <input type="text" id="services" name="services" placeholder="e.g., Vehicle Transport, Heavy Freight, Expedited">
+            </div>
+            
+            <div class="form-group">
+                <label for="thumbnail">Company Logo / Image</label>
+                <!-- accept="image/*" restricts the file picker to images -->
+                <input type="file" id="thumbnail" name="thumbnail" accept="image/*">
+            </div>
+            
+            <div class="form-group">
+                <label for="location">Primary Location (Address or ZIP) *</label>
+                <input type="text" id="location" name="location" required>
+            </div>
+            
+            <button type="submit" class="btn btn-primary">Register Company</button>
+        </form>
+    </div>
+
+    <!-- Required for notifications to show up -->
+    <div id="notification-container"></div>
+    
+    <!-- Load your app bundle -->
+    <script type="module" src="./app.js"></script>
+</body>
+</html>

@@ -1,0 +1,106 @@
+import { apiFetch } from './apiUtil.js';
+import { showNotification } from './notifications.js';
+
+let currentSearchTerm = '';
+
+export async function loadUsersDashboard(page = 1, search = '') {
+    const tbody = document.getElementById('users-table-body');
+    const paginationContainer = document.getElementById('users-pagination-controls');
+    
+    if (!tbody) return;
+
+    tbody.innerHTML = '<tr><td colspan="6" style="text-align: center;">Loading users...</td></tr>';
+    currentSearchTerm = search;
+
+    try {
+        let url = `/api/users?page=${page}&limit=15`;
+        if (search) {
+            url += `&search=${encodeURIComponent(search)}`;
+        }
+
+        const response = await apiFetch(url);
+        const { data: users, pagination } = response;
+
+        if (users.length === 0) {
+            tbody.innerHTML = '<tr><td colspan="6" style="text-align: center;">No users found.</td></tr>';
+            if (paginationContainer) paginationContainer.innerHTML = '';
+            return;
+        }
+
+        tbody.innerHTML = '';
+
+        users.forEach(user => {
+            const tr = document.createElement('tr');
+            const penaltyCount = user.penalty_count || 0;
+            
+            // Highlight users with 3 or more penalties
+            const penaltyStyle = penaltyCount >= 3 ? 'color: #dc3545; font-weight: bold;' : '';
+            
+            const statusBadge = user.is_suspended 
+                ? `<span class="status-badge" style="background: #f8d7da; color: #721c24; padding: 4px 8px; border-radius: 12px; font-size: 0.85em;">Suspended</span>`
+                : `<span class="status-badge" style="background: #d4edda; color: #155724; padding: 4px 8px; border-radius: 12px; font-size: 0.85em;">Active</span>`;
+
+            tr.innerHTML = `
+                <td>#${user.id}</td>
+                <td><strong>${user.name}</strong><br><small class="text-muted">${user.email}</small></td>
+                <td>${(user.roles || []).join(', ')}</td>
+                <td style="${penaltyStyle}">${penaltyCount}</td>
+                <td>${statusBadge}</td>
+                <td class="actions-cell"></td>
+            `;
+
+            // Add Suspend / Unsuspend Button
+            const toggleBtn = document.createElement('button');
+            toggleBtn.className = user.is_suspended ? 'btn btn-outline-success btn-sm' : 'btn btn-outline-danger btn-sm';
+            toggleBtn.textContent = user.is_suspended ? 'Unsuspend' : 'Suspend';
+            toggleBtn.onclick = () => toggleUserSuspension(user.id, !user.is_suspended, toggleBtn);
+            
+            tr.querySelector('.actions-cell').appendChild(toggleBtn);
+            tbody.appendChild(tr);
+        });
+
+        if (paginationContainer && pagination.totalPages > 1) {
+            renderPagination(pagination, paginationContainer);
+        } else if (paginationContainer) {
+            paginationContainer.innerHTML = '';
+        }
+
+    } catch (error) {
+        tbody.innerHTML = `<tr><td colspan="6" style="text-align: center; color: red;">Error: ${error.message}</td></tr>`;
+        showNotification('Failed to fetch users.', 'error');
+    }
+}
+
+async function toggleUserSuspension(userId, suspend, btnElement) {
+    const actionText = suspend ? 'suspend' : 'unsuspend';
+    if (!confirm(`Are you sure you want to ${actionText} user #${userId}?`)) return;
+    let reason = undefined;
+
+    if (suspend) {
+        const promptResult = prompt(`Are you sure you want to suspend user #${userId}?\nIf yes, please provide an optional reason (this will be emailed to the user):`);
+        if (promptResult === null) return; // Admin clicked Cancel on the prompt
+        reason = promptResult.trim();
+    } else {
+        if (!confirm(`Are you sure you want to unsuspend user #${userId}?`)) return;
+    }
+
+    const originalText = btnElement.textContent;
+    btnElement.disabled = true;
+    btnElement.textContent = 'Updating...';
+
+    try {
+        const response = await apiFetch(`/api/users/${userId}/suspend`, {
+            method: 'PATCH',
+            body: { suspend }
+            body: { suspend, reason }
+        });
+        showNotification(response.message, 'success');
+        
+        // Refresh current view to reflect changes
+        loadUsersDashboard(1, currentSearchTerm);
+    } catch (error) {
+        showNotification(`Failed to ${actionText} user: ${error.message}`, 'error');
+        btnElement.disabled = false;
+        btnElement.textContent = originalText;
+    }
+}

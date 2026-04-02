@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Submit Proof of Delivery</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <style>
+        .signature-pad-container {
+            position: relative;
+            width: 100%;
+            max-width: 500px;
+            height: 200px;
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            margin-bottom: 15px;
+        }
+        #signature-pad {
+            width: 100%;
+            height: 100%;
+            cursor: crosshair;
+        }
+        .signature-pad-actions {
+            margin-top: 10px;
+        }
+    </style>
+</head>
+<body>
+<div class="container">
+    <a href="{{ url_for('dashboard') }}" class="back-link">&larr; Back to Dashboard</a>
+    <section>
+        <h2>Submit Proof of Delivery</h2>
+        <p>For Match #{{ match_id }} (Load #{{ load_id }})</p>
+
+        <form action="{{ url_for('submit_pod', match_id=match_id) }}" method="POST" enctype="multipart/form-data" id="podForm">
+            
+            <label for="pod_photo">Photo of Delivered Item(s):</label>
+            <input type="file" name="delivery_proof_pic" id="pod_photo" accept="image/*" required>
+            <p style="font-size: 0.85em; color: var(--text-secondary); margin-top: -10px; margin-bottom: 15px;">
+                Take a clear photo of the item at the delivery location. This is crucial evidence.
+            </p>
+
+            <label for="signature-pad">Recipient's Signature (Optional):</label>
+            <div class="signature-pad-container">
+                <canvas id="signature-pad"></canvas>
+            </div>
+            <div class="signature-pad-actions">
+                <button type="button" id="clearSignature" class="btn btn-secondary">Clear Signature</button>
+            </div>
+            
+            <!-- Hidden input to store signature data -->
+            <input type="hidden" name="signature" id="signature_data">
+            
+            <!-- Hidden inputs for geolocation data -->
+            <input type="hidden" name="latitude" id="latitude">
+            <input type="hidden" name="longitude" id="longitude">
+
+            <button type="submit" class="btn btn-success" style="margin-top: 20px;">Submit POD</button>
+        </form>
+    </section>
+</div>
+
+<!-- Signature Pad Library -->
+<script src="https://cdn.jsdelivr.net/npm/signature_pad@4.0.0/dist/signature_pad.umd.min.js"></script>
+<script>
+    document.addEventListener('DOMContentLoaded', () => {
+        const canvas = document.getElementById('signature-pad');
+        const signaturePad = new SignaturePad(canvas, {
+            backgroundColor: 'rgb(255, 255, 255)'
+        });
+
+        document.getElementById('clearSignature').addEventListener('click', () => {
+            signaturePad.clear();
+        });
+
+        // Try to capture GPS location as soon as the page loads
+        if ("geolocation" in navigator) {
+            navigator.geolocation.getCurrentPosition((position) => {
+                document.getElementById('latitude').value = position.coords.latitude;
+                document.getElementById('longitude').value = position.coords.longitude;
+            }, (error) => {
+                console.warn("Geolocation not available or denied:", error);
+            });
+        }
+
+        document.getElementById('podForm').addEventListener('submit', (event) => {
+            if (!signaturePad.isEmpty()) {
+                document.getElementById('signature_data').value = signaturePad.toDataURL('image/png');
+            }
+        });
+    });
+</script>
+</body>
+</html>

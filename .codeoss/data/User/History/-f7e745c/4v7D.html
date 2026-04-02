@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Privacy Policy</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <style>
+        .policy-container {
+            max-width: 800px;
+            margin: 40px auto;
+            padding: 30px;
+            background-color: var(--white, #fff);
+            border-radius: var(--border-radius-sm, 8px);
+            box-shadow: var(--shadow, 0 4px 12px rgba(0,0,0,0.08));
+            line-height: 1.6;
+        }
+        .policy-container h1 {
+            border-bottom: 2px solid var(--border-color, #eee);
+            padding-bottom: 10px;
+            margin-bottom: 20px;
+        }
+        .policy-container h2 {
+            margin-top: 30px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container policy-container">
+        <h1>Privacy Policy</h1>
+        <p><strong>Last Updated:</strong> [Date]</p>
+
+        <h2>1. Introduction</h2>
+        <p>This Privacy Policy explains how our platform ("Service") collects, uses, and shares your personal information when you use our website to connect with Shippers or Transporters. By using the Service, you agree to the collection and use of information in accordance with this policy.</p>
+
+        <h2>2. Information We Collect</h2>
+        <p>We collect information you provide directly to us when you create an account, post a load, list a truck, or communicate with other users. This may include your name, email address, phone number, location data, and other details necessary to facilitate transportation connections.</p>
+
+        <h2>3. How We Use Your Information</h2>
+        <p>The primary purpose of collecting your information is to connect Shippers with Transporters. We use your data to create and manage your account, display your listings to other users, facilitate communication between users, and maintain the security and functionality of the Service.</p>
+
+        <h2>4. Sharing of Information</h2>
+        <p>Because our Service is a venue for connecting users, certain information (such as your username, ratings, and listing details) is visible to other users. Contact information may be shared with another user when a connection or agreement is made. We do not sell your personal data to third parties.</p>
+
+        <h2>5. Data Security</h2>
+        <p>We take reasonable measures to protect your personal information from unauthorized access, use, or disclosure. However, no method of transmission over the Internet or electronic storage is completely secure, and we cannot guarantee absolute security.</p>
+        
+        <p style="margin-top: 40px; text-align: center;">
+            <a href="{{ url_for('index') }}" class="btn">Return to Dashboard</a>
+        </p>
+    </div>
+    <p style="text-align: center; margin-top: 20px; font-size: 0.9em; color: #888;"><strong>Disclaimer:</strong> This is a general template and not legal advice. You should consult with a legal professional to ensure it meets your specific needs.</p>
+</body>
+</html>

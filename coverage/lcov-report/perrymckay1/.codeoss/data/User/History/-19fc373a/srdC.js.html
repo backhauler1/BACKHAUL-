@@ -1,0 +1,718 @@
+
+<!doctype html>
+<html lang="en">
+
+<head>
+    <title>Code coverage report for perrymckay1/.codeoss/data/User/History/-19fc373a/srdC.js</title>
+    <meta charset="utf-8" />
+    <link rel="stylesheet" href="../../../../../../prettify.css" />
+    <link rel="stylesheet" href="../../../../../../base.css" />
+    <link rel="shortcut icon" type="image/x-icon" href="../../../../../../favicon.png" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <style type='text/css'>
+        .coverage-summary .sorter {
+            background-image: url(../../../../../../sort-arrow-sprite.png);
+        }
+    </style>
+</head>
+    
+<body>
+<div class='wrapper'>
+    <div class='pad1'>
+        <h1><a href="../../../../../../index.html">All files</a> / <a href="index.html">perrymckay1/.codeoss/data/User/History/-19fc373a</a> srdC.js</h1>
+        <div class='clearfix'>
+            
+            <div class='fl pad1y space-right2'>
+                <span class="strong">0% </span>
+                <span class="quiet">Statements</span>
+                <span class='fraction'>0/109</span>
+            </div>
+        
+            
+            <div class='fl pad1y space-right2'>
+                <span class="strong">0% </span>
+                <span class="quiet">Branches</span>
+                <span class='fraction'>0/2</span>
+            </div>
+        
+            
+            <div class='fl pad1y space-right2'>
+                <span class="strong">0% </span>
+                <span class="quiet">Functions</span>
+                <span class='fraction'>0/26</span>
+            </div>
+        
+            
+            <div class='fl pad1y space-right2'>
+                <span class="strong">0% </span>
+                <span class="quiet">Lines</span>
+                <span class='fraction'>0/107</span>
+            </div>
+        
+            
+        </div>
+        <p class="quiet">
+            Press <em>n</em> or <em>j</em> to go to the next uncovered block, <em>b</em>, <em>p</em> or <em>k</em> for the previous block.
+        </p>
+        <template id="filterTemplate">
+            <div class="quiet">
+                Filter:
+                <input type="search" id="fileSearch">
+            </div>
+        </template>
+    </div>
+    <div class='status-line low'></div>
+    <pre><table class="coverage">
+<tr><td class="line-count quiet"><a name='L1'></a><a href='#L1'>1</a>
+<a name='L2'></a><a href='#L2'>2</a>
+<a name='L3'></a><a href='#L3'>3</a>
+<a name='L4'></a><a href='#L4'>4</a>
+<a name='L5'></a><a href='#L5'>5</a>
+<a name='L6'></a><a href='#L6'>6</a>
+<a name='L7'></a><a href='#L7'>7</a>
+<a name='L8'></a><a href='#L8'>8</a>
+<a name='L9'></a><a href='#L9'>9</a>
+<a name='L10'></a><a href='#L10'>10</a>
+<a name='L11'></a><a href='#L11'>11</a>
+<a name='L12'></a><a href='#L12'>12</a>
+<a name='L13'></a><a href='#L13'>13</a>
+<a name='L14'></a><a href='#L14'>14</a>
+<a name='L15'></a><a href='#L15'>15</a>
+<a name='L16'></a><a href='#L16'>16</a>
+<a name='L17'></a><a href='#L17'>17</a>
+<a name='L18'></a><a href='#L18'>18</a>
+<a name='L19'></a><a href='#L19'>19</a>
+<a name='L20'></a><a href='#L20'>20</a>
+<a name='L21'></a><a href='#L21'>21</a>
+<a name='L22'></a><a href='#L22'>22</a>
+<a name='L23'></a><a href='#L23'>23</a>
+<a name='L24'></a><a href='#L24'>24</a>
+<a name='L25'></a><a href='#L25'>25</a>
+<a name='L26'></a><a href='#L26'>26</a>
+<a name='L27'></a><a href='#L27'>27</a>
+<a name='L28'></a><a href='#L28'>28</a>
+<a name='L29'></a><a href='#L29'>29</a>
+<a name='L30'></a><a href='#L30'>30</a>
+<a name='L31'></a><a href='#L31'>31</a>
+<a name='L32'></a><a href='#L32'>32</a>
+<a name='L33'></a><a href='#L33'>33</a>
+<a name='L34'></a><a href='#L34'>34</a>
+<a name='L35'></a><a href='#L35'>35</a>
+<a name='L36'></a><a href='#L36'>36</a>
+<a name='L37'></a><a href='#L37'>37</a>
+<a name='L38'></a><a href='#L38'>38</a>
+<a name='L39'></a><a href='#L39'>39</a>
+<a name='L40'></a><a href='#L40'>40</a>
+<a name='L41'></a><a href='#L41'>41</a>
+<a name='L42'></a><a href='#L42'>42</a>
+<a name='L43'></a><a href='#L43'>43</a>
+<a name='L44'></a><a href='#L44'>44</a>
+<a name='L45'></a><a href='#L45'>45</a>
+<a name='L46'></a><a href='#L46'>46</a>
+<a name='L47'></a><a href='#L47'>47</a>
+<a name='L48'></a><a href='#L48'>48</a>
+<a name='L49'></a><a href='#L49'>49</a>
+<a name='L50'></a><a href='#L50'>50</a>
+<a name='L51'></a><a href='#L51'>51</a>
+<a name='L52'></a><a href='#L52'>52</a>
+<a name='L53'></a><a href='#L53'>53</a>
+<a name='L54'></a><a href='#L54'>54</a>
+<a name='L55'></a><a href='#L55'>55</a>
+<a name='L56'></a><a href='#L56'>56</a>
+<a name='L57'></a><a href='#L57'>57</a>
+<a name='L58'></a><a href='#L58'>58</a>
+<a name='L59'></a><a href='#L59'>59</a>
+<a name='L60'></a><a href='#L60'>60</a>
+<a name='L61'></a><a href='#L61'>61</a>
+<a name='L62'></a><a href='#L62'>62</a>
+<a name='L63'></a><a href='#L63'>63</a>
+<a name='L64'></a><a href='#L64'>64</a>
+<a name='L65'></a><a href='#L65'>65</a>
+<a name='L66'></a><a href='#L66'>66</a>
+<a name='L67'></a><a href='#L67'>67</a>
+<a name='L68'></a><a href='#L68'>68</a>
+<a name='L69'></a><a href='#L69'>69</a>
+<a name='L70'></a><a href='#L70'>70</a>
+<a name='L71'></a><a href='#L71'>71</a>
+<a name='L72'></a><a href='#L72'>72</a>
+<a name='L73'></a><a href='#L73'>73</a>
+<a name='L74'></a><a href='#L74'>74</a>
+<a name='L75'></a><a href='#L75'>75</a>
+<a name='L76'></a><a href='#L76'>76</a>
+<a name='L77'></a><a href='#L77'>77</a>
+<a name='L78'></a><a href='#L78'>78</a>
+<a name='L79'></a><a href='#L79'>79</a>
+<a name='L80'></a><a href='#L80'>80</a>
+<a name='L81'></a><a href='#L81'>81</a>
+<a name='L82'></a><a href='#L82'>82</a>
+<a name='L83'></a><a href='#L83'>83</a>
+<a name='L84'></a><a href='#L84'>84</a>
+<a name='L85'></a><a href='#L85'>85</a>
+<a name='L86'></a><a href='#L86'>86</a>
+<a name='L87'></a><a href='#L87'>87</a>
+<a name='L88'></a><a href='#L88'>88</a>
+<a name='L89'></a><a href='#L89'>89</a>
+<a name='L90'></a><a href='#L90'>90</a>
+<a name='L91'></a><a href='#L91'>91</a>
+<a name='L92'></a><a href='#L92'>92</a>
+<a name='L93'></a><a href='#L93'>93</a>
+<a name='L94'></a><a href='#L94'>94</a>
+<a name='L95'></a><a href='#L95'>95</a>
+<a name='L96'></a><a href='#L96'>96</a>
+<a name='L97'></a><a href='#L97'>97</a>
+<a name='L98'></a><a href='#L98'>98</a>
+<a name='L99'></a><a href='#L99'>99</a>
+<a name='L100'></a><a href='#L100'>100</a>
+<a name='L101'></a><a href='#L101'>101</a>
+<a name='L102'></a><a href='#L102'>102</a>
+<a name='L103'></a><a href='#L103'>103</a>
+<a name='L104'></a><a href='#L104'>104</a>
+<a name='L105'></a><a href='#L105'>105</a>
+<a name='L106'></a><a href='#L106'>106</a>
+<a name='L107'></a><a href='#L107'>107</a>
+<a name='L108'></a><a href='#L108'>108</a>
+<a name='L109'></a><a href='#L109'>109</a>
+<a name='L110'></a><a href='#L110'>110</a>
+<a name='L111'></a><a href='#L111'>111</a>
+<a name='L112'></a><a href='#L112'>112</a>
+<a name='L113'></a><a href='#L113'>113</a>
+<a name='L114'></a><a href='#L114'>114</a>
+<a name='L115'></a><a href='#L115'>115</a>
+<a name='L116'></a><a href='#L116'>116</a>
+<a name='L117'></a><a href='#L117'>117</a>
+<a name='L118'></a><a href='#L118'>118</a>
+<a name='L119'></a><a href='#L119'>119</a>
+<a name='L120'></a><a href='#L120'>120</a>
+<a name='L121'></a><a href='#L121'>121</a>
+<a name='L122'></a><a href='#L122'>122</a>
+<a name='L123'></a><a href='#L123'>123</a>
+<a name='L124'></a><a href='#L124'>124</a>
+<a name='L125'></a><a href='#L125'>125</a>
+<a name='L126'></a><a href='#L126'>126</a>
+<a name='L127'></a><a href='#L127'>127</a>
+<a name='L128'></a><a href='#L128'>128</a>
+<a name='L129'></a><a href='#L129'>129</a>
+<a name='L130'></a><a href='#L130'>130</a>
+<a name='L131'></a><a href='#L131'>131</a>
+<a name='L132'></a><a href='#L132'>132</a>
+<a name='L133'></a><a href='#L133'>133</a>
+<a name='L134'></a><a href='#L134'>134</a>
+<a name='L135'></a><a href='#L135'>135</a>
+<a name='L136'></a><a href='#L136'>136</a>
+<a name='L137'></a><a href='#L137'>137</a>
+<a name='L138'></a><a href='#L138'>138</a>
+<a name='L139'></a><a href='#L139'>139</a>
+<a name='L140'></a><a href='#L140'>140</a>
+<a name='L141'></a><a href='#L141'>141</a>
+<a name='L142'></a><a href='#L142'>142</a>
+<a name='L143'></a><a href='#L143'>143</a>
+<a name='L144'></a><a href='#L144'>144</a>
+<a name='L145'></a><a href='#L145'>145</a>
+<a name='L146'></a><a href='#L146'>146</a>
+<a name='L147'></a><a href='#L147'>147</a>
+<a name='L148'></a><a href='#L148'>148</a>
+<a name='L149'></a><a href='#L149'>149</a>
+<a name='L150'></a><a href='#L150'>150</a>
+<a name='L151'></a><a href='#L151'>151</a>
+<a name='L152'></a><a href='#L152'>152</a>
+<a name='L153'></a><a href='#L153'>153</a>
+<a name='L154'></a><a href='#L154'>154</a>
+<a name='L155'></a><a href='#L155'>155</a>
+<a name='L156'></a><a href='#L156'>156</a>
+<a name='L157'></a><a href='#L157'>157</a>
+<a name='L158'></a><a href='#L158'>158</a>
+<a name='L159'></a><a href='#L159'>159</a>
+<a name='L160'></a><a href='#L160'>160</a>
+<a name='L161'></a><a href='#L161'>161</a>
+<a name='L162'></a><a href='#L162'>162</a>
+<a name='L163'></a><a href='#L163'>163</a>
+<a name='L164'></a><a href='#L164'>164</a>
+<a name='L165'></a><a href='#L165'>165</a>
+<a name='L166'></a><a href='#L166'>166</a>
+<a name='L167'></a><a href='#L167'>167</a>
+<a name='L168'></a><a href='#L168'>168</a>
+<a name='L169'></a><a href='#L169'>169</a>
+<a name='L170'></a><a href='#L170'>170</a>
+<a name='L171'></a><a href='#L171'>171</a>
+<a name='L172'></a><a href='#L172'>172</a>
+<a name='L173'></a><a href='#L173'>173</a>
+<a name='L174'></a><a href='#L174'>174</a>
+<a name='L175'></a><a href='#L175'>175</a>
+<a name='L176'></a><a href='#L176'>176</a>
+<a name='L177'></a><a href='#L177'>177</a>
+<a name='L178'></a><a href='#L178'>178</a>
+<a name='L179'></a><a href='#L179'>179</a>
+<a name='L180'></a><a href='#L180'>180</a>
+<a name='L181'></a><a href='#L181'>181</a>
+<a name='L182'></a><a href='#L182'>182</a>
+<a name='L183'></a><a href='#L183'>183</a>
+<a name='L184'></a><a href='#L184'>184</a>
+<a name='L185'></a><a href='#L185'>185</a>
+<a name='L186'></a><a href='#L186'>186</a>
+<a name='L187'></a><a href='#L187'>187</a>
+<a name='L188'></a><a href='#L188'>188</a>
+<a name='L189'></a><a href='#L189'>189</a>
+<a name='L190'></a><a href='#L190'>190</a>
+<a name='L191'></a><a href='#L191'>191</a>
+<a name='L192'></a><a href='#L192'>192</a>
+<a name='L193'></a><a href='#L193'>193</a>
+<a name='L194'></a><a href='#L194'>194</a>
+<a name='L195'></a><a href='#L195'>195</a>
+<a name='L196'></a><a href='#L196'>196</a>
+<a name='L197'></a><a href='#L197'>197</a>
+<a name='L198'></a><a href='#L198'>198</a>
+<a name='L199'></a><a href='#L199'>199</a>
+<a name='L200'></a><a href='#L200'>200</a>
+<a name='L201'></a><a href='#L201'>201</a>
+<a name='L202'></a><a href='#L202'>202</a>
+<a name='L203'></a><a href='#L203'>203</a>
+<a name='L204'></a><a href='#L204'>204</a>
+<a name='L205'></a><a href='#L205'>205</a>
+<a name='L206'></a><a href='#L206'>206</a>
+<a name='L207'></a><a href='#L207'>207</a>
+<a name='L208'></a><a href='#L208'>208</a>
+<a name='L209'></a><a href='#L209'>209</a>
+<a name='L210'></a><a href='#L210'>210</a>
+<a name='L211'></a><a href='#L211'>211</a>
+<a name='L212'></a><a href='#L212'>212</a></td><td class="line-coverage quiet"><span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span></td><td class="text"><pre class="prettyprint lang-js"><span class="cstat-no" title="statement not covered" >process.env.AWS_S3_BUCKET_NAME = 'test-bucket';</span>
+&nbsp;
+const { initializeSocketHandlers } = <span class="cstat-no" title="statement not covered" >require('./socketHandlers');</span>
+const pool = <span class="cstat-no" title="statement not covered" >require('./db');</span>
+const logger = <span class="cstat-no" title="statement not covered" >require('./logger');</span>
+const { S3Client, PutObjectCommand, GetObjectCommand } = <span class="cstat-no" title="statement not covered" >require('@aws-sdk/client-s3');</span>
+const { getSignedUrl } = <span class="cstat-no" title="statement not covered" >require('@aws-sdk/s3-request-presigner');</span>
+&nbsp;
+// 1. Mock all external dependencies
+<span class="cstat-no" title="statement not covered" >jest.mock('./db');</span>
+<span class="cstat-no" title="statement not covered" >jest.mock('./logger');</span>
+<span class="cstat-no" title="statement not covered" >jest.mock('@aws-sdk/client-s3', <span class="fstat-no" title="function not covered" >()</span> =&gt; {</span>
+    const sendMock = <span class="cstat-no" title="statement not covered" >jest.fn();</span>
+<span class="cstat-no" title="statement not covered" >    return {</span>
+        S3Client: jest.fn(<span class="fstat-no" title="function not covered" >()</span> =&gt; (<span class="cstat-no" title="statement not covered" >{ send: sendMock })</span>),
+        PutObjectCommand: jest.fn(<span class="fstat-no" title="function not covered" >(a</span>rgs) =&gt; (<span class="cstat-no" title="statement not covered" >{ type: 'PutObject', args })</span>),
+        GetObjectCommand: jest.fn(<span class="fstat-no" title="function not covered" >(a</span>rgs) =&gt; (<span class="cstat-no" title="statement not covered" >{ type: 'GetObject', args })</span>),
+        _sendMock: sendMock
+    };
+});
+const mockS3Send = <span class="cstat-no" title="statement not covered" >require('@aws-sdk/client-s3')._sendMock;</span>
+&nbsp;
+<span class="cstat-no" title="statement not covered" >jest.mock('@aws-sdk/s3-request-presigner', <span class="fstat-no" title="function not covered" >()</span> =&gt; (<span class="cstat-no" title="statement not covered" >{</span></span>
+    getSignedUrl: jest.fn(),
+}));
+&nbsp;
+// 2. Create mock Socket.IO server and client objects
+const mockIo = <span class="cstat-no" title="statement not covered" >{</span>
+    on: jest.fn(),
+    to: jest.fn(<span class="fstat-no" title="function not covered" >()</span> =&gt; <span class="cstat-no" title="statement not covered" >mockIo)</span>, // Return self for chaining: io.to(room).emit()
+    emit: jest.fn(),
+};
+&nbsp;
+const mockSocket = <span class="cstat-no" title="statement not covered" >{</span>
+    on: jest.fn(),
+    emit: jest.fn(),
+    join: jest.fn(),
+    to: jest.fn(<span class="fstat-no" title="function not covered" >()</span> =&gt; <span class="cstat-no" title="statement not covered" >mockSocket)</span>, // Return self for chaining: socket.to(room).emit()
+};
+&nbsp;
+<span class="cstat-no" title="statement not covered" >describe('Socket.IO Handlers (socketHandlers.js)', <span class="fstat-no" title="function not covered" >()</span> =&gt; {</span>
+    let connectionCallback;
+    const eventHandlers = <span class="cstat-no" title="statement not covered" >{};</span>
+&nbsp;
+<span class="cstat-no" title="statement not covered" >    beforeAll(<span class="fstat-no" title="function not covered" >()</span> =&gt; { <span class="cstat-no" title="statement not covered" >process.env.AWS_S3_BUCKET_NAME = 'test-bucket'; </span>});</span>
+&nbsp;
+    // 3. Before each test, re-initialize the handlers and capture the callbacks
+<span class="cstat-no" title="statement not covered" >    beforeEach(<span class="fstat-no" title="function not covered" >()</span> =&gt; {</span>
+<span class="cstat-no" title="statement not covered" >        jest.clearAllMocks();</span>
+&nbsp;
+        // Capture the main 'connection' callback from io.on('connection', ...)
+<span class="cstat-no" title="statement not covered" >        mockIo.on.mockImplementation(<span class="fstat-no" title="function not covered" >(e</span>vent, callback) =&gt; {</span>
+<span class="cstat-no" title="statement not covered" >            if (event === 'connection') {</span>
+<span class="cstat-no" title="statement not covered" >                connectionCallback = callback;</span>
+            }
+        });
+&nbsp;
+        // Capture all the individual event handlers like 'send_message', 'join', etc.
+<span class="cstat-no" title="statement not covered" >        mockSocket.on.mockImplementation(<span class="fstat-no" title="function not covered" >(e</span>vent, handler) =&gt; {</span>
+<span class="cstat-no" title="statement not covered" >            eventHandlers[event] = handler;</span>
+        });
+&nbsp;
+        // Initialize our socket handlers with the mock server
+<span class="cstat-no" title="statement not covered" >        initializeSocketHandlers(mockIo);</span>
+        // Simulate a client connecting, which triggers the setup of all event listeners
+<span class="cstat-no" title="statement not covered" >        connectionCallback(mockSocket);</span>
+    });
+&nbsp;
+<span class="cstat-no" title="statement not covered" >    describe('send_message handler', <span class="fstat-no" title="function not covered" >()</span> =&gt; {</span>
+<span class="cstat-no" title="statement not covered" >        it('should save a text-only message and broadcast it to the room', <span class="fstat-no" title="function not covered" >as</span>ync () =&gt; {</span>
+            const messageData = <span class="cstat-no" title="statement not covered" >{</span>
+                room: 'user1_user2',
+                content: 'Hello, world!',
+                sender_id: 'user1',
+                receiver_id: 'user2',
+            };
+            const mockDbResponse = <span class="cstat-no" title="statement not covered" >{ id: 1, ...messageData, image_url: null, timestamp: new Date().toISOString() };</span>
+<span class="cstat-no" title="statement not covered" >            pool.query.mockResolvedValue({ rows: [mockDbResponse] });</span>
+&nbsp;
+            // Simulate the client emitting the 'send_message' event
+<span class="cstat-no" title="statement not covered" >            await eventHandlers.send_message(messageData);</span>
+&nbsp;
+            // Verify database insertion with no image key
+<span class="cstat-no" title="statement not covered" >            expect(pool.query).toHaveBeenCalledWith(expect.stringContaining('INSERT INTO messages'), ['user1', 'user2', 'Hello, world!', null]);</span>
+&nbsp;
+            // Verify the message was broadcast to the correct room
+<span class="cstat-no" title="statement not covered" >            expect(mockIo.to).toHaveBeenCalledWith('user1_user2');</span>
+            const emittedMessage = <span class="cstat-no" title="statement not covered" >mockIo.emit.mock.calls[0][1];</span>
+<span class="cstat-no" title="statement not covered" >            expect(emittedMessage.content).toBe('Hello, world!');</span>
+<span class="cstat-no" title="statement not covered" >            expect(emittedMessage.image).toBe(null); </span>// No signed URL
+        });
+&nbsp;
+<span class="cstat-no" title="statement not covered" >        it('should upload an image, save key to DB, and broadcast with a signed URL', <span class="fstat-no" title="function not covered" >as</span>ync () =&gt; {</span>
+            const messageData = <span class="cstat-no" title="statement not covered" >{</span>
+                room: 'user1_user2',
+                content: 'Check this out',
+                sender_id: 'user1',
+                receiver_id: 'user2',
+                image: 'data:image/png;base64,FAKEDATA'
+            };
+            const mockDbResponse = <span class="cstat-no" title="statement not covered" >{ id: 2, ...messageData, image_url: 'chat-images/mock-key.png', timestamp: new Date().toISOString() };</span>
+<span class="cstat-no" title="statement not covered" >            delete mockDbResponse.image; </span>// The raw base64 is not in the DB response
+&nbsp;
+<span class="cstat-no" title="statement not covered" >            pool.query.mockResolvedValue({ rows: [mockDbResponse] });</span>
+<span class="cstat-no" title="statement not covered" >            getSignedUrl.mockResolvedValue('https://s3.mock/signed-url-for/mock-key.png');</span>
+&nbsp;
+<span class="cstat-no" title="statement not covered" >            await eventHandlers.send_message(messageData);</span>
+&nbsp;
+            // Verify S3 upload was attempted
+<span class="cstat-no" title="statement not covered" >            expect(mockS3Send).toHaveBeenCalledWith(expect.objectContaining({ type: 'PutObject' }));</span>
+&nbsp;
+            // Verify signed URL generation was called
+<span class="cstat-no" title="statement not covered" >            expect(getSignedUrl).toHaveBeenCalledWith(expect.any(S3Client), expect.any(GetObjectCommand), { expiresIn: 3600 });</span>
+&nbsp;
+            // Verify DB was called with an image key
+<span class="cstat-no" title="statement not covered" >            expect(pool.query).toHaveBeenCalledWith(expect.stringContaining('INSERT INTO messages'), ['user1', 'user2', 'Check this out', expect.stringContaining('chat-images/')]);</span>
+&nbsp;
+            // Verify broadcast included the signed URL
+<span class="cstat-no" title="statement not covered" >            expect(mockIo.to).toHaveBeenCalledWith('user1_user2');</span>
+            const emittedMessage = <span class="cstat-no" title="statement not covered" >mockIo.emit.mock.calls[0][1];</span>
+<span class="cstat-no" title="statement not covered" >            expect(emittedMessage.image).toBe('https://s3.mock/signed-url-for/mock-key.png');</span>
+        });
+&nbsp;
+<span class="cstat-no" title="statement not covered" >        it('should emit a send_message_error if the database query fails', <span class="fstat-no" title="function not covered" >as</span>ync () =&gt; {</span>
+            const messageData = <span class="cstat-no" title="statement not covered" >{ room: 'user1_user2', content: 'This will fail' };</span>
+            const dbError = <span class="cstat-no" title="statement not covered" >new Error('DB connection lost');</span>
+<span class="cstat-no" title="statement not covered" >            pool.query.mockRejectedValue(dbError);</span>
+&nbsp;
+<span class="cstat-no" title="statement not covered" >            await eventHandlers.send_message(messageData);</span>
+&nbsp;
+<span class="cstat-no" title="statement not covered" >            expect(logger.error).toHaveBeenCalledWith('Error handling send_message:', expect.any(Object));</span>
+<span class="cstat-no" title="statement not covered" >            expect(mockSocket.emit).toHaveBeenCalledWith('send_message_error', { message: 'Could not send your message.' });</span>
+<span class="cstat-no" title="statement not covered" >            expect(mockIo.emit).not.toHaveBeenCalled(); </span>// Should not broadcast on error
+        });
+    });
+&nbsp;
+<span class="cstat-no" title="statement not covered" >    describe('join handler', <span class="fstat-no" title="function not covered" >()</span> =&gt; {</span>
+<span class="cstat-no" title="statement not covered" >        it('should join the room and emit historical messages with signed URLs', <span class="fstat-no" title="function not covered" >as</span>ync () =&gt; {</span>
+            const joinData = <span class="cstat-no" title="statement not covered" >{ room: 'user1_user2' };</span>
+            const mockHistory = <span class="cstat-no" title="statement not covered" >[</span>
+                { id: 1, content: 'Old message', image_url: null, sender_id: 'user1' },
+                { id: 2, content: 'Message with image', image_url: 'chat-images/old-image.png', sender_id: 'user2' }
+            ];
+<span class="cstat-no" title="statement not covered" >            pool.query.mockResolvedValue({ rows: mockHistory });</span>
+<span class="cstat-no" title="statement not covered" >            getSignedUrl.mockResolvedValue('https://s3.mock/signed-url-for/old-image.png');</span>
+&nbsp;
+<span class="cstat-no" title="statement not covered" >            await eventHandlers.join(joinData);</span>
+&nbsp;
+<span class="cstat-no" title="statement not covered" >            expect(mockSocket.join).toHaveBeenCalledWith('user1_user2');</span>
+<span class="cstat-no" title="statement not covered" >            expect(pool.query).toHaveBeenCalledWith(expect.stringContaining('SELECT * FROM ('), ['user1', 'user2']);</span>
+<span class="cstat-no" title="statement not covered" >            expect(getSignedUrl).toHaveBeenCalledTimes(1);</span>
+&nbsp;
+            // Verify historical messages were emitted back to the joining client
+<span class="cstat-no" title="statement not covered" >            expect(mockSocket.emit).toHaveBeenCalledTimes(2);</span>
+<span class="cstat-no" title="statement not covered" >            expect(mockSocket.emit).toHaveBeenCalledWith('message', expect.objectContaining({ content: 'Old message' }));</span>
+<span class="cstat-no" title="statement not covered" >            expect(mockSocket.emit).toHaveBeenCalledWith('message', expect.objectContaining({ content: 'Message with image', image: 'https://s3.mock/signed-url-for/old-image.png' }));</span>
+        });
+    });
+&nbsp;
+<span class="cstat-no" title="statement not covered" >    describe('load_older_messages handler', <span class="fstat-no" title="function not covered" >()</span> =&gt; {</span>
+<span class="cstat-no" title="statement not covered" >        it('should fetch and emit older messages based on a timestamp', <span class="fstat-no" title="function not covered" >as</span>ync () =&gt; {</span>
+            const loadData = <span class="cstat-no" title="statement not covered" >{ room: 'user1_user2', beforeTimestamp: '2023-01-01T12:00:00.000Z' };</span>
+            const mockOlderHistory = <span class="cstat-no" title="statement not covered" >[{ id: 1, content: 'Very old message', image_url: null }];</span>
+<span class="cstat-no" title="statement not covered" >            pool.query.mockResolvedValue({ rows: mockOlderHistory });</span>
+&nbsp;
+<span class="cstat-no" title="statement not covered" >            await eventHandlers.load_older_messages(loadData);</span>
+&nbsp;
+<span class="cstat-no" title="statement not covered" >            expect(pool.query).toHaveBeenCalledWith(expect.stringContaining('created_at &lt; $3'), ['user1', 'user2', '2023-01-01T12:00:00.000Z']);</span>
+<span class="cstat-no" title="statement not covered" >            expect(mockSocket.emit).toHaveBeenCalledWith('older_messages', expect.any(Array));</span>
+            const emittedPayload = <span class="cstat-no" title="statement not covered" >mockSocket.emit.mock.calls[0][1];</span>
+<span class="cstat-no" title="statement not covered" >            expect(emittedPayload[0].content).toBe('Very old message');</span>
+        });
+    });
+&nbsp;
+<span class="cstat-no" title="statement not covered" >    describe('mark_as_read handler', <span class="fstat-no" title="function not covered" >()</span> =&gt; {</span>
+<span class="cstat-no" title="statement not covered" >        it('should update message statuses and broadcast the change', <span class="fstat-no" title="function not covered" >as</span>ync () =&gt; {</span>
+            const readData = <span class="cstat-no" title="statement not covered" >{ messageIds: [10, 11], room: 'user1_user2', readerId: 'user2' };</span>
+<span class="cstat-no" title="statement not covered" >            pool.query.mockResolvedValue({ rowCount: 2 });</span>
+&nbsp;
+<span class="cstat-no" title="statement not covered" >            await eventHandlers.mark_as_read(readData);</span>
+&nbsp;
+<span class="cstat-no" title="statement not covered" >            expect(pool.query).toHaveBeenCalledWith(expect.stringContaining('UPDATE messages SET read_at'), [[10, 11], 'user2']);</span>
+<span class="cstat-no" title="statement not covered" >            expect(mockIo.to).toHaveBeenCalledWith('user1_user2');</span>
+<span class="cstat-no" title="statement not covered" >            expect(mockIo.emit).toHaveBeenCalledWith('messages_read', { messageIds: [10, 11] });</span>
+        });
+    });
+&nbsp;
+<span class="cstat-no" title="statement not covered" >    describe('typing_status handler', <span class="fstat-no" title="function not covered" >()</span> =&gt; {</span>
+<span class="cstat-no" title="statement not covered" >        it('should broadcast the typing status to other users in the room', <span class="fstat-no" title="function not covered" >()</span> =&gt; {</span>
+            const typingData = <span class="cstat-no" title="statement not covered" >{ room: 'user1_user2', userId: 'user1', isTyping: true };</span>
+&nbsp;
+<span class="cstat-no" title="statement not covered" >            eventHandlers.typing_status(typingData);</span>
+&nbsp;
+            // Verify broadcast to the room (excluding the sender)
+<span class="cstat-no" title="statement not covered" >            expect(mockSocket.to).toHaveBeenCalledWith('user1_user2');</span>
+<span class="cstat-no" title="statement not covered" >            expect(mockSocket.emit).toHaveBeenCalledWith('typing_status', typingData);</span>
+        });
+    });
+&nbsp;
+<span class="cstat-no" title="statement not covered" >    describe('message_delivered handler', <span class="fstat-no" title="function not covered" >()</span> =&gt; {</span>
+<span class="cstat-no" title="statement not covered" >        it('should broadcast a message_was_delivered event to the room', <span class="fstat-no" title="function not covered" >()</span> =&gt; {</span>
+            const deliveryData = <span class="cstat-no" title="statement not covered" >{ messageId: 123, room: 'user1_user2' };</span>
+&nbsp;
+            // Simulate the client emitting the event
+<span class="cstat-no" title="statement not covered" >            eventHandlers.message_delivered(deliveryData);</span>
+&nbsp;
+            // Verify the server broadcasts the confirmation back to the room
+<span class="cstat-no" title="statement not covered" >            expect(mockIo.to).toHaveBeenCalledWith('user1_user2');</span>
+<span class="cstat-no" title="statement not covered" >            expect(mockIo.emit).toHaveBeenCalledWith('message_was_delivered', { messageId: 123 });</span>
+        });
+    });
+});</pre></td></tr></table></pre>
+
+                <div class='push'></div><!-- for sticky footer -->
+            </div><!-- /wrapper -->
+            <div class='footer quiet pad2 space-top1 center small'>
+                Code coverage generated by
+                <a href="https://istanbul.js.org/" target="_blank" rel="noopener noreferrer">istanbul</a>
+                at 2026-04-02T10:53:43.688Z
+            </div>
+        <script src="../../../../../../prettify.js"></script>
+        <script>
+            window.onload = function () {
+                prettyPrint();
+            };
+        </script>
+        <script src="../../../../../../sorter.js"></script>
+        <script src="../../../../../../block-navigation.js"></script>
+    </body>
+</html>
+    

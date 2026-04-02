@@ -1,0 +1,23 @@
+2026-03-31 19:25:42.444 [info] Extension host with pid 1518 started
+2026-03-31 19:25:42.941 [info] ExtensionService#_doActivateExtension vscode.github-authentication, startup: false, activationEvent: 'onAuthenticationRequest:github'
+2026-03-31 19:25:42.942 [info] ExtensionService#_doActivateExtension vscode.emmet, startup: false, activationEvent: 'onLanguage'
+2026-03-31 19:25:42.942 [info] ExtensionService#_doActivateExtension google.geminicodeassist, startup: false, activationEvent: 'onView:cloudcode.gemini.chatView'
+2026-03-31 19:25:42.943 [info] ExtensionService#_doActivateExtension vscode.typescript-language-features, startup: false, activationEvent: 'onLanguage:javascript'
+2026-03-31 19:25:42.943 [info] ExtensionService#_doActivateExtension vscode.html-language-features, startup: false, activationEvent: 'onLanguage:html'
+2026-03-31 19:25:42.943 [info] ExtensionService#_doActivateExtension ms-python.python, startup: false, activationEvent: 'onLanguage:python'
+2026-03-31 19:25:44.627 [info] ExtensionService#_doActivateExtension vscode.git-base, startup: true, activationEvent: '*', root cause: vscode.git
+2026-03-31 19:25:44.653 [info] ExtensionService#_doActivateExtension google.cloud-shell, startup: false, activationEvent: 'onTerminalProfile:cloudshell.default'
+2026-03-31 19:25:54.633 [info] ExtensionService#_doActivateExtension EditorConfig.EditorConfig, startup: false, activationEvent: 'onStartupFinished'
+2026-03-31 19:25:54.634 [info] ExtensionService#_doActivateExtension vscode.debug-auto-launch, startup: false, activationEvent: 'onStartupFinished'
+2026-03-31 19:25:54.634 [info] ExtensionService#_doActivateExtension google.gemini-cli-vscode-ide-companion, startup: false, activationEvent: 'onStartupFinished'
+2026-03-31 19:25:54.634 [info] ExtensionService#_doActivateExtension vscode.merge-conflict, startup: false, activationEvent: 'onStartupFinished'
+2026-03-31 19:25:58.186 [info] ExtensionService#_doActivateExtension vscode.git, startup: true, activationEvent: '*'
+2026-03-31 19:25:58.186 [info] ExtensionService#_doActivateExtension vscode.github, startup: true, activationEvent: '*'
+2026-03-31 19:25:58.946 [info] ExtensionService#_doActivateExtension vscode.configuration-editing, startup: false, activationEvent: 'onLanguage:jsonc'
+2026-03-31 19:25:58.946 [info] ExtensionService#_doActivateExtension vscode.json-language-features, startup: false, activationEvent: 'onLanguage:jsonc'
+2026-03-31 19:25:59.243 [info] Eager extensions activated
+2026-03-31 19:26:04.704 [info] ExtensionService#_doActivateExtension googlecloudtools.cloudcode, startup: false, activationEvent: 'onStartupFinished'
+2026-03-31 19:26:07.524 [info] Extension host terminating: received terminate message from renderer
+2026-03-31 19:26:12.950 [warning] ExtHostTextEditorOptions 'setOptions' failed:'
+2026-03-31 19:26:12.951 [warning] Canceled
+2026-03-31 19:26:13.100 [info] Extension host with pid 1518 exiting with code 0

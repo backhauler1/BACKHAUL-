@@ -1,0 +1,15 @@
+2026-04-02 19:35:35.801 [info] Extension host with pid 1504 started
+2026-04-02 19:35:36.260 [info] ExtensionService#_doActivateExtension vscode.github-authentication, startup: false, activationEvent: 'onAuthenticationRequest:github'
+2026-04-02 19:35:36.262 [info] ExtensionService#_doActivateExtension vscode.emmet, startup: false, activationEvent: 'onLanguage'
+2026-04-02 19:35:36.262 [info] ExtensionService#_doActivateExtension google.geminicodeassist, startup: false, activationEvent: 'onView:cloudcode.gemini.chatView'
+2026-04-02 19:35:36.263 [info] ExtensionService#_doActivateExtension vscode.html-language-features, startup: false, activationEvent: 'onLanguage:html'
+2026-04-02 19:35:36.263 [info] ExtensionService#_doActivateExtension vscode.typescript-language-features, startup: false, activationEvent: 'onLanguage:javascript'
+2026-04-02 19:35:36.264 [info] ExtensionService#_doActivateExtension ms-python.python, startup: false, activationEvent: 'onLanguage:python'
+2026-04-02 19:35:38.097 [info] ExtensionService#_doActivateExtension vscode.git-base, startup: true, activationEvent: '*', root cause: vscode.git
+2026-04-02 19:35:38.137 [info] ExtensionService#_doActivateExtension google.cloud-shell, startup: false, activationEvent: 'onTerminalProfile:cloudshell.default'
+2026-04-02 19:35:48.102 [info] ExtensionService#_doActivateExtension EditorConfig.EditorConfig, startup: false, activationEvent: 'onStartupFinished'
+2026-04-02 19:35:48.103 [info] ExtensionService#_doActivateExtension vscode.debug-auto-launch, startup: false, activationEvent: 'onStartupFinished'
+2026-04-02 19:35:48.103 [info] ExtensionService#_doActivateExtension google.gemini-cli-vscode-ide-companion, startup: false, activationEvent: 'onStartupFinished'
+2026-04-02 19:35:48.104 [info] ExtensionService#_doActivateExtension vscode.merge-conflict, startup: false, activationEvent: 'onStartupFinished'
+2026-04-02 19:40:47.776 [info] Extension host terminating: renderer disconnected for too long (2)
+2026-04-02 19:40:47.778 [info] Extension host with pid 1504 exiting with code 0

@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Edit Profile</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+<div class="container">
+    <a href="{{ url_for('profile', user_id=session.user_id) }}" class="back-link">&larr; Back to Profile</a>
+    <section>
+        <h2>Edit Profile</h2>
+        <form action="{{ url_for('edit_profile') }}" method="POST">
+            <label for="bio">Bio (Tell others about yourself or your company):</label>
+            <textarea name="bio" id="bio" rows="4" placeholder="e.g., Independent owner-operator with 10 years experience...">{{ user.bio or '' }}</textarea>
+            
+            <label for="contact_info">Contact Information (Phone, email, etc.):</label>
+            <input type="text" name="contact_info" id="contact_info" placeholder="e.g., 555-0199 or name@example.com" value="{{ user.contact_info or '' }}">
+            
+            <button type="submit">Update Profile</button>
+        </form>
+    </section>
+</div>
+</body>
+</html>

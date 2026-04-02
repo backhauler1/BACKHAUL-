@@ -1,0 +1,55 @@
+/* Chat Component Styles */
+.chat-box {
+    background-color: var(--white);
+    border: 1px solid var(--border-color);
+    padding: 20px;
+    border-radius: var(--border-radius);
+    height: 50vh;
+    overflow-y: scroll;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    margin-bottom: 20px;
+}
+.message {
+    max-width: 75%;
+    padding: 10px 15px;
+    border-radius: 18px;
+    line-height: 1.4;
+}
+.message.sent {
+    background-color: var(--primary-color);
+    color: var(--white);
+    align-self: flex-end;
+    border-bottom-right-radius: 4px;
+}
+.message.received {
+    background-color: var(--gray-200);
+    color: var(--text-dark);
+    align-self: flex-start;
+    border-bottom-left-radius: 4px;
+}
+.message .time {
+    font-size: 0.75em;
+    display: block;
+}
+.chat-form {
+    display: flex;
+    gap: 10px;
+}
+.chat-form input[type="text"] {
+    flex-grow: 1;
+    margin-bottom: 0;
+}
+.chat-form button {
+    width: auto;
+    background-color: var(--success-color);
+}
+.chat-form button:hover {
+    background-color: var(--success-hover);
+}
+
+[data-theme="dark"] .message.sent {
+    /* Ensure text on primary background is light */
+    color: #fff;
+}

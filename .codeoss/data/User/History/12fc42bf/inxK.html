@@ -1,0 +1,221 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Available Loads</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <!-- Mapbox GL JS -->
+    <script src='https://api.mapbox.com/mapbox-gl-js/v2.9.1/mapbox-gl.js'></script>
+    <link href='https://api.mapbox.com/mapbox-gl-js/v2.9.1/mapbox-gl.css' rel='stylesheet' />
+    <style>
+        .map-container {
+            height: 200px;
+            width: 100%;
+            margin-top: 15px;
+            border-radius: 8px;
+        }
+        .spinner {
+            position: absolute;
+            right: 10px;
+            border: 2px solid #f3f3f3; /* Light grey */
+            border-top: 2px solid #3498db; /* Blue */
+            border-radius: 50%;
+            width: 16px;
+            height: 16px;
+            animation: spin 1s linear infinite;
+            display: none; /* Hidden by default */
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+    </style>
+</head>
+<body>
+<div class="container">
+    <a href="{{ url_for('index') }}" class="back-link">&larr; Back to Home</a>
+    <h1>Available Loads</h1>
+
+    <div class="filter-controls" style="margin-bottom: 20px; display: flex; gap: 10px; flex-wrap: wrap;">
+        <a href="{{ url_for('available_loads') }}" class="btn {% if not request.args.get('loading') and not request.args.get('type') %}active{% endif %}">All Loads</a>
+        <a href="{{ url_for('available_loads', loading='driver') }}" class="btn {% if request.args.get('loading') == 'driver' %}active{% endif %}">Driver Load</a>
+        <a href="{{ url_for('available_loads', loading='shipper') }}" class="btn {% if request.args.get('loading') == 'shipper' %}active{% endif %}">Shipper Load</a>
+        <a href="{{ url_for('available_loads', type='trailer') }}" class="btn {% if request.args.get('type') == 'trailer' %}active{% endif %}">Trailers to Haul</a>
+    </div>
+
+    <form class="search-bar" method="GET" action="{{ url_for('available_loads') }}" style="margin-bottom: 20px; display: flex; gap: 10px; flex-wrap: wrap; align-items: center;">
+        {% if request.args.get('loading') %}
+            <input type="hidden" name="loading" value="{{ request.args.get('loading') }}">
+        {% endif %}
+        {% if request.args.get('type') %}
+            <input type="hidden" name="type" value="{{ request.args.get('type') }}">
+        {% endif %}
+        <div style="position: relative; display: flex; align-items: center; flex: 1; min-width: 200px;">
+            <input type="text" name="pickup" id="pickupSearch" list="pickupSuggestions" placeholder="Filter by pickup location..." value="{{ request.args.get('pickup', '') }}" style="width: 100%; padding: 10px; border: 1px solid #ccc; border-radius: 4px;" autocomplete="off">
+            <span class="spinner" id="pickupSpinner"></span>
+        </div>
+        <datalist id="pickupSuggestions"></datalist>
+        <div style="position: relative; display: flex; align-items: center; flex: 1; min-width: 200px;">
+            <input type="text" name="delivery" id="deliverySearch" list="deliverySuggestions" placeholder="Filter by delivery location..." value="{{ request.args.get('delivery', '') }}" style="width: 100%; padding: 10px; border: 1px solid #ccc; border-radius: 4px;" autocomplete="off">
+            <span class="spinner" id="deliverySpinner"></span>
+        </div>
+        <datalist id="deliverySuggestions"></datalist>
+        <div style="position: relative; display: flex; align-items: center; flex: 1; min-width: 200px;">
+            <select name="category" style="width: 100%; padding: 10px; border: 1px solid #ccc; border-radius: 4px;">
+                <option value="">All Categories</option>
+                {% for val, label in categories %}
+                <option value="{{ val }}" {% if request.args.get('category') == val %}selected{% endif %}>{{ label }}</option>
+                {% endfor %}
+            </select>
+        </div>
+        <div style="position: relative; display: flex; align-items: center; flex: 1; min-width: 200px;">
+            <select name="package_size" style="width: 100%; padding: 10px; border: 1px solid #ccc; border-radius: 4px;">
+                <option value="">All Load Sizes</option>
+                <option value="Small" {% if request.args.get('package_size') == 'Small' %}selected{% endif %}>Small (Fits in a Car, under 200 lbs)</option>
+                <option value="Medium" {% if request.args.get('package_size') == 'Medium' %}selected{% endif %}>Medium (Pickup Truck / Trailer, 200 - 2,000 lbs)</option>
+                <option value="Large" {% if request.args.get('package_size') == 'Large' %}selected{% endif %}>Large (Transport Truck / Trailer, 2,000+ lbs)</option>
+            </select>
+        </div>
+        <div style="display: flex; gap: 10px; flex: 1; min-width: 200px;">
+            <input type="number" name="min_weight" placeholder="Min Weight (lbs)" value="{{ request.args.get('min_weight', '') }}" style="width: 50%; padding: 10px; border: 1px solid #ccc; border-radius: 4px;">
+            <input type="number" name="max_weight" placeholder="Max Weight (lbs)" value="{{ request.args.get('max_weight', '') }}" style="width: 50%; padding: 10px; border: 1px solid #ccc; border-radius: 4px;">
+        </div>
+        <button type="submit" class="btn">Search</button>
+        {% if request.args.get('pickup') or request.args.get('delivery') or request.args.get('category') or request.args.get('package_size') or request.args.get('min_weight') or request.args.get('max_weight') %}
+            <a href="{{ url_for('available_loads', loading=request.args.get('loading'), type=request.args.get('type')) }}" class="btn" style="background-color: #d9534f; color: white;">Clear</a>
+        {% endif %}
+    </form>
+
+    {% if loads %}
+        {% for load in loads %}
+        <div class="card load-card"
+             data-pickup="{{ load.pickup }}"
+             data-delivery="{{ load.delivery }}"
+             data-load-id="{{ load.load_id }}">
+            <h3>{{ load.description }} (ID: {{ load.load_id }})</h3>
+            {% if load.category %}
+                <p><strong>Category:</strong> <span class="badge" style="background-color: #eee; padding: 3px 8px; border-radius: 12px; font-size: 0.85em; color: #333;">{{ load.category }}</span></p>
+            {% endif %}
+            {% if load.package_size or load.dimensions or load.weight %}
+                <p><strong>Size / Weight:</strong> 
+                    {% if load.package_size %}{{ load.package_size }}{% endif %}
+                    {% if load.dimensions %} [Exact: {{ load.dimensions }}]{% endif %}
+                    {% if load.weight %} - {{ load.weight }}{% endif %}
+                </p>
+            {% endif %}
+            <p><strong>Shipper:</strong> <a href="{{ url_for('profile', user_id=load.shipper_id) }}">{{ load.username }}</a>
+                {% if load.id_verified %}<span class="badge" style="background-color: #28a745; color: white; font-size: 0.7em; vertical-align: middle; padding: 3px 6px; border-radius: 10px; margin-left: 5px;">✓ ID Verified</span>{% endif %}
+                {% if load.rating_count > 0 %}
+                    <span class="rating">★ {{ "%.2f"|format(load.avg_rating) }} ({{ load.rating_count }})</span>
+                {% else %}
+                    <span>(No reviews yet)</span>
+                {% endif %}
+            </p>
+            {% if load.image_filename %}
+                <div class="load-image-container">
+                    <img src="{{ url_for('static', filename='uploads/' + load.image_filename) }}" alt="Image for {{ load.description }}">
+                </div>
+            {% endif %}
+            <p><strong>Route:</strong> {{ load.pickup }} &rarr; {{ load.delivery }}</p>
+            <div id="map-{{ load.load_id }}" class="map-container"></div>
+            <p><strong>Shipping Date:</strong> {{ load.shipping_date }}</p>
+            <p><strong>Offer:</strong> ${{ load.offer }}</p>
+            
+            {% if load.is_trailer %}
+                <p><strong>Load Type:</strong> Trailer for Hauling</p>
+                {% if load.requires_bol %}
+                    <p style="font-size: 0.85em; color: #d9534f; margin-top: 5px;">* Bill of Lading is required.</p>
+                {% endif %}
+            {% else %}
+                <p><strong>Loading Responsibility:</strong> 
+                    {% if load.loading_responsibility == 'driver' %}
+                        Driver to load
+                    {% else %}
+                        Shipper provides equipment/manpower
+                    {% endif %}
+                </p>
+                {% if load.equipment_failure_compensation %}
+                    <p style="font-size: 0.85em; color: #d9534f; margin-top: 5px;">* Shipper agrees to compensate for loading delays if equipment is unavailable.</p>
+                {% endif %}
+            {% endif %}
+
+            {% if session.user_id and session.user_id != load.shipper_id %}
+            <div class="card-actions">
+                <a href="{{ url_for('chat', other_user_id=load.shipper_id) }}" class="btn btn-success">Message Shipper</a>
+                <button class="btn make-offer-btn" data-load-id="{{ load.load_id }}" data-load-description="{{ load.description }}">Make an Offer</button>
+            </div>
+        {% elif not session.user_id %}
+        <div class="card-actions">
+            <a href="{{ url_for('login') }}" class="btn">Log in to Message or Make an Offer</a>
+        </div>
+            {% endif %}
+        </div>
+        {% endfor %}
+
+        {% if pagination and pagination.pages > 1 %}
+        <div class="pagination" style="margin-top: 20px; display: flex; justify-content: center; gap: 5px;">
+            {# Helper macro to generate pagination links while preserving filters #}
+            {% macro pagination_link(page_num, text) %}
+                {% set query_params = request.args.to_dict() %}
+                {% do query_params.update({'page': page_num}) %}
+                <a href="{{ url_for('available_loads', **query_params) }}" class="btn">{{ text|safe }}</a>
+            {% endmacro %}
+
+            {% if pagination.has_prev %}
+                {{ pagination_link(pagination.prev_num, '&laquo; Prev') }}
+            {% endif %}
+
+            {% for page_num in pagination.iter_pages(left_edge=1, right_edge=1, left_current=2, right_current=2) %}
+                {% if page_num %}
+                    {% if page_num == pagination.page %}
+                        <span class="btn active" style="pointer-events: none;">{{ page_num }}</span>
+                    {% else %}
+                        {{ pagination_link(page_num, page_num) }}
+                    {% endif %}
+                {% else %}
+                    <span class="ellipsis" style="padding: 10px;">...</span>
+                {% endif %}
+            {% endfor %}
+
+            {% if pagination.has_next %}
+                {{ pagination_link(pagination.next_num, 'Next &raquo;') }}
+            {% endif %}
+        </div>
+        {% endif %}
+    {% else %}
+        <p class="no-results">No loads are currently available.</p>
+    {% endif %}
+</div>
+
+{% from '_macros.html' import render_bid_modal %}
+{{ render_bid_modal() }}
+
+<script>
+    mapboxgl.accessToken = '{{ mapbox_token }}';
+</script>
+<script src="{{ url_for('static', filename='map_loader.js') }}"></script>
+<script>
+    document.addEventListener('DOMContentLoaded', () => {
+        initializeMaps({
+            cardSelector: '.load-card',
+            startLocationAttr: 'pickup',
+            endLocationAttr: 'delivery',
+            idAttr: 'loadId',
+            idPrefix: 'map'
+        });
+
+        // Autocomplete functionality
+        setupAutocomplete('pickupSearch', 'pickupSuggestions', 'pickupSpinner');
+        setupAutocomplete('deliverySearch', 'deliverySuggestions', 'deliverySpinner');
+
+        // Initialize Bidding Modal Logic
+        setupBiddingModal();
+    });
+</script>
+</body>
+</html>

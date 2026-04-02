@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>{{ user.username }}'s Profile</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+<div class="container">
+    <a href="javascript:history.back()" class="back-link">&larr; Go Back</a>
+    <section class="profile-header">
+        <div style="display: flex; justify-content: space-between; align-items: flex-start;">
+            <div>
+                <h1>{{ user.username }}</h1>
+                <p>Role: {{ user.role.capitalize() }}</p>
+                <div class="rating-summary">
+                    {% if rating_stats.rating_count > 0 %}
+                        <span class="rating">★ {{ "%.2f"|format(rating_stats.avg_rating) }}</span>
+                        <span class="text-secondary">({{ rating_stats.rating_count }} review(s))</span>
+                    {% else %}
+                        <strong>No reviews yet.</strong>
+                    {% endif %}
+                </div>
+            </div>
+            {% if session.user_id and session.user_id != user.user_id %}
+                <a href="{{ url_for('chat', other_user_id=user.user_id) }}" class="btn btn-success">Message {{ user.username }}</a>
+            {% endif %}
+        </div>
+    </section>
+
+    <section>
+        <h2>Reviews</h2>
+        {% if reviews %}
+            {% for review in reviews %}
+                <div class="review card">
+                    <p><strong class="rating">★ {{ review.rating }}/5</strong></p>
+                    {% if review.comment %}
+                        <p>"{{ review.comment }}"</p>
+                    {% endif %}
+                    <p class="review-meta">- by {{ review.reviewer_name }} on {{ review.timestamp|datetimeformat }}</p>
+                </div>
+            {% endfor %}
+        {% else %}
+            <p class="no-results">This user has not received any reviews.</p>
+        {% endif %}
+    </section>
+
+</div>
+</body>
+</html>

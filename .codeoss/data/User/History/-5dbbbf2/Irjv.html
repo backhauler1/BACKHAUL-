@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Chat with {{ other_user.username }}</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+<div class="container">
+    <a href="{{ url_for('inbox') }}" class="back-link">&larr; Back to Inbox</a>
+    <h1>Chat with <a href="{{ url_for('profile', user_id=other_user_id) }}">{{ other_user.username }}</a></h1>
+
+    <div class="chat-box" id="chatBox">
+        {% if messages %}
+            {% for msg in messages %}
+                <div class="message {% if msg.sender_id == session.user_id %}sent{% else %}received{% endif %}">
+                    {{ msg.content }}
+                    <span class="time">{{ msg.timestamp|datetimeformat }}</span>
+                </div>
+            {% endfor %}
+        {% else %}
+            <p class="no-results" style="padding: 20px 0;">No messages yet. Send one to start the conversation!</p>
+        {% endif %}
+    </div>
+
+    <form action="{{ url_for('chat', other_user_id=other_user_id) }}" method="POST" class="chat-form">
+        <input type="text" name="content" placeholder="Type your message..." required autocomplete="off" autofocus>
+        <button type="submit">Send</button>
+    </form>
+</div>
+
+    <script>
+        // Auto-scroll to the bottom of the chat box
+        const chatBox = document.getElementById('chatBox');
+        chatBox.scrollTop = chatBox.scrollHeight;
+    </script>
+</body>
+</html>

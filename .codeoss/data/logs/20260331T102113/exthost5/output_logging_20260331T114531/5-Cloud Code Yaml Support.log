@@ -1,0 +1,5 @@
+[Error - 11:46:09 AM] (node:33921) [DEP0040] DeprecationWarning: The `punycode` module is deprecated. Please use a userland alternative instead.
+(Use `node --trace-deprecation ...` to show where the warning was created)
+[Error - 11:46:12 AM] Error making request: Protocol "http:" not supported. Expected "https:"
+[Error - 11:46:12 AM] Error making request: Protocol "http:" not supported. Expected "https:"
+[Error - 12:33:52 PM] Error making request: Protocol "http:" not supported. Expected "https:"

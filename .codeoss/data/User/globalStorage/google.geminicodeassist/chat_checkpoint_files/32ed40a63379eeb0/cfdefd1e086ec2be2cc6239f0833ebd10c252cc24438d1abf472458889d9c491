@@ -1,0 +1,188 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Submit Proof of Delivery</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <style>
+        .alert {
+            padding: 15px;
+            margin-bottom: 20px;
+            border: 1px solid transparent;
+            border-radius: 8px;
+        }
+        .alert-warning {
+            color: #856404;
+            background-color: #fff3cd;
+            border-color: #ffeeba;
+        }
+        .signature-pad-container {
+            position: relative;
+            width: 100%;
+            max-width: 500px;
+            height: 200px;
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            margin-bottom: 15px;
+        }
+        #signature-pad {
+            width: 100%;
+            height: 100%;
+            cursor: crosshair;
+        }
+        .signature-pad-actions {
+            margin-top: 10px;
+        }
+        @keyframes spin {
+            100% { transform: rotate(360deg); }
+        }
+        .spinner {
+            display: inline-block; width: 12px; height: 12px; border: 2px solid #fff;
+            border-top: 2px solid transparent; border-radius: 50%; animation: spin 1s linear infinite; margin-left: 8px; vertical-align: middle;
+        }
+    </style>
+</head>
+<body>
+<div class="container">
+    <a href="{{ url_for('dashboard') }}" class="back-link">&larr; Back to Dashboard</a>
+    <section>
+        <h2>Submit Proof of Delivery</h2>
+        <p>For Load #{{ load_id }}</p>
+
+        {% if signature_required %}
+        <div class="alert alert-warning">
+            <strong>Signature Required!</strong> The shipper has requested a signature for this delivery. Please ensure the recipient signs below.
+        </div>
+        {% endif %}
+
+        <!-- The form action is handled by JavaScript to support offline mode -->
+        <form method="POST" enctype="multipart/form-data" id="podForm">
+            
+            <label for="pod_photo">Photo of Delivered Item(s):</label>
+            <input type="file" name="delivery_proof_pic" id="pod_photo" accept="image/*" required>
+            <p style="font-size: 0.85em; color: var(--text-secondary); margin-top: -10px; margin-bottom: 15px;">
+                Take a clear photo of the item at the delivery location. This is crucial evidence.
+            </p>
+
+            {% if signature_required %}
+            <label for="signature-pad">Recipient's Signature (Required):</label>
+            {% else %}
+            <label for="signature-pad">Recipient's Signature (Optional):</label>
+            {% endif %}
+            <div class="signature-pad-container">
+                <canvas id="signature-pad"></canvas>
+            </div>
+            <div class="signature-pad-actions">
+                <button type="button" id="clearSignature" class="btn btn-secondary">Clear Signature</button>
+            </div>
+            
+            <!-- Hidden input to store signature data -->
+            <input type="hidden" name="signature" id="signature_data">
+            
+            <!-- Hidden inputs for geolocation data -->
+            <input type="hidden" name="latitude" id="latitude">
+            <input type="hidden" name="longitude" id="longitude">
+            <input type="hidden" name="load_id" value="{{ load_id }}">
+
+            <p id="gpsStatus" style="font-size: 0.85em; color: #dc3545; display: none; margin-top: 15px;">GPS access is required to submit Proof of Delivery. Please enable location services.</p>
+            <button type="submit" id="submitBtn" class="btn btn-success" style="margin-top: 20px;" disabled>Acquiring GPS...</button>
+        </form>
+    </section>
+</div>
+
+<!-- Signature Pad Library -->
+<script src="https://cdn.jsdelivr.net/npm/signature_pad@4.0.0/dist/signature_pad.umd.min.js"></script>
+<script src="{{ url_for('static', filename='db.js') }}"></script>
+<script>
+    document.addEventListener('DOMContentLoaded', () => {
+        const canvas = document.getElementById('signature-pad');
+        const signaturePad = new SignaturePad(canvas, {
+            backgroundColor: 'rgb(255, 255, 255)'
+        });
+
+        document.getElementById('clearSignature').addEventListener('click', () => {
+            signaturePad.clear();
+        });
+
+        // Try to capture GPS location as soon as the page loads
+        if ("geolocation" in navigator) {
+            navigator.geolocation.getCurrentPosition((position) => {
+                document.getElementById('latitude').value = position.coords.latitude;
+                document.getElementById('longitude').value = position.coords.longitude;
+                document.getElementById('submitBtn').disabled = false;
+                document.getElementById('submitBtn').innerText = "Submit POD";
+            }, (error) => {
+                console.warn("Geolocation not available or denied:", error);
+                document.getElementById('gpsStatus').style.display = 'block';
+                document.getElementById('submitBtn').innerText = "GPS Required";
+            });
+        } else {
+            document.getElementById('gpsStatus').innerText = "Geolocation is not supported by your browser.";
+            document.getElementById('gpsStatus').style.display = 'block';
+            document.getElementById('submitBtn').innerText = "GPS Unsupported";
+        }
+
+        const podForm = document.getElementById('podForm');
+        podForm.addEventListener('submit', async (event) => {
+            event.preventDefault(); // Stop default form submission
+
+            const btn = document.getElementById('submitBtn');
+            btn.disabled = true;
+            btn.innerHTML = 'Submitting... <span class="spinner"></span>';
+
+            // Client-side validation for required signature
+            const signatureRequired = {{ signature_required | tojson }}; // Safely get the boolean value
+            if (signatureRequired && signaturePad.isEmpty()) {
+                alert('This delivery requires a signature. Please provide one.');
+                btn.disabled = false;
+                btn.innerHTML = 'Submit POD';
+                return; // Stop submission
+            }
+            if (!signaturePad.isEmpty()) {
+                document.getElementById('signature_data').value = signaturePad.toDataURL('image/png');
+            }
+
+            const formData = new FormData(podForm);
+
+            // If online and sync isn't supported, submit directly. Otherwise, use offline-first.
+            if (navigator.onLine && !('serviceWorker' in navigator && 'SyncManager' in window)) {
+                try {
+                    const response = await fetch("{{ url_for('tracking.delivery_confirmation') }}", {
+                        method: 'POST',
+                        body: formData
+                    });
+
+                    if (response.ok) {
+                        alert('Proof of Delivery submitted successfully!');
+                        window.location.href = "{{ url_for('dashboard') }}";
+                    } else {
+                        const result = await response.json();
+                        alert(`Submission failed: ${result.error || 'Unknown error'}`);
+                        btn.disabled = false;
+                        btn.innerHTML = 'Submit POD';
+                    }
+                } catch (error) {
+                    console.error('Submission error:', error);
+                    alert('Submission failed due to a network error. Please try again later.');
+                    btn.disabled = false;
+                    btn.innerHTML = 'Submit POD';
+                }
+            } else {
+                // If offline (or online with sync support), save to IndexedDB and request background sync
+                alert('Submission saved. It will be uploaded automatically when you are back online.');
+                saveAndSync(formData);
+            }
+        });
+
+        async function saveAndSync(formData) {
+            const podData = Object.fromEntries(formData.entries());
+            await savePodForSync(podData);
+            await requestBackgroundSync('sync-pending-pods');
+            window.location.href = "{{ url_for('dashboard') }}";
+        }
+    });
+</script>
+</body>
+</html>

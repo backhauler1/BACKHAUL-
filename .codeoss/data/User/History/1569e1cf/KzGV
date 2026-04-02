@@ -1,0 +1,29 @@
+# Use an official lightweight Node.js image
+FROM node:18-alpine
+
+# Set the working directory
+WORKDIR /app
+
+# Copy package manifests to leverage Docker caching
+COPY package*.json ./
+
+# Install all dependencies (including devDependencies needed for esbuild)
+RUN npm ci
+
+# Copy the rest of the application
+COPY . .
+
+# Build the production static assets
+RUN node build.js
+
+# Prune devDependencies to reduce the final image size and attack surface
+RUN npm prune --production
+
+# Expose the server port
+EXPOSE 5000
+
+# Enforce production environment variables
+ENV NODE_ENV=production
+
+# Start the application (which runs migrations and starts Express)
+CMD ["node", "server.js"]

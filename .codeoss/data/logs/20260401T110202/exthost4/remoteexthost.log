@@ -1,0 +1,128 @@
+2026-04-01 14:50:22.983 [info] Extension host with pid 12240 started
+2026-04-01 14:50:23.010 [info] Lock '/home/perrymckay1/.codeoss/data/User/workspaceStorage/-6a79e224/vscode.lock': Lock acquired.
+2026-04-01 14:50:23.683 [info] ExtensionService#_doActivateExtension vscode.github-authentication, startup: false, activationEvent: 'onAuthenticationRequest:github'
+2026-04-01 14:50:23.685 [info] ExtensionService#_doActivateExtension vscode.emmet, startup: false, activationEvent: 'onLanguage'
+2026-04-01 14:50:23.685 [info] ExtensionService#_doActivateExtension google.geminicodeassist, startup: false, activationEvent: 'onView:cloudcode.gemini.chatView'
+2026-04-01 14:50:23.686 [info] ExtensionService#_doActivateExtension vscode.typescript-language-features, startup: false, activationEvent: 'onLanguage:javascript'
+2026-04-01 14:50:25.169 [info] ExtensionService#_doActivateExtension vscode.git-base, startup: true, activationEvent: '*', root cause: vscode.git
+2026-04-01 14:50:25.180 [info] ExtensionService#_doActivateExtension vscode.npm, startup: true, activationEvent: 'workspaceContains:package.json'
+2026-04-01 14:50:32.174 [info] Not activating extension 'ms-python.python': Timed out while searching for 'workspaceContains' pattern **/pylock.*.toml
+2026-04-01 14:50:32.174 [info] Not activating extension 'redhat.java': Timed out while searching for 'workspaceContains' pattern */pom.xml,*/build.gradle,*/settings.gradle,*/build.gradle.kts,*/settings.gradle.kts,*/.classpath
+2026-04-01 14:50:32.175 [info] Not activating extension 'vscjava.vscode-java-dependency': Timed out while searching for 'workspaceContains' pattern */pom.xml,*/build.gradle,*/settings.gradle,*/build.gradle.kts,*/settings.gradle.kts,*/.classpath
+2026-04-01 14:50:32.175 [info] Not activating extension 'vscjava.vscode-java-test': Timed out while searching for 'workspaceContains' pattern */pom.xml,*/build.gradle,*/settings.gradle,*/build.gradle.kts,*/settings.gradle.kts,*/.classpath
+2026-04-01 14:50:32.175 [info] Not activating extension 'vscjava.vscode-maven': Timed out while searching for 'workspaceContains' pattern **/pom.xml
+2026-04-01 14:50:35.182 [info] ExtensionService#_doActivateExtension EditorConfig.EditorConfig, startup: false, activationEvent: 'onStartupFinished'
+2026-04-01 14:50:35.182 [info] ExtensionService#_doActivateExtension google.cloud-shell, startup: false, activationEvent: 'onStartupFinished'
+2026-04-01 14:50:35.183 [info] ExtensionService#_doActivateExtension vscode.debug-auto-launch, startup: false, activationEvent: 'onStartupFinished'
+2026-04-01 14:50:35.183 [info] ExtensionService#_doActivateExtension google.gemini-cli-vscode-ide-companion, startup: false, activationEvent: 'onStartupFinished'
+2026-04-01 14:50:35.184 [info] ExtensionService#_doActivateExtension vscode.merge-conflict, startup: false, activationEvent: 'onStartupFinished'
+2026-04-01 14:50:41.682 [info] ExtensionService#_doActivateExtension vscode.git, startup: true, activationEvent: '*'
+2026-04-01 14:50:41.683 [info] ExtensionService#_doActivateExtension vscode.github, startup: true, activationEvent: '*'
+2026-04-01 14:50:42.796 [info] ExtensionService#_doActivateExtension vscode.configuration-editing, startup: false, activationEvent: 'onLanguage:jsonc'
+2026-04-01 14:50:42.796 [info] ExtensionService#_doActivateExtension vscode.json-language-features, startup: false, activationEvent: 'onLanguage:jsonc'
+2026-04-01 14:50:43.858 [info] Eager extensions activated
+2026-04-01 14:50:50.050 [info] ExtensionService#_doActivateExtension googlecloudtools.cloudcode, startup: false, activationEvent: 'onStartupFinished'
+2026-04-01 14:50:58.515 [info] ExtensionService#_doActivateExtension vscode.terminal-suggest, startup: false, activationEvent: 'onTerminalShellIntegration:*'
+2026-04-01 14:51:00.357 [info] ExtensionService#_doActivateExtension vscode.extension-editing, startup: false, activationEvent: 'onLanguage:json'
+2026-04-01 15:18:56.054 [warning] ExtHostTextEditorOptions 'setOptions' failed:'
+2026-04-01 15:18:56.055 [warning] Illegal argument: TextEditor(vs.editor.ICodeEditor:1,$model9)
+2026-04-01 15:18:56.658 [warning] ExtHostTextEditorOptions 'setOptions' failed:'
+2026-04-01 15:18:56.658 [warning] Illegal argument: TextEditor(vs.editor.ICodeEditor:1,$model10)
+2026-04-01 15:18:57.390 [warning] ExtHostTextEditorOptions 'setOptions' failed:'
+2026-04-01 15:18:57.390 [warning] Illegal argument: TextEditor(vs.editor.ICodeEditor:1,$model11)
+2026-04-01 15:18:58.568 [warning] ExtHostTextEditorOptions 'setOptions' failed:'
+2026-04-01 15:18:58.568 [warning] Illegal argument: TextEditor(vs.editor.ICodeEditor:1,$model12)
+2026-04-01 15:18:59.320 [warning] ExtHostTextEditorOptions 'setOptions' failed:'
+2026-04-01 15:18:59.320 [warning] Illegal argument: TextEditor(vs.editor.ICodeEditor:1,$model13)
+2026-04-01 15:19:00.334 [warning] ExtHostTextEditorOptions 'setOptions' failed:'
+2026-04-01 15:19:00.334 [warning] Illegal argument: TextEditor(vs.editor.ICodeEditor:1,$model14)
+2026-04-01 15:19:01.172 [warning] ExtHostTextEditorOptions 'setOptions' failed:'
+2026-04-01 15:19:01.173 [warning] Illegal argument: TextEditor(vs.editor.ICodeEditor:1,$model15)
+2026-04-01 15:19:02.216 [warning] ExtHostTextEditorOptions 'setOptions' failed:'
+2026-04-01 15:19:02.216 [warning] Illegal argument: TextEditor(vs.editor.ICodeEditor:1,$model16)
+2026-04-01 15:19:03.206 [warning] ExtHostTextEditorOptions 'setOptions' failed:'
+2026-04-01 15:19:03.207 [warning] Illegal argument: TextEditor(vs.editor.ICodeEditor:1,$model17)
+2026-04-01 15:19:27.671 [warning] ExtHostTextEditorOptions 'setOptions' failed:'
+2026-04-01 15:19:27.671 [warning] Illegal argument: TextEditor(vs.editor.ICodeEditor:1,$model18)
+2026-04-01 15:34:00.627 [warning] ExtHostTextEditorOptions 'setOptions' failed:'
+2026-04-01 15:34:00.627 [warning] Illegal argument: TextEditor(vs.editor.ICodeEditor:1,$model17)
+2026-04-01 15:34:01.340 [warning] ExtHostTextEditorOptions 'setOptions' failed:'
+2026-04-01 15:34:01.340 [warning] Illegal argument: TextEditor(vs.editor.ICodeEditor:1,$model12)
+2026-04-01 15:34:02.498 [warning] ExtHostTextEditorOptions 'setOptions' failed:'
+2026-04-01 15:34:02.499 [warning] Illegal argument: TextEditor(vs.editor.ICodeEditor:1,$model16)
+2026-04-01 15:34:03.197 [warning] ExtHostTextEditorOptions 'setOptions' failed:'
+2026-04-01 15:34:03.197 [warning] Illegal argument: TextEditor(vs.editor.ICodeEditor:1,$model15)
+2026-04-01 15:34:03.826 [warning] ExtHostTextEditorOptions 'setOptions' failed:'
+2026-04-01 15:34:03.826 [warning] Illegal argument: TextEditor(vs.editor.ICodeEditor:1,$model18)
+2026-04-01 15:34:05.063 [warning] ExtHostTextEditorOptions 'setOptions' failed:'
+2026-04-01 15:34:05.063 [warning] Illegal argument: TextEditor(vs.editor.ICodeEditor:1,$model10)
+2026-04-01 15:34:05.569 [warning] ExtHostTextEditorOptions 'setOptions' failed:'
+2026-04-01 15:34:05.569 [warning] Illegal argument: TextEditor(vs.editor.ICodeEditor:1,$model13)
+2026-04-01 15:43:43.411 [warning] ExtHostTextEditorOptions 'setOptions' failed:'
+2026-04-01 15:43:43.411 [warning] Illegal argument: TextEditor(vs.editor.ICodeEditor:1,$model13)
+2026-04-01 15:43:44.332 [warning] ExtHostTextEditorOptions 'setOptions' failed:'
+2026-04-01 15:43:44.332 [warning] Illegal argument: TextEditor(vs.editor.ICodeEditor:1,$model10)
+2026-04-01 15:43:45.789 [warning] ExtHostTextEditorOptions 'setOptions' failed:'
+2026-04-01 15:43:45.789 [warning] Illegal argument: TextEditor(vs.editor.ICodeEditor:1,$model18)
+2026-04-01 15:43:47.240 [warning] ExtHostTextEditorOptions 'setOptions' failed:'
+2026-04-01 15:43:47.240 [warning] Illegal argument: TextEditor(vs.editor.ICodeEditor:1,$model15)
+2026-04-01 15:43:48.098 [warning] ExtHostTextEditorOptions 'setOptions' failed:'
+2026-04-01 15:43:48.098 [warning] Illegal argument: TextEditor(vs.editor.ICodeEditor:1,$model16)
+2026-04-01 15:43:49.060 [warning] ExtHostTextEditorOptions 'setOptions' failed:'
+2026-04-01 15:43:49.060 [warning] Illegal argument: TextEditor(vs.editor.ICodeEditor:1,$model17)
+2026-04-01 15:58:48.312 [warning] ExtHostTextEditorOptions 'setOptions' failed:'
+2026-04-01 15:58:48.312 [warning] Illegal argument: TextEditor(vs.editor.ICodeEditor:1,$model20)
+2026-04-01 15:58:49.002 [warning] ExtHostTextEditorOptions 'setOptions' failed:'
+2026-04-01 15:58:49.002 [warning] Illegal argument: TextEditor(vs.editor.ICodeEditor:1,$model13)
+2026-04-01 15:58:49.610 [warning] ExtHostTextEditorOptions 'setOptions' failed:'
+2026-04-01 15:58:49.610 [warning] Illegal argument: TextEditor(vs.editor.ICodeEditor:1,$model21)
+2026-04-01 15:58:50.788 [warning] ExtHostTextEditorOptions 'setOptions' failed:'
+2026-04-01 15:58:50.788 [warning] Illegal argument: TextEditor(vs.editor.ICodeEditor:1,$model18)
+2026-04-01 15:58:52.170 [warning] ExtHostTextEditorOptions 'setOptions' failed:'
+2026-04-01 15:58:52.171 [warning] Illegal argument: TextEditor(vs.editor.ICodeEditor:1,$model10)
+2026-04-01 15:58:58.409 [warning] ExtHostTextEditorOptions 'setOptions' failed:'
+2026-04-01 15:58:58.409 [warning] Illegal argument: TextEditor(vs.editor.ICodeEditor:1,$model16)
+2026-04-01 15:59:01.186 [warning] ExtHostTextEditorOptions 'setOptions' failed:'
+2026-04-01 15:59:01.186 [warning] Illegal argument: TextEditor(vs.editor.ICodeEditor:1,$model17)
+2026-04-01 16:17:19.279 [warning] ExtHostTextEditorOptions 'setOptions' failed:'
+2026-04-01 16:17:19.279 [warning] Illegal argument: TextEditor(vs.editor.ICodeEditor:1,$model18)
+2026-04-01 16:17:21.273 [warning] ExtHostTextEditorOptions 'setOptions' failed:'
+2026-04-01 16:17:21.273 [warning] Illegal argument: TextEditor(vs.editor.ICodeEditor:1,$model17)
+2026-04-01 16:17:25.318 [warning] ExtHostTextEditorOptions 'setOptions' failed:'
+2026-04-01 16:17:25.318 [warning] Illegal argument: TextEditor(vs.editor.ICodeEditor:1,$model16)
+2026-04-01 16:25:40.769 [warning] ExtHostTextEditorOptions 'setOptions' failed:'
+2026-04-01 16:25:40.769 [warning] Illegal argument: TextEditor(vs.editor.ICodeEditor:1,$model18)
+2026-04-01 16:25:46.002 [warning] ExtHostTextEditorOptions 'setOptions' failed:'
+2026-04-01 16:25:46.002 [warning] Illegal argument: TextEditor(vs.editor.ICodeEditor:1,$model17)
+2026-04-01 16:25:47.501 [warning] ExtHostTextEditorOptions 'setOptions' failed:'
+2026-04-01 16:25:47.501 [warning] Illegal argument: TextEditor(vs.editor.ICodeEditor:1,$model16)
+2026-04-01 16:37:02.696 [warning] ExtHostTextEditorOptions 'setOptions' failed:'
+2026-04-01 16:37:02.696 [warning] Illegal argument: TextEditor(vs.editor.ICodeEditor:1,$model18)
+2026-04-01 16:37:05.153 [warning] ExtHostTextEditorOptions 'setOptions' failed:'
+2026-04-01 16:37:05.153 [warning] Illegal argument: TextEditor(vs.editor.ICodeEditor:1,$model17)
+2026-04-01 16:37:08.022 [warning] ExtHostTextEditorOptions 'setOptions' failed:'
+2026-04-01 16:37:08.022 [warning] Illegal argument: TextEditor(vs.editor.ICodeEditor:1,$model16)
+2026-04-01 16:55:29.477 [warning] ExtHostTextEditorOptions 'setOptions' failed:'
+2026-04-01 16:55:29.477 [warning] Illegal argument: TextEditor(vs.editor.ICodeEditor:1,$model16)
+2026-04-01 16:55:34.089 [warning] ExtHostTextEditorOptions 'setOptions' failed:'
+2026-04-01 16:55:34.090 [warning] Illegal argument: TextEditor(vs.editor.ICodeEditor:1,$model17)
+2026-04-01 17:02:28.415 [warning] ExtHostTextEditorOptions 'setOptions' failed:'
+2026-04-01 17:02:28.415 [warning] Illegal argument: TextEditor(vs.editor.ICodeEditor:1,$model16)
+2026-04-01 17:02:31.521 [warning] ExtHostTextEditorOptions 'setOptions' failed:'
+2026-04-01 17:02:31.521 [warning] Illegal argument: TextEditor(vs.editor.ICodeEditor:1,$model17)
+2026-04-01 17:09:12.413 [warning] ExtHostTextEditorOptions 'setOptions' failed:'
+2026-04-01 17:09:12.413 [warning] Illegal argument: TextEditor(vs.editor.ICodeEditor:1,$model17)
+2026-04-01 17:09:14.487 [warning] ExtHostTextEditorOptions 'setOptions' failed:'
+2026-04-01 17:09:14.487 [warning] Illegal argument: TextEditor(vs.editor.ICodeEditor:1,$model16)
+2026-04-01 17:15:16.699 [warning] ExtHostTextEditorOptions 'setOptions' failed:'
+2026-04-01 17:15:16.699 [warning] Illegal argument: TextEditor(vs.editor.ICodeEditor:1,$model17)
+2026-04-01 17:15:18.231 [warning] ExtHostTextEditorOptions 'setOptions' failed:'
+2026-04-01 17:15:18.231 [warning] Illegal argument: TextEditor(vs.editor.ICodeEditor:1,$model16)
+2026-04-01 17:47:28.264 [warning] ExtHostTextEditorOptions 'setOptions' failed:'
+2026-04-01 17:47:28.264 [warning] Illegal argument: TextEditor(vs.editor.ICodeEditor:1,$model17)
+2026-04-01 17:47:28.828 [warning] ExtHostTextEditorOptions 'setOptions' failed:'
+2026-04-01 17:47:28.828 [warning] Illegal argument: TextEditor(vs.editor.ICodeEditor:1,$model16)
+2026-04-01 18:08:31.113 [warning] ExtHostTextEditorOptions 'setOptions' failed:'
+2026-04-01 18:08:31.114 [warning] Illegal argument: TextEditor(vs.editor.ICodeEditor:1,$model22)
+2026-04-01 18:17:32.989 [warning] ExtHostTextEditorOptions 'setOptions' failed:'
+2026-04-01 18:17:32.990 [warning] Illegal argument: TextEditor(vs.editor.ICodeEditor:1,$model22)

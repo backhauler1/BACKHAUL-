@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Available Loads</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <!-- Mapbox GL JS -->
+    <script src='https://api.mapbox.com/mapbox-gl-js/v2.9.1/mapbox-gl.js'></script>
+    <link href='https://api.mapbox.com/mapbox-gl-js/v2.9.1/mapbox-gl.css' rel='stylesheet' />
+    <style>
+        .map-container {
+            height: 200px;
+            width: 100%;
+            margin-top: 15px;
+            border-radius: 8px;
+        }
+    </style>
+</head>
+<body>
+<div class="container">
+    <a href="{{ url_for('index') }}" class="back-link">&larr; Back to Home</a>
+    <h1>Available Loads</h1>
+
+    {% if loads %}
+        {% for load in loads %}
+        <div class="card load-card"
+             data-pickup="{{ load.pickup }}"
+             data-delivery="{{ load.delivery }}"
+             data-load-id="{{ load.load_id }}">
+            <h3>{{ load.description }} (ID: {{ load.load_id }})</h3>
+            <p><strong>Shipper:</strong> <a href="{{ url_for('profile', user_id=load.shipper_id) }}">{{ load.username }}</a>
+                {% if load.rating_count > 0 %}
+                    <span class="rating">★ {{ "%.2f"|format(load.avg_rating) }} ({{ load.rating_count }})</span>
+                {% else %}
+                    <span>(No reviews yet)</span>
+                {% endif %}
+            </p>
+            <p><strong>Route:</strong> {{ load.pickup }} &rarr; {{ load.delivery }}</p>
+            <div id="map-{{ load.load_id }}" class="map-container"></div>
+            <p><strong>Shipping Date:</strong> {{ load.shipping_date }}</p>
+            <p><strong>Offer:</strong> ${{ load.offer }}</p>
+        </div>
+        {% endfor %}
+    {% else %}
+        <p class="no-results">No loads are currently available.</p>
+    {% endif %}
+</div>
+
+<script>
+    mapboxgl.accessToken = '{{ mapbox_token }}';
+</script>
+<script src="{{ url_for('static', filename='map_loader.js') }}"></script>
+<script>
+    document.addEventListener('DOMContentLoaded', () => {
+        initializeMaps({
+            cardSelector: '.load-card',
+            startLocationAttr: 'pickup',
+            endLocationAttr: 'delivery',
+            idAttr: 'loadId',
+            idPrefix: 'map'
+        });
+    });
+</script>
+</body>
+</html>

@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Available Trucks</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <!-- Mapbox GL JS -->
+    <script src='https://api.mapbox.com/mapbox-gl-js/v2.9.1/mapbox-gl.js'></script>
+    <link href='https://api.mapbox.com/mapbox-gl-js/v2.9.1/mapbox-gl.css' rel='stylesheet' />
+    <style>
+        .map-container {
+            height: 200px;
+            width: 100%;
+            margin-top: 15px;
+            border-radius: 8px;
+        }
+    </style>
+</head>
+<body>
+<div class="container">
+    <a href="{{ url_for('index') }}" class="back-link">&larr; Back to Home</a>
+    <h1>Available Trucks</h1>
+
+    <div class="filter-controls" style="margin-bottom: 20px; display: flex; gap: 10px; flex-wrap: wrap;">
+        <a href="{{ url_for('available_vehicles') }}" class="btn {% if not request.args.get('equipment') %}active{% endif %}">All Trucks</a>
+        <a href="{{ url_for('available_vehicles', equipment='true') }}" class="btn {% if request.args.get('equipment') == 'true' %}active{% endif %}">With Loading Equipment</a>
+    </div>
+
+    <form class="search-bar" method="GET" action="{{ url_for('available_vehicles') }}" style="margin-bottom: 20px; display: flex; gap: 10px; flex-wrap: wrap; align-items: center;">
+        {% if request.args.get('equipment') %}
+            <input type="hidden" name="equipment" value="{{ request.args.get('equipment') }}">
+        {% endif %}
+        <input type="text" name="pickup" id="pickupSearch" placeholder="Filter by pickup location..." value="{{ request.args.get('pickup', '') }}" style="flex: 1; min-width: 200px; padding: 10px; border: 1px solid #ccc; border-radius: 4px;">
+        <input type="text" name="delivery" id="deliverySearch" placeholder="Filter by delivery location..." value="{{ request.args.get('delivery', '') }}" style="flex: 1; min-width: 200px; padding: 10px; border: 1px solid #ccc; border-radius: 4px;">
+        <button type="submit" class="btn">Search</button>
+        {% if request.args.get('pickup') or request.args.get('delivery') %}
+            <a href="{{ url_for('available_vehicles', equipment=request.args.get('equipment')) }}" class="btn" style="background-color: #d9534f; color: white;">Clear</a>
+        {% endif %}
+    </form>
+
+    {% if trucks %}
+        {% for truck in trucks %}
+        <div class="card truck-card"
+             data-departure="{{ truck.departure_city }}"
+             data-destination="{{ truck.destination_city }}"
+             data-vehicle-id="{{ truck.vehicle_id }}">
+            <h3>{{ truck.vehicle_type }} (ID: {{ truck.vehicle_id }})</h3>
+            <p><strong>Transporter:</strong> <a href="{{ url_for('profile', user_id=truck.driver_id) }}">{{ truck.username }}</a>
+                {% if truck.rating_count > 0 %}
+                    <span class="rating">★ {{ "%.2f"|format(truck.avg_rating) }} ({{ truck.rating_count }})</span>
+                {% else %}
+                    <span>(No reviews yet)</span>
+                {% endif %}
+            </p>
+            <p><strong>Route:</strong> {{ truck.departure_city }} &rarr; {{ truck.destination_city }}</p>
+            <div id="map-{{ truck.vehicle_id }}" class="map-container"></div>
+            <p><strong>Availability:</strong> {{ truck.start_date }} to {{ truck.end_date }}</p>
+            <p><strong>Equipment:</strong> {{ 'Has own loading equipment' if truck.has_loading_equipment else 'No loading equipment provided' }}</p>
+
+            {% if session.user_id and session.user_id != truck.driver_id %}
+            <div class="card-actions">
+                <a href="{{ url_for('chat', other_user_id=truck.driver_id) }}" class="btn btn-success">Message Transporter</a>
+                <a href="{{ url_for('index') }}?vehicle_id={{ truck.vehicle_id }}#matchSection" class="btn">Request This Truck</a>
+            </div>
+            {% endif %}
+        </div>
+        {% endfor %}
+
+        {% if pagination and pagination.pages > 1 %}
+        <div class="pagination" style="margin-top: 20px; display: flex; justify-content: center; gap: 5px;">
+            {% if pagination.has_prev %}
+                <a href="{{ url_for('available_vehicles', page=pagination.prev_num, pickup=request.args.get('pickup', ''), delivery=request.args.get('delivery', ''), equipment=request.args.get('equipment', '')) }}" class="btn">&laquo; Prev</a>
+            {% endif %}
+
+            {% for page_num in pagination.iter_pages(left_edge=1, right_edge=1, left_current=2, right_current=2) %}
+                {% if page_num %}
+                    {% if page_num == pagination.page %}
+                        <span class="btn active" style="pointer-events: none;">{{ page_num }}</span>
+                    {% else %}
+                        <a href="{{ url_for('available_vehicles', page=page_num, pickup=request.args.get('pickup', ''), delivery=request.args.get('delivery', ''), equipment=request.args.get('equipment', '')) }}" class="btn">{{ page_num }}</a>
+                    {% endif %}
+                {% else %}
+                    <span class="ellipsis" style="padding: 10px;">...</span>
+                {% endif %}
+            {% endfor %}
+
+            {% if pagination.has_next %}
+                <a href="{{ url_for('available_vehicles', page=pagination.next_num, pickup=request.args.get('pickup', ''), delivery=request.args.get('delivery', ''), equipment=request.args.get('equipment', '')) }}" class="btn">Next &raquo;</a>
+            {% endif %}
+        </div>
+        {% endif %}
+    {% else %}
+        <p class="no-results">No trucks are currently available. Go back and post one!</p>
+    {% endif %}
+</div>
+
+<script>
+    mapboxgl.accessToken = '{{ mapbox_token }}';
+</script>
+<script src="{{ url_for('static', filename='map_loader.js') }}"></script>
+<script>
+    document.addEventListener('DOMContentLoaded', () => {
+        initializeMaps({
+            cardSelector: '.truck-card',
+            startLocationAttr: 'departure',
+            endLocationAttr: 'destination',
+            idAttr: 'vehicleId',
+            idPrefix: 'map'
+        });
+    });
+</script>
+</body>
+</html>

@@ -1,0 +1,134 @@
+const express = require('express');
+const pool = require('./db');
+const { protect } = require('./middleware/auth');
+const PDFDocument = require('pdfkit');
+
+const router = express.Router();
+
+/**
+ * GET /api/orders/history
+ * Fetches the order history for the currently authenticated user.
+ */
+router.get('/history', protect, async (req, res) => {
+    const userId = req.user.id;
+    const page = parseInt(req.query.page, 10) || 1;
+    const limit = parseInt(req.query.limit, 10) || 10; // Default to 10 items per page
+    const offset = (page - 1) * limit;
+
+    try {
+        // Use a single client for both queries to ensure data consistency
+        const client = await pool.connect();
+        try {
+            // Query 1: Get the total count of orders for the user
+            const totalItemsQuery = await client.query(
+                `SELECT COUNT(*) FROM orders WHERE user_id = $1`,
+                [userId]
+            );
+            const totalItems = parseInt(totalItemsQuery.rows[0].count, 10);
+            const totalPages = Math.ceil(totalItems / limit);
+
+            // Query 2: Fetch the paginated list of orders
+            const ordersQuery = await client.query(
+                `SELECT 
+                    id, 
+                    amount, 
+                    currency, 
+                    status, 
+                    created_at 
+                 FROM orders 
+                 WHERE user_id = $1 
+                 ORDER BY created_at DESC
+                 LIMIT $2 OFFSET $3`,
+                [userId, limit, offset]
+            );
+
+            res.status(200).json({
+                message: 'Successfully retrieved order history.',
+                data: ordersQuery.rows,
+                pagination: {
+                    currentPage: page,
+                    totalPages,
+                    totalItems,
+                }
+            });
+        } finally {
+            // Release the client back to the pool
+            client.release();
+        }
+    } catch (error) {
+        console.error('Get Order History Error:', error);
+        res.status(500).json({ message: 'Internal server error while fetching order history.' });
+    }
+});
+
+/**
+ * GET /api/orders/invoice/:orderId/pdf
+ * Generates and streams a PDF invoice for a specific order.
+ */
+router.get('/invoice/:orderId/pdf', protect, async (req, res) => {
+    const { orderId } = req.params;
+    const userId = req.user.id;
+
+    try {
+        // Fetch the specific order, ensuring it belongs to the logged-in user.
+        // We join with the users table to get customer details for the invoice.
+        const orderQuery = await pool.query(
+            `SELECT o.id, o.amount, o.currency, o.status, o.created_at, u.name as user_name, u.email as user_email
+             FROM orders o
+             JOIN users u ON o.user_id = u.id
+             WHERE o.id = $1 AND o.user_id = $2`,
+            [orderId, userId]
+        );
+
+        const order = orderQuery.rows[0];
+
+        if (!order) {
+            return res.status(404).json({ message: 'Invoice not found or you do not have permission to view it.' });
+        }
+
+        // --- PDF Generation using pdfkit ---
+        const doc = new PDFDocument({ size: 'A4', margin: 50 });
+
+        // Set response headers to trigger a download in the browser
+        const filename = `invoice-${order.id.toString().padStart(6, '0')}.pdf`;
+        res.setHeader('Content-disposition', `attachment; filename="${filename}"`);
+        res.setHeader('Content-type', 'application/pdf');
+
+        // Pipe the PDF document to the response stream
+        doc.pipe(res);
+
+        // --- Add content to the PDF ---
+        doc.fontSize(20).text('Invoice', { align: 'center' });
+        doc.moveDown(2);
+
+        doc.fontSize(12);
+        doc.text('Your Company Name', { continued: true });
+        doc.text(`Invoice #: ${order.id.toString().padStart(6, '0')}`, { align: 'right' });
+        doc.text('123 Your Street', { continued: true });
+        doc.text(`Date: ${new Date(order.created_at).toLocaleDateString()}`, { align: 'right' });
+        doc.text('Your City, ST 12345', { continued: true });
+        doc.text(`Status: ${order.status}`, { align: 'right' });
+        doc.moveDown(2);
+
+        doc.text('Bill To:');
+        doc.text(order.user_name);
+        doc.text(order.user_email);
+        doc.moveDown(2);
+
+        // Simple table for line items
+        const tableTop = doc.y;
+        doc.font('Helvetica-Bold').text('Description', 50, tableTop).text('Amount', 450, tableTop, { align: 'right' });
+        doc.lineCap('butt').moveTo(50, doc.y).lineTo(550, doc.y).stroke();
+        doc.moveDown();
+        const amountInDollars = (order.amount / 100).toFixed(2);
+        doc.font('Helvetica').text(`Order #${order.id.toString().padStart(6, '0')}`, 50, doc.y).text(`$${amountInDollars}`, 450, doc.y, { align: 'right' });
+
+        // Finalize the PDF and end the stream
+        doc.end();
+    } catch (error) {
+        console.error('PDF Generation Error:', error);
+        res.status(500).json({ message: 'Internal server error while generating PDF.' });
+    }
+});
+
+module.exports = router;

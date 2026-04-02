@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Edit Load</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+<div class="container">
+    <a href="{{ url_for('dashboard') }}" class="back-link">&larr; Back to Dashboard</a>
+    <section>
+        <h2>Edit Load (ID: {{ load.load_id }})</h2>
+        {% if load.image_filename %}
+            <div class="current-image">
+                <p>Current Image:</p>
+                <img src="{{ url_for('static', filename='uploads/' + load.image_filename) }}" alt="Current load image" style="max-width: 200px; border-radius: 8px; margin-bottom: 15px;">
+            </div>
+        {% endif %}
+        <form action="{{ url_for('edit_load', load_id=load.load_id) }}" method="POST" enctype="multipart/form-data">
+            <input type="text" name="description" placeholder="Description" value="{{ load.description }}" required>
+            <input type="text" name="weight" placeholder="Weight" value="{{ load.weight or '' }}">
+            <input type="text" name="dimensions" placeholder="Dimensions" value="{{ load.dimensions or '' }}">
+            <input type="text" name="pickup" placeholder="Pickup Location" value="{{ load.pickup }}">
+            <input type="text" name="delivery" placeholder="Delivery Location" value="{{ load.delivery }}">
+            <label for="shipping_date">Desired Shipping Date:</label>
+            <input type="date" name="shipping_date" id="shipping_date" value="{{ load.shipping_date }}" required>
+            <label for="load_image">Upload New Image (optional, will replace current):</label>
+            <input type="file" name="load_image" id="load_image" accept="image/*">
+            <input type="text" name="shipper_offer" placeholder="Offer" value="{{ load.offer }}">
+            <button type="submit">Update Load</button>
+        </form>
+    </section>
+</div>
+</body>
+</html>

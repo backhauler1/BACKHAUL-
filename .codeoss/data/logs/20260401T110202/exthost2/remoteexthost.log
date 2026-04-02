@@ -1,0 +1,189 @@
+2026-04-01 11:02:36.095 [info] Extension host with pid 1526 started
+2026-04-01 11:02:36.120 [info] Lock '/home/perrymckay1/.codeoss/data/User/workspaceStorage/-6a79e224/vscode.lock': Lock acquired.
+2026-04-01 11:02:36.813 [info] ExtensionService#_doActivateExtension vscode.github-authentication, startup: false, activationEvent: 'onAuthenticationRequest:github'
+2026-04-01 11:02:36.814 [info] ExtensionService#_doActivateExtension vscode.emmet, startup: false, activationEvent: 'onLanguage'
+2026-04-01 11:02:36.815 [info] ExtensionService#_doActivateExtension google.geminicodeassist, startup: false, activationEvent: 'onView:cloudcode.gemini.chatView'
+2026-04-01 11:02:36.815 [info] ExtensionService#_doActivateExtension vscode.typescript-language-features, startup: false, activationEvent: 'onLanguage:javascript'
+2026-04-01 11:02:37.991 [info] ExtensionService#_doActivateExtension vscode.git-base, startup: true, activationEvent: '*', root cause: vscode.git
+2026-04-01 11:02:38.003 [info] ExtensionService#_doActivateExtension vscode.npm, startup: true, activationEvent: 'workspaceContains:package.json'
+2026-04-01 11:02:44.995 [info] Not activating extension 'ms-python.python': Timed out while searching for 'workspaceContains' pattern **/pylock.*.toml
+2026-04-01 11:02:44.998 [info] Not activating extension 'redhat.java': Timed out while searching for 'workspaceContains' pattern */pom.xml,*/build.gradle,*/settings.gradle,*/build.gradle.kts,*/settings.gradle.kts,*/.classpath
+2026-04-01 11:02:44.998 [info] Not activating extension 'vscjava.vscode-java-dependency': Timed out while searching for 'workspaceContains' pattern */pom.xml,*/build.gradle,*/settings.gradle,*/build.gradle.kts,*/settings.gradle.kts,*/.classpath
+2026-04-01 11:02:44.998 [info] Not activating extension 'vscjava.vscode-java-test': Timed out while searching for 'workspaceContains' pattern */pom.xml,*/build.gradle,*/settings.gradle,*/build.gradle.kts,*/settings.gradle.kts,*/.classpath
+2026-04-01 11:02:44.998 [info] Not activating extension 'vscjava.vscode-maven': Timed out while searching for 'workspaceContains' pattern **/pom.xml
+2026-04-01 11:02:48.005 [info] ExtensionService#_doActivateExtension EditorConfig.EditorConfig, startup: false, activationEvent: 'onStartupFinished'
+2026-04-01 11:02:48.006 [info] ExtensionService#_doActivateExtension google.cloud-shell, startup: false, activationEvent: 'onStartupFinished'
+2026-04-01 11:02:48.011 [info] ExtensionService#_doActivateExtension vscode.debug-auto-launch, startup: false, activationEvent: 'onStartupFinished'
+2026-04-01 11:02:48.011 [info] ExtensionService#_doActivateExtension google.gemini-cli-vscode-ide-companion, startup: false, activationEvent: 'onStartupFinished'
+2026-04-01 11:02:48.012 [info] ExtensionService#_doActivateExtension vscode.merge-conflict, startup: false, activationEvent: 'onStartupFinished'
+2026-04-01 11:02:53.404 [info] ExtensionService#_doActivateExtension vscode.git, startup: true, activationEvent: '*'
+2026-04-01 11:02:53.405 [info] ExtensionService#_doActivateExtension vscode.github, startup: true, activationEvent: '*'
+2026-04-01 11:02:54.924 [info] Eager extensions activated
+2026-04-01 11:02:59.942 [info] ExtensionService#_doActivateExtension vscode.configuration-editing, startup: false, activationEvent: 'onLanguage:jsonc'
+2026-04-01 11:02:59.943 [info] ExtensionService#_doActivateExtension vscode.json-language-features, startup: false, activationEvent: 'onLanguage:jsonc'
+2026-04-01 11:03:00.405 [info] ExtensionService#_doActivateExtension googlecloudtools.cloudcode, startup: false, activationEvent: 'onStartupFinished'
+2026-04-01 11:03:04.076 [info] ExtensionService#_doActivateExtension vscode.terminal-suggest, startup: false, activationEvent: 'onTerminalShellIntegration:*'
+2026-04-01 11:03:06.944 [info] ExtensionService#_doActivateExtension vscode.extension-editing, startup: false, activationEvent: 'onLanguage:json'
+2026-04-01 11:10:20.307 [warning] ExtHostTextEditorOptions 'setOptions' failed:'
+2026-04-01 11:10:20.308 [warning] Illegal argument: TextEditor(vs.editor.ICodeEditor:1,$model9)
+2026-04-01 11:10:21.055 [warning] ExtHostTextEditorOptions 'setOptions' failed:'
+2026-04-01 11:10:21.055 [warning] Illegal argument: TextEditor(vs.editor.ICodeEditor:1,$model10)
+2026-04-01 11:10:22.326 [warning] ExtHostTextEditorOptions 'setOptions' failed:'
+2026-04-01 11:10:22.326 [warning] Illegal argument: TextEditor(vs.editor.ICodeEditor:1,$model11)
+2026-04-01 11:10:22.984 [warning] ExtHostTextEditorOptions 'setOptions' failed:'
+2026-04-01 11:10:22.984 [warning] Illegal argument: TextEditor(vs.editor.ICodeEditor:1,$model12)
+2026-04-01 11:10:23.495 [warning] ExtHostTextEditorOptions 'setOptions' failed:'
+2026-04-01 11:10:23.495 [warning] Illegal argument: TextEditor(vs.editor.ICodeEditor:1,$model13)
+2026-04-01 11:10:24.101 [warning] ExtHostTextEditorOptions 'setOptions' failed:'
+2026-04-01 11:10:24.101 [warning] Illegal argument: TextEditor(vs.editor.ICodeEditor:1,$model14)
+2026-04-01 11:10:24.964 [warning] ExtHostTextEditorOptions 'setOptions' failed:'
+2026-04-01 11:10:24.964 [warning] Illegal argument: TextEditor(vs.editor.ICodeEditor:1,$model15)
+2026-04-01 11:10:25.529 [warning] ExtHostTextEditorOptions 'setOptions' failed:'
+2026-04-01 11:10:25.529 [warning] Illegal argument: TextEditor(vs.editor.ICodeEditor:1,$model16)
+2026-04-01 11:10:27.077 [warning] ExtHostTextEditorOptions 'setOptions' failed:'
+2026-04-01 11:10:27.077 [warning] Illegal argument: TextEditor(vs.editor.ICodeEditor:1,$model17)
+2026-04-01 11:38:35.209 [warning] ExtHostTextEditorOptions 'setOptions' failed:'
+2026-04-01 11:38:35.209 [warning] Illegal argument: TextEditor(vs.editor.ICodeEditor:1,$model19)
+2026-04-01 11:38:35.968 [warning] ExtHostTextEditorOptions 'setOptions' failed:'
+2026-04-01 11:38:35.969 [warning] Illegal argument: TextEditor(vs.editor.ICodeEditor:1,$model20)
+2026-04-01 11:38:36.656 [warning] ExtHostTextEditorOptions 'setOptions' failed:'
+2026-04-01 11:38:36.656 [warning] Illegal argument: TextEditor(vs.editor.ICodeEditor:1,$model9)
+2026-04-01 11:38:37.733 [warning] ExtHostTextEditorOptions 'setOptions' failed:'
+2026-04-01 11:38:37.733 [warning] Illegal argument: TextEditor(vs.editor.ICodeEditor:1,$model21)
+2026-04-01 11:38:38.797 [warning] ExtHostTextEditorOptions 'setOptions' failed:'
+2026-04-01 11:38:38.797 [warning] Illegal argument: TextEditor(vs.editor.ICodeEditor:1,$model13)
+2026-04-01 11:38:39.737 [warning] ExtHostTextEditorOptions 'setOptions' failed:'
+2026-04-01 11:38:39.738 [warning] Illegal argument: TextEditor(vs.editor.ICodeEditor:1,$model12)
+2026-04-01 11:38:40.527 [warning] ExtHostTextEditorOptions 'setOptions' failed:'
+2026-04-01 11:38:40.527 [warning] Illegal argument: TextEditor(vs.editor.ICodeEditor:1,$model14)
+2026-04-01 11:38:41.574 [warning] ExtHostTextEditorOptions 'setOptions' failed:'
+2026-04-01 11:38:41.574 [warning] Illegal argument: TextEditor(vs.editor.ICodeEditor:1,$model15)
+2026-04-01 11:38:42.836 [warning] ExtHostTextEditorOptions 'setOptions' failed:'
+2026-04-01 11:38:42.837 [warning] Illegal argument: TextEditor(vs.editor.ICodeEditor:1,$model22)
+2026-04-01 11:38:44.168 [warning] ExtHostTextEditorOptions 'setOptions' failed:'
+2026-04-01 11:38:44.168 [warning] Illegal argument: TextEditor(vs.editor.ICodeEditor:1,$model11)
+2026-04-01 11:39:05.102 [warning] ExtHostTextEditorOptions 'setOptions' failed:'
+2026-04-01 11:39:05.102 [warning] Illegal argument: TextEditor(vs.editor.ICodeEditor:1,$model23)
+2026-04-01 11:39:06.945 [warning] ExtHostTextEditorOptions 'setOptions' failed:'
+2026-04-01 11:39:06.945 [warning] Illegal argument: TextEditor(vs.editor.ICodeEditor:1,$model24)
+2026-04-01 11:39:31.477 [warning] ExtHostTextEditorOptions 'setOptions' failed:'
+2026-04-01 11:39:31.477 [warning] Illegal argument: TextEditor(vs.editor.ICodeEditor:1,$model25)
+2026-04-01 11:39:46.393 [warning] ExtHostTextEditorOptions 'setOptions' failed:'
+2026-04-01 11:39:46.394 [warning] Illegal argument: TextEditor(vs.editor.ICodeEditor:1,$model26)
+2026-04-01 11:39:48.586 [warning] ExtHostTextEditorOptions 'setOptions' failed:'
+2026-04-01 11:39:48.586 [warning] Illegal argument: TextEditor(vs.editor.ICodeEditor:1,$model27)
+2026-04-01 11:40:16.281 [warning] ExtHostTextEditorOptions 'setOptions' failed:'
+2026-04-01 11:40:16.281 [warning] Illegal argument: TextEditor(vs.editor.ICodeEditor:1,$model28)
+2026-04-01 11:40:40.171 [warning] ExtHostTextEditorOptions 'setOptions' failed:'
+2026-04-01 11:40:40.171 [warning] Illegal argument: TextEditor(vs.editor.ICodeEditor:1,$model29)
+2026-04-01 11:40:41.233 [warning] ExtHostTextEditorOptions 'setOptions' failed:'
+2026-04-01 11:40:41.233 [warning] Illegal argument: TextEditor(vs.editor.ICodeEditor:1,$model30)
+2026-04-01 11:40:43.121 [warning] ExtHostTextEditorOptions 'setOptions' failed:'
+2026-04-01 11:40:43.121 [warning] Illegal argument: TextEditor(vs.editor.ICodeEditor:1,$model31)
+2026-04-01 11:41:43.098 [warning] ExtHostTextEditorOptions 'setOptions' failed:'
+2026-04-01 11:41:43.098 [warning] Illegal argument: TextEditor(vs.editor.ICodeEditor:1,$model32)
+2026-04-01 12:05:07.647 [error] Error: Could NOT open editor for "file:///home/perrymckay1/passwordReset.test.js".
+    at OX.showTextDocument (file:///google/devshell/editor/code-oss-for-cloud-shell/out/vs/workbench/api/node/extensionHostProcess.js:213:64264)
+    at processTicksAndRejections (node:internal/process/task_queues:105:5)
+    at document (/google/devshell/editor/code-oss-for-cloud-shell/extensions/geminicodeassist/dist/webpack:/src/ai-companion/vscode_file_helper.ts:182:5)
+    at V.openFileAndReplaceItsContent (/google/devshell/editor/code-oss-for-cloud-shell/extensions/geminicodeassist/dist/webpack:/src/ai-companion/chat/chat_action_processor.ts:1321:9)
+    at V.ACCEPT_CODE_BLOCK [as handleCodeActionClickedAcceptCodeBlock] (/google/devshell/editor/code-oss-for-cloud-shell/extensions/geminicodeassist/dist/webpack:/src/ai-companion/chat/chat_action_processor.ts:1255:109)
+    at V.response [as codeActionClickedAction] (/google/devshell/editor/code-oss-for-cloud-shell/extensions/geminicodeassist/dist/webpack:/src/ai-companion/chat/chat_action_processor.ts:1070:39)
+    at V.processAction (/google/devshell/editor/code-oss-for-cloud-shell/extensions/geminicodeassist/dist/webpack:/common/packages/angular-panel/base_action_processor.ts:32:11)
+2026-04-01 12:05:07.662 [error] Error: Could NOT open editor for "file:///home/perrymckay1/socketHandlers.test.js".
+    at OX.showTextDocument (file:///google/devshell/editor/code-oss-for-cloud-shell/out/vs/workbench/api/node/extensionHostProcess.js:213:64264)
+    at processTicksAndRejections (node:internal/process/task_queues:105:5)
+    at document (/google/devshell/editor/code-oss-for-cloud-shell/extensions/geminicodeassist/dist/webpack:/src/ai-companion/vscode_file_helper.ts:182:5)
+    at V.openFileAndReplaceItsContent (/google/devshell/editor/code-oss-for-cloud-shell/extensions/geminicodeassist/dist/webpack:/src/ai-companion/chat/chat_action_processor.ts:1321:9)
+    at V.ACCEPT_CODE_BLOCK [as handleCodeActionClickedAcceptCodeBlock] (/google/devshell/editor/code-oss-for-cloud-shell/extensions/geminicodeassist/dist/webpack:/src/ai-companion/chat/chat_action_processor.ts:1255:109)
+    at V.response [as codeActionClickedAction] (/google/devshell/editor/code-oss-for-cloud-shell/extensions/geminicodeassist/dist/webpack:/src/ai-companion/chat/chat_action_processor.ts:1070:39)
+    at V.processAction (/google/devshell/editor/code-oss-for-cloud-shell/extensions/geminicodeassist/dist/webpack:/common/packages/angular-panel/base_action_processor.ts:32:11)
+2026-04-01 12:05:07.663 [error] Error: Could NOT open editor for "file:///home/perrymckay1/forms.test.js".
+    at OX.showTextDocument (file:///google/devshell/editor/code-oss-for-cloud-shell/out/vs/workbench/api/node/extensionHostProcess.js:213:64264)
+    at processTicksAndRejections (node:internal/process/task_queues:105:5)
+    at document (/google/devshell/editor/code-oss-for-cloud-shell/extensions/geminicodeassist/dist/webpack:/src/ai-companion/vscode_file_helper.ts:182:5)
+    at V.openFileAndReplaceItsContent (/google/devshell/editor/code-oss-for-cloud-shell/extensions/geminicodeassist/dist/webpack:/src/ai-companion/chat/chat_action_processor.ts:1321:9)
+    at V.ACCEPT_CODE_BLOCK [as handleCodeActionClickedAcceptCodeBlock] (/google/devshell/editor/code-oss-for-cloud-shell/extensions/geminicodeassist/dist/webpack:/src/ai-companion/chat/chat_action_processor.ts:1255:109)
+    at V.response [as codeActionClickedAction] (/google/devshell/editor/code-oss-for-cloud-shell/extensions/geminicodeassist/dist/webpack:/src/ai-companion/chat/chat_action_processor.ts:1070:39)
+    at V.processAction (/google/devshell/editor/code-oss-for-cloud-shell/extensions/geminicodeassist/dist/webpack:/common/packages/angular-panel/base_action_processor.ts:32:11)
+2026-04-01 12:05:07.663 [error] Error: Could NOT open editor for "file:///home/perrymckay1/driverTracking.test.js".
+    at OX.showTextDocument (file:///google/devshell/editor/code-oss-for-cloud-shell/out/vs/workbench/api/node/extensionHostProcess.js:213:64264)
+    at processTicksAndRejections (node:internal/process/task_queues:105:5)
+    at document (/google/devshell/editor/code-oss-for-cloud-shell/extensions/geminicodeassist/dist/webpack:/src/ai-companion/vscode_file_helper.ts:182:5)
+    at V.openFileAndReplaceItsContent (/google/devshell/editor/code-oss-for-cloud-shell/extensions/geminicodeassist/dist/webpack:/src/ai-companion/chat/chat_action_processor.ts:1321:9)
+    at V.ACCEPT_CODE_BLOCK [as handleCodeActionClickedAcceptCodeBlock] (/google/devshell/editor/code-oss-for-cloud-shell/extensions/geminicodeassist/dist/webpack:/src/ai-companion/chat/chat_action_processor.ts:1255:109)
+    at V.response [as codeActionClickedAction] (/google/devshell/editor/code-oss-for-cloud-shell/extensions/geminicodeassist/dist/webpack:/src/ai-companion/chat/chat_action_processor.ts:1070:39)
+    at V.processAction (/google/devshell/editor/code-oss-for-cloud-shell/extensions/geminicodeassist/dist/webpack:/common/packages/angular-panel/base_action_processor.ts:32:11)
+2026-04-01 12:05:07.664 [error] Error: Could NOT open editor for "file:///home/perrymckay1/users.test.js".
+    at OX.showTextDocument (file:///google/devshell/editor/code-oss-for-cloud-shell/out/vs/workbench/api/node/extensionHostProcess.js:213:64264)
+    at processTicksAndRejections (node:internal/process/task_queues:105:5)
+    at document (/google/devshell/editor/code-oss-for-cloud-shell/extensions/geminicodeassist/dist/webpack:/src/ai-companion/vscode_file_helper.ts:182:5)
+    at V.openFileAndReplaceItsContent (/google/devshell/editor/code-oss-for-cloud-shell/extensions/geminicodeassist/dist/webpack:/src/ai-companion/chat/chat_action_processor.ts:1321:9)
+    at V.ACCEPT_CODE_BLOCK [as handleCodeActionClickedAcceptCodeBlock] (/google/devshell/editor/code-oss-for-cloud-shell/extensions/geminicodeassist/dist/webpack:/src/ai-companion/chat/chat_action_processor.ts:1255:109)
+    at V.response [as codeActionClickedAction] (/google/devshell/editor/code-oss-for-cloud-shell/extensions/geminicodeassist/dist/webpack:/src/ai-companion/chat/chat_action_processor.ts:1070:39)
+    at V.processAction (/google/devshell/editor/code-oss-for-cloud-shell/extensions/geminicodeassist/dist/webpack:/common/packages/angular-panel/base_action_processor.ts:32:11)
+2026-04-01 12:05:08.103 [warning] ExtHostTextEditorOptions 'setOptions' failed:'
+2026-04-01 12:05:08.103 [warning] Illegal argument: TextEditor(vs.editor.ICodeEditor:1,$model31)
+2026-04-01 12:14:06.925 [warning] ExtHostTextEditorOptions 'setOptions' failed:'
+2026-04-01 12:14:06.925 [warning] Illegal argument: TextEditor(vs.editor.ICodeEditor:1,$model22)
+2026-04-01 12:14:07.386 [warning] ExtHostTextEditorOptions 'setOptions' failed:'
+2026-04-01 12:14:07.386 [warning] Illegal argument: TextEditor(vs.editor.ICodeEditor:1,$model23)
+2026-04-01 12:14:08.188 [warning] ExtHostTextEditorOptions 'setOptions' failed:'
+2026-04-01 12:14:08.188 [warning] Illegal argument: TextEditor(vs.editor.ICodeEditor:1,$model25)
+2026-04-01 12:14:09.387 [warning] ExtHostTextEditorOptions 'setOptions' failed:'
+2026-04-01 12:14:09.387 [warning] Illegal argument: TextEditor(vs.editor.ICodeEditor:1,$model9)
+2026-04-01 12:14:10.686 [warning] ExtHostTextEditorOptions 'setOptions' failed:'
+2026-04-01 12:14:10.686 [warning] Illegal argument: TextEditor(vs.editor.ICodeEditor:1,$model27)
+2026-04-01 12:14:12.376 [warning] ExtHostTextEditorOptions 'setOptions' failed:'
+2026-04-01 12:14:12.376 [warning] Illegal argument: TextEditor(vs.editor.ICodeEditor:1,$model11)
+2026-04-01 12:14:14.140 [warning] ExtHostTextEditorOptions 'setOptions' failed:'
+2026-04-01 12:14:14.140 [warning] Illegal argument: TextEditor(vs.editor.ICodeEditor:1,$model24)
+2026-04-01 12:14:15.519 [warning] ExtHostTextEditorOptions 'setOptions' failed:'
+2026-04-01 12:14:15.519 [warning] Illegal argument: TextEditor(vs.editor.ICodeEditor:1,$model14)
+2026-04-01 12:14:17.173 [warning] ExtHostTextEditorOptions 'setOptions' failed:'
+2026-04-01 12:14:17.173 [warning] Illegal argument: TextEditor(vs.editor.ICodeEditor:1,$model12)
+2026-04-01 12:14:18.570 [warning] ExtHostTextEditorOptions 'setOptions' failed:'
+2026-04-01 12:14:18.570 [warning] Illegal argument: TextEditor(vs.editor.ICodeEditor:1,$model13)
+2026-04-01 12:36:49.690 [warning] ExtHostTextEditorOptions 'setOptions' failed:'
+2026-04-01 12:36:49.690 [warning] Illegal argument: TextEditor(vs.editor.ICodeEditor:1,$model37)
+2026-04-01 12:36:50.312 [warning] ExtHostTextEditorOptions 'setOptions' failed:'
+2026-04-01 12:36:50.312 [warning] Illegal argument: TextEditor(vs.editor.ICodeEditor:1,$model16)
+2026-04-01 12:36:51.103 [warning] ExtHostTextEditorOptions 'setOptions' failed:'
+2026-04-01 12:36:51.104 [warning] Illegal argument: TextEditor(vs.editor.ICodeEditor:1,$model14)
+2026-04-01 12:36:53.218 [warning] ExtHostTextEditorOptions 'setOptions' failed:'
+2026-04-01 12:36:53.218 [warning] Illegal argument: TextEditor(vs.editor.ICodeEditor:1,$model23)
+2026-04-01 12:36:54.216 [warning] ExtHostTextEditorOptions 'setOptions' failed:'
+2026-04-01 12:36:54.216 [warning] Illegal argument: TextEditor(vs.editor.ICodeEditor:1,$model25)
+2026-04-01 12:36:55.617 [warning] ExtHostTextEditorOptions 'setOptions' failed:'
+2026-04-01 12:36:55.617 [warning] Illegal argument: TextEditor(vs.editor.ICodeEditor:1,$model27)
+2026-04-01 12:36:56.925 [warning] ExtHostTextEditorOptions 'setOptions' failed:'
+2026-04-01 12:36:56.925 [warning] Illegal argument: TextEditor(vs.editor.ICodeEditor:1,$model24)
+2026-04-01 12:36:57.993 [warning] ExtHostTextEditorOptions 'setOptions' failed:'
+2026-04-01 12:36:57.993 [warning] Illegal argument: TextEditor(vs.editor.ICodeEditor:1,$model11)
+2026-04-01 12:36:58.972 [warning] ExtHostTextEditorOptions 'setOptions' failed:'
+2026-04-01 12:36:58.972 [warning] Illegal argument: TextEditor(vs.editor.ICodeEditor:1,$model9)
+2026-04-01 12:37:00.666 [warning] ExtHostTextEditorOptions 'setOptions' failed:'
+2026-04-01 12:37:00.666 [warning] Illegal argument: TextEditor(vs.editor.ICodeEditor:1,$model38)
+2026-04-01 12:49:19.998 [warning] ExtHostTextEditorOptions 'setOptions' failed:'
+2026-04-01 12:49:19.999 [warning] Illegal argument: TextEditor(vs.editor.ICodeEditor:1,$model39)
+2026-04-01 12:49:20.747 [warning] ExtHostTextEditorOptions 'setOptions' failed:'
+2026-04-01 12:49:20.748 [warning] Illegal argument: TextEditor(vs.editor.ICodeEditor:1,$model14)
+2026-04-01 12:49:22.603 [warning] ExtHostTextEditorOptions 'setOptions' failed:'
+2026-04-01 12:49:22.603 [warning] Illegal argument: TextEditor(vs.editor.ICodeEditor:1,$model16)
+2026-04-01 12:49:24.111 [warning] ExtHostTextEditorOptions 'setOptions' failed:'
+2026-04-01 12:49:24.111 [warning] Illegal argument: TextEditor(vs.editor.ICodeEditor:1,$model12)
+2026-04-01 12:49:24.491 [warning] ExtHostTextEditorOptions 'setOptions' failed:'
+2026-04-01 12:49:24.491 [warning] Illegal argument: TextEditor(vs.editor.ICodeEditor:1,$model23)
+2026-04-01 12:49:25.072 [warning] ExtHostTextEditorOptions 'setOptions' failed:'
+2026-04-01 12:49:25.072 [warning] Illegal argument: TextEditor(vs.editor.ICodeEditor:1,$model25)
+2026-04-01 12:49:25.437 [warning] ExtHostTextEditorOptions 'setOptions' failed:'
+2026-04-01 12:49:25.437 [warning] Illegal argument: TextEditor(vs.editor.ICodeEditor:1,$model27)
+2026-04-01 12:49:25.756 [warning] ExtHostTextEditorOptions 'setOptions' failed:'
+2026-04-01 12:49:25.756 [warning] Illegal argument: TextEditor(vs.editor.ICodeEditor:1,$model24)
+2026-04-01 12:49:26.701 [warning] ExtHostTextEditorOptions 'setOptions' failed:'
+2026-04-01 12:49:26.701 [warning] Illegal argument: TextEditor(vs.editor.ICodeEditor:1,$model9)
+2026-04-01 12:49:27.013 [warning] ExtHostTextEditorOptions 'setOptions' failed:'
+2026-04-01 12:49:27.013 [warning] Illegal argument: TextEditor(vs.editor.ICodeEditor:1,$model11)
+2026-04-01 13:00:33.121 [info] Extension host terminating: received terminate message from renderer
+2026-04-01 13:00:33.122 [info] Lock '/home/perrymckay1/.codeoss/data/User/workspaceStorage/-6a79e224/vscode.lock': Marking the lockfile as scheduled to be released in 6000 ms.
+2026-04-01 13:00:33.326 [info] Extension host with pid 1526 exiting with code 0
